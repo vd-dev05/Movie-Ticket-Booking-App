@@ -1,13 +1,14 @@
 // import { Iron } from "@mui/icons-material";
-import axios from "axios";
+import { Movie, truncateText,convertMinutesToHhMm } from "../GetApi/GetApi";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-const LatestMovie = () => {
+import { Link  } from "react-router-dom";
+import Nav from "../../Nav";
+const LoveMovie = () => {
     const [data, setData] = useState([])
     useEffect(() => {
         const fetchData = async () => {
-            const r = await axios.get('api/searchMovie.json')
-            setData(r.data)
+            const r = await Movie()
+            setData(r)
         }
 
         fetchData()
@@ -15,12 +16,7 @@ const LatestMovie = () => {
 
     // console.log(data);
 
-    const truncateText = (text, length) => {
-        if (text.length > length) {
-            return text.substring(0, length) + '...';
-        }
-        return text;
-    };
+
     // const test = data.Search
     // console.log(test);
     return (
@@ -32,25 +28,25 @@ const LatestMovie = () => {
                     </Link>
 
                 </div>
-                <h1 className="text-center font-logo">Latest Movies</h1>
+                <h1 className="text-center font-logo">Favourite Movies</h1>
                 <div className="grid grid-cols-2 gap-5 mt-10 ">
 
                     {data.map((item) => (
+
                         <div key={item.id} >
-                            <Link to="/item"  state={{ item }} className="text-black">
-                                <div className=" saturate-200   ">
-                                    <img src={item.poster} alt={item.Title} loading="lazy" className="rounded-2xl  h-[210px] w-[200px]  bg-cover "></img>
+                            <Link to="/itemlove"  state={{ data: item }} className="text-black ">
+                                <div className=" saturate-100" >
+                                    <img src={item.poster} alt={item.title} loading="lazy" className="rounded-2xl  h-[210px] w-[200px]  bg-cover  object-cover"></img>
                                 </div>
                                 <div className="mt-2">
-                                    <h2 className="font-[700]">{truncateText(item.Title, 15)}</h2>
+                                    <h2 className="font-[700]">{truncateText(item.title, 15)}</h2>
                                     {/* {truncateText(item.author, 39)} */}
-                                    <p className="text-gray-400 text-xs">{item.Type}</p>
+                                    <p className="text-gray-400 text-xs">{item.type}</p>
                                 </div>
                             </Link>
 
-
-
                         </div>
+
                     ))}
 
 
@@ -58,9 +54,12 @@ const LatestMovie = () => {
                 </div>
 
             </div>
-
+     
+            <div>
+                <Nav data={"love"}></Nav>
+            </div>
         </div>
     );
 }
 
-export default LatestMovie;
+export default LoveMovie;

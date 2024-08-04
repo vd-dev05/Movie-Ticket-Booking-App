@@ -1,0 +1,301 @@
+{
+    "movies": [
+        {
+            "id": 0,
+            "title": "Avengers : EndGame",
+            "type": [
+                "Sci-Fi",
+                "Action",
+                "Adventure"
+            ],
+            "rate": 9,
+            "year": 2019,
+            "released": [
+                17,
+                "Apr"
+            ],
+            "runtime": 181,
+            "language": "English, Spanish",
+            "theFirm": "Hoollywood Movie",
+            "poster": "https://i.pinimg.com/564x/91/e8/b2/91e8b28b4cb04f5bd07d7fcd3bf08e16.jpg"
+        },
+        {
+            "id": 1,
+            "title": "Doctor Strange",
+            "type": [
+                "Sci-Fi",
+                "Action",
+                "Adventure"
+            ],
+            "rate": 9,
+            "year": 2019,
+            "released": [
+                17,
+                "Apr"
+            ],
+            "runtime": 181,
+            "language": "English, Spanish",
+            "theFirm": "Hoollywood Movie",
+            "poster": "https://github.com/duonghoccodefullstack/i/blob/master/doctor.jpg?raw=true"
+        },
+        {
+            "id": 2,
+            "title": "Jumanji",
+            "type": [
+                "Adventure",
+                "Fantasy",
+                "Family"
+            ],
+            "rate": 7,
+            "year": 1995,
+            "released": [
+                15,
+                "Dec"
+            ],
+            "runtime": 104,
+            "language": "English",
+            "theFirm": "Columbia Pictures",
+            "poster": "https://github.com/duonghoccodefullstack/i/blob/master/jumanji.jpg?raw=true"
+        },
+        {
+            "id": 3,
+            "title": "Pathaan",
+            "type": [
+                "Action",
+                "Thriller"
+            ],
+            "rate": 7,
+            "year": 2023,
+            "released": [
+                25,
+                "Jan"
+            ],
+            "runtime": 146,
+            "language": "Hindi",
+            "theFirm": "Yash Raj Films",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/c/c3/Pathaan_film_poster.jpg"
+        },
+        {
+            "id": 4,
+            "title": "3 Idiots",
+            "type": [
+                "Comedy",
+                "Drama"
+            ],
+            "rate": 8,
+            "year": 2009,
+            "released": [
+                25,
+                "Dec"
+            ],
+            "runtime": 170,
+            "language": "Hindi",
+            "theFirm": "Rajkumar Hirani Films",
+            "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/66A9MqXOyVFCssoloscw79z8Tew.jpg"
+        },
+        {
+            "id": 5,
+            "title": "Pyaar Ka Punchnama",
+            "type": [
+                "Comedy",
+                "Romance"
+            ],
+            "rate": 7,
+            "year": 2011,
+            "released": [
+                16,
+                "Oct"
+            ],
+            "runtime": 135,
+            "language": "Hindi",
+            "theFirm": "Next Gen Films",
+            "poster": "https://a10.gaanacdn.com/gn_img/albums/lJvKa63DV9/JvKaky2WDV/size_l_1713801012.jpg"
+        },
+        {
+            "id": 6,
+            "title": "De De Pyaar De",
+            "type": [
+                "Comedy",
+                "Romance"
+            ],
+            "rate": 6,
+            "year": 2019,
+            "released": [
+                17,
+                "May"
+            ],
+            "runtime": 135,
+            "language": "Hindi",
+            "theFirm": "T-Series",
+            "poster": "https://ascreation02.wordpress.com/wp-content/uploads/2019/06/images-4.jpeg"
+        },
+        {
+            "id": 7,
+            "title": "Sultan",
+            "type": [
+                "Action",
+                "Drama",
+                "Sports"
+            ],
+            "rate": 7,
+            "year": 2016,
+            "released": [
+                6,
+                "Jul"
+            ],
+            "runtime": 170,
+            "language": "Hindi",
+            "theFirm": "Yash Raj Films",
+            "poster": "https://play-lh.googleusercontent.com/gU62T8eIfe1xBFI-Kl-hs6Sx6Wh8Vhh-GuxMFrVSnjKgrGXMfXXwIqJjEYbfzgjvn4jS=w480-h960-rw"
+        },
+        {
+            "id": 8,
+            "title": "Furious 7",
+            "type": [
+                "Action",
+                "Adventure",
+                "Thriller"
+            ],
+            "rate": 7,
+            "year": 2015,
+            "released": [
+                3,
+                "Apr"
+            ],
+            "runtime": 137,
+            "language": "English",
+            "theFirm": "Universal Pictures",
+            "poster": "https://assets.lastdodo.com/image/ld_medium/plain/assets/catalog/assets/2017/10/14/b/4/d/pdf_b4dc8d12-b0c6-11e7-9762-b04a3acabc29.jpg"
+        },
+        {
+            "id": 9,
+            "title": "Hindi Medium",
+            "type": [
+                "Comedy",
+                "Drama"
+            ],
+            "rate": 7,
+            "year": 2017,
+            "released": [
+                19,
+                "May"
+            ],
+            "runtime": 132,
+            "language": "Hindi",
+            "theFirm": "T-Series",
+            "poster": "https://a10.gaanacdn.com/gn_img/albums/oAJbDlbnL8/AJbD2kgq3n/size_l_1715591058.webp"
+        },
+        {
+            "id": 10,
+            "title": "Jurassic World",
+            "type": [
+                "Action",
+                "Adventure",
+                "Sci-Fi"
+            ],
+            "rate": 7,
+            "year": 2015,
+            "released": [
+                12,
+                "Jun"
+            ],
+            "runtime": 124,
+            "language": "English",
+            "theFirm": "Universal Pictures",
+            "poster": "https://i.pinimg.com/564x/3d/d1/95/3dd1955f1c22ef0eba41c168c56806d5.jpg"
+        },
+        {
+            "id": 11,
+            "title": "Spider-Man",
+            "type": [
+                "Action",
+                "Adventure",
+                "Sci-Fi"
+            ],
+            "rate": 7,
+            "year": 2002,
+            "released": [
+                3,
+                "May"
+            ],
+            "runtime": 121,
+            "language": "English",
+            "theFirm": "Columbia Pictures",
+            "poster": "https://sm.ign.com/t/ign_nordic/cover/s/spider-man/spider-man-no-way-home_56ma.600.jpg"
+        },
+        {
+            "id": 12,
+            "title": "Doraemon the Movie: Nobita's Earth Symphony.",
+            "type": [
+                "Animation",
+                "Adventure",
+                "Family"
+            ],
+            "rate": 8,
+            "year": 1980,
+            "released": [
+                15,
+                "Mar"
+            ],
+            "runtime": 96,
+            "language": "Japanese",
+            "theFirm": "Shin-Ei Animation",
+            "poster": "https://i.pinimg.com/736x/df/03/37/df03378d92dc04f926c21e58a0a7a705.jpg"
+        },
+        {
+            "id": 13,
+            "title": "Batman Begins",
+            "type": [
+                "Action",
+                "Adventure"
+            ],
+            "rate": 8,
+            "year": 2005,
+            "released": [
+                15,
+                "Jun"
+            ],
+            "runtime": 140,
+            "language": "English",
+            "theFirm": "Warner Bros. Pictures",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/a/af/Batman_Begins_Poster.jpg"
+        },
+        {
+            "id": 14,
+            "title": "Inception",
+            "type": [
+                "Action",
+                "Adventure",
+                "Sci-Fi"
+            ],
+            "rate": 8,
+            "year": 2010,
+            "released": [
+                16,
+                "Jul"
+            ],
+            "runtime": 148,
+            "language": "English",
+            "theFirm": "Warner Bros. Pictures",
+            "poster":"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhY-4WtmGlE97xRFaOVj5G4KO2OwVk2biQhU764Dv5IDSGGrv0T8EVr43OTy5Hf8Mk8EfpoDQXilBnUUrLUSmVHvGkE2xlXQQpflTSLyZ7kO3HRF7x3v8_EtgNhKSXJbFSy_wqZWKzisQ25/s1600/inception-poster.jpg"
+        },
+        {
+            "id": 15,
+            "title": "The Matrix",
+            "type": [
+                "Action",
+                "Sci-Fi"
+            ],
+            "rate": 8,
+            "year": 1999,
+            "released": [
+                31,
+                "Mar"
+            ],
+            "runtime": 136,
+            "language": "English",
+            "theFirm": "Warner Bros. Pictures",
+            "poster": "https://play-lh.googleusercontent.com/zL8ya3uEa7Q-oDqc7McTIAaRvwKZNN4HMICMwHHL2eKsbE9Hms_2Dj6SWwNGI555CyauvPVjCPUzYBm2TJ8=w480-h960-rw"
+        }
+    ]
+}

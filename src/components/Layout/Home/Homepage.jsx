@@ -2,11 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input";
 import { Link, } from "react-router-dom";
 // import LatestMovie from "../Product/cardLmovie";
-import { fetchMovies } from "../Product/homelmovie"
+import { fetchMovies } from "../Product/GetApi/GetApi"
 import { useEffect, useState } from "react";
-import MovieDe from "../Product/movieDetails";
-import { FaHome, FaSearch, FaHeart, FaTicketAlt } from 'react-icons/fa';
-import { TbUserSquareRounded } from "react-icons/tb";
+import MovieDe from "../Product/nextPage/MovieDetails";
+import Nav from "../Nav";
+
+
 const HomePage = () => {
     const [data, setMovieData] = useState([])
 
@@ -23,26 +24,15 @@ const HomePage = () => {
         getMovies();
     }, []);
 
-    const NavButton = ({ label, icon, isActive, onClick }) => (
-        <button
-            className={`flex  items-center text-sm ${isActive ? 'bg-chairMovie-chairSelected text-white' : 'text-gray-400'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
-            onClick={onClick}
-        >
-            <div className="text-xl">{icon}</div>
-            {isActive && <span className="pl-2">{label}</span>}
-        </button>
-    );
 
-    const [activeTab, setActiveTab] = useState('home');
 
-    const handleClick = (tab) => {
-        setActiveTab(tab);
-    };
+
     return (
         <div className="">
-            <div className="iphone-12-pro-max:flex flex flex-col h-[200vh] iphone-12:w-[390px] font-movie px-5 mt-10 ">
-                 {/* banner */}
-                <div className="flex justify-between"> 
+            <div className="iphone-12-pro-max:flex flex flex-col h-[200vh] iphone-12:w-[390px] font-movie  mt-10 relative ">
+                {/* banner */}
+                <div className="px-5">
+                <div className="flex justify-between ">
                     <div className="">
                         <h1 className="font-logo">Welcome name 👋</h1>
                         <p>Book your favourite movie</p>
@@ -76,6 +66,7 @@ const HomePage = () => {
                         <Link to="/all" >See all </Link>
                     </div>
                 </div>
+                
                 <div className="flex justify-between mt-5">
                     <div>
                         <button
@@ -103,8 +94,11 @@ const HomePage = () => {
                     </div>
 
                 </div>
+
+                </div>
+                
                 <div>
-                    <div className="flex justify-between mt-10 ">
+                    <div className="flex justify-between mt-10 px-5 ">
                         <h2>Latest Movie</h2>
                         <Link to="/lmovie" >See all </Link>
 
@@ -112,51 +106,24 @@ const HomePage = () => {
 
                 </div>
 
-                <div className="iphone-12-pro-max:flex flex flex-col iphone-12:w-[390px] font-movie ">
+                <div className="iphone-12-pro-max:flex flex flex-col iphone-12:w-[390px] font-movie pl-5 ">
                     <MovieDe data={data}></MovieDe>
                 </div>
-                <div  className="flex justify-between mt-10 ">
+                <div className="flex justify-between mt-10 px-5">
                     <h2>Favourite Movie</h2>
-                    <Link to="/alllove" >See all </Link>
+                    <Link to="/love" >See all </Link>
                 </div>
 
-                <div className="iphone-12-pro-max:flex flex flex-col  iphone-12:w-[390px] font-movie ">
+                <div className="iphone-12-pro-max:flex flex flex-col  iphone-12:w-[390px] font-movie  pl-5 ">
                     <MovieDe data={data}></MovieDe>
                 </div>
-                <div className="fixed -bottom-4 left-0 w-full h-20 bg-white shadow-lg flex justify-between p-5 mr-5">
-                    <NavButton
-                        label="Home"
-                        icon={<FaHome />}
-                        isActive={activeTab === 'home'}
-                        onClick={() => handleClick('home')}
-                    />
-                    <NavButton
-                        label="Tìm kiếm"
-                        icon={<FaSearch />}
-                        isActive={activeTab === 'search'}
-                        onClick={() => handleClick('search')}
-                    />
-                    <NavButton
-                        label="Love Movie"
-                        icon={<FaHeart />}
-                        isActive={activeTab === 'love'}
-                        onClick={() => handleClick('love')}
-                    />
-                    <NavButton
-                        label="My Tickets"
-                        icon={<FaTicketAlt />}
-                        isActive={activeTab === 'tickets'}
-                        onClick={() => handleClick('tickets')}
-                    />
-                    <NavButton
-                        label="Profile"
-                        icon={<TbUserSquareRounded />}
-                        isActive={activeTab === 'user'}
-                        onClick={() => handleClick('user')}
-                    />
-                </div>
-            </div>
+             
 
+            </div>
+            <div className="fixed bottom-0 left-0 w-full ">
+                <Nav data="home"></Nav>
+
+            </div>
 
         </div>
 
