@@ -46,7 +46,7 @@ const Nav = ({data}) => {
                 />
             </Link>
 
-            <Link>
+            <Link to="/ticket">
                 <NavButton
                     label="My Tickets"
                     icon={<LuTicket size={25} className='-translate-y-[2px]'/>}
