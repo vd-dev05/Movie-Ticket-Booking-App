@@ -23,6 +23,7 @@ import LoveMovie from './components/Layout/Product/LoveMovie';
 import ItemLove from './components/Layout/Product/LoveMovie/ItemLove';
 import 'boxicons'
 import Myticket from './components/Layout/Product/Myticket';
+
 // import About from './Component/Layout/About/about.jsx'
 // import Contact from './Component/Layout/Contact/contact.jsx';
 // import Login from './Component/Layout/Dasboard/Login.jsx';
@@ -59,7 +60,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/itemlove" element={<ItemLove />} />
                 <Route path="/love" element={<LoveMovie />} />
                 <Route path="/ticket" element={<Myticket />} />
-            
+        
                
                 
                
