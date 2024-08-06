@@ -36,8 +36,8 @@ const Cancelled = () => {
                             </div>
                         </div>
 
-                        <div className="bg-[#fff0ef] h-8 w-14 flex justify-center items-center mt-12 rounded-md">
-                            <Link className="text-chairMovie-chairSelected">
+                        <div className="bg-[#f5f3f3] h-8 w-14 flex justify-center items-center mt-12 rounded-md">
+                            <Link className="text-black">
                                 <Button
 
                                 > Paid</Button>
