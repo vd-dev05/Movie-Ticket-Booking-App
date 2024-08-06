@@ -53,8 +53,8 @@ const Past = () => {
                             </div>
                         </div>
 
-                        <div className="bg-[#fff0ef] h-8 w-14 flex justify-center items-center mt-12 rounded-md">
-                            <Link className="text-chairMovie-chairSelected">
+                        <div className="bg-[#f5f3f3] h-8 w-14 flex justify-center items-center mt-12 rounded-md">
+                            <Link className="text-black">
                                 <Button
 
                                 > Paid</Button>
@@ -66,7 +66,7 @@ const Past = () => {
                         <Link className=" border-1 w-full text-black">
                             <Button
                                 className="border-gray-300  w-full"
-                            >Cancel Booking</Button>
+                            >View Details</Button>
                         </Link>
                         <Link>
                         <div
