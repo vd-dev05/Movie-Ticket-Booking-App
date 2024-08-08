@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input";
-import { Link, } from "react-router-dom";
+import { Link, useLocation, } from "react-router-dom";
 // import LatestMovie from "../Product/cardLmovie";
 import { fetchMovies } from "../Product/GetApi/GetApi"
 import { useEffect, useState } from "react";
@@ -9,6 +9,13 @@ import Nav from "../Nav";
 
 
 const HomePage = () => {
+    // const location = useLocation();
+    // const d = location;
+    // console.log(d);
+    const location = useLocation();
+    const datas = location.state?.data;
+    console.log(datas);
+    
     const [data, setMovieData] = useState([])
 
     useEffect(() => {

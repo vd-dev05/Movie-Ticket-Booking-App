@@ -6,13 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+/src/components/firebase/test
 node_modules
 dist
 dist-ssr
 *.local
 /src/components/Layout/Product/test/
-
+.env
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

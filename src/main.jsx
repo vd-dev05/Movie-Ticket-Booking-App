@@ -24,6 +24,7 @@ import ItemLove from './components/Layout/Product/LoveMovie/ItemLove';
 import 'boxicons'
 import Myticket from './components/Layout/Product/Myticket';
 import Test from './components/Layout/Product/test';
+import FireBase from './components/firebase/test';
 
 // import About from './Component/Layout/About/about.jsx'
 // import Contact from './Component/Layout/Contact/contact.jsx';
@@ -61,8 +62,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/itemlove" element={<ItemLove />} />
                 <Route path="/love" element={<LoveMovie />} />
                 <Route path="/ticket" element={<Myticket />} />
-                <Route path="/test" element={<Test/>} />
-               
+                {/* <Route path="/test" element={<Test/>} /> */}
+                <Route path="/test" element={<FireBase/>} />
                 
                
                
