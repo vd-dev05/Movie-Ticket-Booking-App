@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 /src/components/Layout/Product/test/
-.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
