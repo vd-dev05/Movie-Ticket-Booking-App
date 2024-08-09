@@ -15,7 +15,7 @@ const SignUp = () => {
 
     const [data,setData] = useState({
         email : "",
-        password:"",
+        password:"",    
         phone:"", 
         realignPass:"", 
     })
