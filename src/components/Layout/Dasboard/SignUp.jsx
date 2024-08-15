@@ -76,7 +76,7 @@ const SignUp = () => {
                             />
                             <Input
                                 placeholder="Mobile Number"
-                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg':'bg-white'}`}
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white'}`}
                                 value={data.phone}
                                 onChange={handleChange}
                                 name="phone"
@@ -84,7 +84,7 @@ const SignUp = () => {
                             />
                             <Input
                                 placeholder="Password"
-                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg':'bg-white'}`}
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white'}`}
                                 name="password"
                                 value={data.password}
                                 required
@@ -93,7 +93,7 @@ const SignUp = () => {
                             />
                             <Input
                                 placeholder="Re-enter Password"
-                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg ':'bg-white'}`}
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white'}`}
                                 name="realignPass"
                                 value={data.realignPass}
                                 required
