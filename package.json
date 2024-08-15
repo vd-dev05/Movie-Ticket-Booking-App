@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.13.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.6",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^5.16.6",
@@ -34,11 +35,13 @@
     "lucide-react": "^0.418.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.26.0",
     "react-swipeable": "^7.0.1",
     "styled-components": "^6.1.12",
-    "tailwind-merge": "^2.4.0"
+    "tailwind-merge": "^2.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
