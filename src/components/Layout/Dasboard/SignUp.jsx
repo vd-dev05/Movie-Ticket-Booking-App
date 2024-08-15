@@ -2,120 +2,119 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// fire base 
-import {app } from '../../firebase/firebase' 
-import { getAuth ,createUserWithEmailAndPassword  } from "firebase/auth";
+import { db } from '../../firebase/firebase';
+import { collection, addDoc } from "firebase/firestore";
+import { useTheme } from "../Theme";
+
 const SignUp = () => {
-    // fire base 
-    const auth = getAuth(app)   
-    
-    const appVerifier = window.recaptchaVerifier;
- 
+    const themeCtx = useTheme()
+    const [data, setData] = useState({
+        user: "",
+        password: "",
+        phone: "",
+        realignPass: "",
+    });
 
+    const ClickAddUser = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "users"), {
+                name: data.user,
+                phone: data.phone,
+                password: data.password
+            });
+            console.log(docRef);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+    };
 
-    const [data,setData] = useState({
-        email : "",
-        password:"",    
-        phone:"", 
-        realignPass:"", 
-    })
-    const ClickFireBase = () => {   
-        createUserWithEmailAndPassword(
-            auth,data.email,data.password
-        ).then((value) => {
-            
-            console.log(value)
-            alert("Done")
-            console.log(data);
-            
-        })
-     
-    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData(prevData => ({
             ...prevData,
             [name]: value,
-    
         }));
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (data.realignPass !== data.password)alert("sai pass")
-        ClickFireBase()
-
+        if (data.realignPass !== data.password) {
+            alert("Passwords do not match");
+            return;
+        }
+        ClickAddUser();
         // reset 
         setData({
-            email : "",
-            password:"",
-            phone:"", 
-            realignPass:"", 
-        })
-       
-        
-       
-    }
+            user: "",
+            password: "",
+            phone: "",
+            realignPass: "",
+        });
+    };
+
     return (
         <div>
-            <div className="iphone-12-pro-max:flex h-[100vh]  flex-col text-left font-movie  bg-gray-500">
+            <div className={ ` iphone-12-pro-max:flex h-[100vh] flex-col text-left font-movie  ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg' :'bg-white'} ` }>
                 <div className="p-3 text-center">
-                    <div className="flex justify-center h-56 ">
-                        <img src="/src/assets/img/logo1.png" className=" h-96 -translate-y-20" alt="" />
+                    <div className="flex justify-center h-56">
+                        <img src="/src/assets/img/logo1.png" className="h-96 -translate-y-20" alt="Logo" />
                     </div>
                     <div className="text-gray-400">
-                        <h1 className="font-logo text-[29px] text-nowrap text-black font-movieTicket ">Create New Account </h1>
-                        <p className="text-xl mt-2">Set Up yoyur username and password </p>
+                        <h1 className={ `font-logo text-[29px] text-nowrap  font-movieTicket  ${themeCtx.theme == 'dark' ? 'text-light-bg': 'text-dark-bg'}`}>Create New Account</h1>
+                        <p className="text-xl mt-2">Set up your username and password</p>
                         <p className="text-xl mb-4">You can always change it later</p>
                     </div>
                     <div>
-                    
-                        <Input
-                        className ="py-6 my-5 outline-none"
-                        placeholder="Name"
-                        type="text"
-                        value={data.email}
-                        onChange={handleChange}
-                        name="email"
-                        ></Input>
-                        <Input
-                         placeholder="Mobile Number"
-                        className ="py-6 my-5 outline-none"
-                        value={data.phone}
-                        onChange={handleChange}
-                        name="phone"
-                        type="text"></Input>
-                        <Input
-                         placeholder="Password"
-                        className ="py-6 my-5 outline-none"
-                        name="password"
-                        value={data.password}
-                        required 
-                        onChange={handleChange}
-                        type="password"></Input>
-                        <Input 
-                        placeholder="Enter the password"
-                        className ="py-6 my-5 outline-none"
-                        name="realignPass"
-                        value={data.realignPass}
-                        required 
-                        onChange={handleChange}
-                        type="password"></Input>
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg ':'bg-white'}`}
+                                placeholder="Name"
+                                type="text"
+                                value={data.user}
+                                onChange={handleChange}
+                                name="user"
+                            />
+                            <Input
+                                placeholder="Mobile Number"
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg':'bg-white'}`}
+                                value={data.phone}
+                                onChange={handleChange}
+                                name="phone"
+                                type="text"
+                            />
+                            <Input
+                                placeholder="Password"
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg':'bg-white'}`}
+                                name="password"
+                                value={data.password}
+                                required
+                                onChange={handleChange}
+                                type="password"
+                            />
+                            <Input
+                                placeholder="Re-enter Password"
+                                className={`py-6 my-5 outline-none ${themeCtx.theme == 'dark' ? 'bg-dark-bg ':'bg-white'}`}
+                                name="realignPass"
+                                value={data.realignPass}
+                                required
+                                onChange={handleChange}
+                                type="password"
+                            />
+                            <Button
+                                type="submit"
+                                className="bg-primary-textMovie w-full p-6 focus:bg-chairMovie-chairSelected"
+                            >
+                                <p className="text-white">Signup</p>
+                            </Button>
+                        </form>
                     </div>
                     <div>
-                        <Button
-                            onClick={handleSubmit}
-                            className="bg-primary-textMovie w-full p-6 focus:bg-chairMovie-chairSelected"
-                        ><p className="text-white ">
-                        Signup</p></Button>
-                    </div>
-                    <div>
-                        <p className="mt-20">Aleady have an account?<Link to="/L">Login</Link></p>
+                        <p className="mt-20">Already have an account? <Link to="/L" className="text-primary-textMovie">Login</Link></p>
                     </div>
                 </div>
-
             </div>
         </div>
     );
-}
+};
 
 export default SignUp;

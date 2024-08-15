@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import {useTheme} from '@/components/Layout/Theme'
 const Login = () => {
+    const themeCtx = useTheme()
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [data, setData] = useState([]);
     const [header, setHeader] = useState({
@@ -35,7 +36,7 @@ const Login = () => {
      
 
     }, []);
-    
+ 
     const handleClick = useCallback(() => {
         const nextIndex = (selectedIndex + 1) ;
         // console.log(nextIndex);
@@ -72,7 +73,7 @@ const Login = () => {
     }, [header]);
     // console.log(header);
     return (
-        <div className="iphone-12-pro-max:flex  flex-col text-left font-movieTicket font-bold">
+        <div className={`iphone-12-pro-max:flex  flex-col text-left font-movieTicket font-bold ${themeCtx.theme  == 'dark' ? "bg-black text-white" : "bg-white"} `}>
         <h1 className="text-[30px] p-5 ">
             {getHighlightedText}    
         </h1>

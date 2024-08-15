@@ -30,3 +30,17 @@ export const convertMinutesToHhMm = (minutes) => {
     const remainingMinutes = minutes % 60;
     return `${hours.toString().padStart(2)}h ${remainingMinutes.toString().padStart(2, '0')}m`;
   };
+
+export const TimestampConverter = ({ seconds, nanoseconds }) => {
+    const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+    const formattedDate = date.toUTCString();
+    return (
+      <div>
+        <h3>Timestamp:</h3>
+        <p>{`Seconds: ${seconds}`}</p>
+        <p>{`Nanoseconds: ${nanoseconds}`}</p>
+        <h4>Converted Date:</h4>
+        <p>{formattedDate}</p>
+      </div>
+    );
+  };

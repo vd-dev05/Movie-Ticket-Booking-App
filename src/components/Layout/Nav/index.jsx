@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaHome, FaSearch, FaRegHeart} from 'react-icons/fa';
 import { TbUserSquareRounded } from "react-icons/tb";
 import { LuTicket } from "react-icons/lu";
 import { Link } from 'react-router-dom';
+import {useTheme} from '../Theme';
 const Nav = ({data}) => {
+
+    const themeCtx = useTheme()
     const [activeTab, setActiveTab] = useState(data);
     const handleClick = (tab) => {
         setActiveTab(tab);
@@ -18,7 +21,7 @@ const Nav = ({data}) => {
         </button>
     );
     return (
-        <div className=" fixed bottom-0 w-full h-20 bg-white shadow-lg flex justify-between p-5 ">
+        <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 ${themeCtx.theme === 'dark' ? 'bg-[#130d0d] text-dark-text' : 'bg-white'}`}>
             <Link to="/home">
                 <NavButton
                     label="Home"

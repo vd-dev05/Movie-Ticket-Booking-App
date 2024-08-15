@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { useTheme } from '@/components/Layout/Theme/index'
 const Home = () => {
+  const themeCtx = useTheme()
     const navigate = useNavigate();
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -9,7 +11,7 @@ const Home = () => {
         return () => clearTimeout(timer);
       }, [navigate]);
     return (
-    <div className="iphone-12-pro-max:flex flex justify-center items-center h-[100vh] " >
+    <div className={` iphone-12-pro-max:flex flex justify-center items-center h-[100vh] ${themeCtx.value == "dark" ? "bg-black" : "bg-white"}`} >
         <img src="/src/assets/img/logo.png"  alt="" />
     </div>
     );
