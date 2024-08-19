@@ -8,29 +8,41 @@ import { IoMdTime } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
 import {convertMinutesToHhMm} from'../GetApi/GetApi'
+import { useTheme } from '../../Theme';
+import { useItem } from '../GetApi/ItemContext';
+import { useThemeClasses } from '../../Theme/themeStyles';
 const ItemMovie = () => {
-    const location = useLocation();
-    const { item ,test } = location.state || {};
+    const {color}= useTheme()
+    const {backGround,textClasses} = useThemeClasses()
+    // console.log(themeCtx.theme);
+    
+    const {item} = useItem()
+    console.log(item);
+    
+    // const location = useLocation();
+    // const { item ,test } = location.state || {};
     // console.log(test);
     
-    // console.log(item);
+    
+    console.log(item);
     return (
- 
+        
         <div>
-            <div className="iphone-12-pro-max:flex flex flex-col h-[100vh] iphone-12:w-[390px] font-movie px-5  ">
-                <div>
+            <div className={`iphone-12-pro-max:flex flex flex-col  h-[100vh] min-w-full font-movie px-5 ${backGround}${textClasses}  `}>
+                <div> 
                     <div className="translate-y-9">
                         <Link to="/lmovie">
-                            <box-icon name='chevron-left' size={"40px"}> </box-icon>
+                            <box-icon name='chevron-left' size={"40px"} color={color}> </box-icon>
                         </Link>
 
                     </div>
                     <h1 className='text-center font-logo'>Movie Details</h1>
+                   
                 </div>
-
-                <div className='flex mt-10'>
+ 
+                <div className='flex mt-10 w-full'>
                     <div >
-                        <img src={item.poster} alt="helo" className='rounded-2xl  h-[300px] w-[250px]  bg-cover ' />
+                        <img src={item.poster} alt="helo" className='rounded-2xl  h-[300px] w-screen  object-cover bg-cover ' />
                     </div>
 
                     <div className='flex flex-col justify-between pl-5 text-center'>
@@ -62,7 +74,8 @@ const ItemMovie = () => {
                 </div>
                 <div>
                     <h2 className='font-w900'>Descriptions</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p>
+                    <p>{item.description}</p>
+
                 </div>
                 <div className=''>
                     <Link className='text-white' to="/boking" state={item}>

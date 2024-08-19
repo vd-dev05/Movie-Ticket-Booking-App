@@ -10,7 +10,8 @@ export default {
   theme: {
     extend: {
       screens: {
-        "iphone-12": "390px"
+        "iphone-12": "390px",
+        "redmi":"360px"
       },
 
       fontWeight: {
@@ -57,7 +58,13 @@ export default {
       backgroundColor: {
         "button_gift": "#FF4D00"
 
-      }
+      },
+      spacing: {
+        'icon-sm': '24px',
+        'icon-md': '32px',
+        'icon-lg': '40px',
+        'icon-xl': '48px',
+    },
 
     },
   },

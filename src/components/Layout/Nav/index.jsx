@@ -21,7 +21,7 @@ const Nav = ({data}) => {
         </button>
     );
     return (
-        <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 ${themeCtx.theme === 'dark' ? 'bg-[#130d0d] text-dark-text' : 'bg-white'}`}>
+        <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 ${themeCtx.theme === 'dark' ? 'bg-[#130d0d] text-dark-text' : 'bg-white'} xl:hidden`}>
             <Link to="/home">
                 <NavButton
                     label="Home"

@@ -10,4 +10,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // server: {
+  //   host: true,
+  //   port: 3000,
+  //   proxy: {
+    
+  //     '/api': {
+  //       target: 'http://192.168.1.225:3000',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, ''),
+  //     },
+  //   },
+  // },
 });

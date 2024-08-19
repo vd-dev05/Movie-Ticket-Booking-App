@@ -3,8 +3,23 @@ import React, { useState } from 'react';
 import { MdChair } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useLocation } from 'react-router-dom';
+import { useThemeClasses } from "../../Theme/themeStyles";
+import { useTheme } from "../../Theme";
+// import { useItem } from "../GetApi/ItemContext";
+const getSizeClass = () => {
+    if (window.innerWidth < 320) return '10'; 
+    if (window.innerWidth < 640) return '60'; 
+    if (window.innerWidth < 768) return '70'; 
+    if (window.innerWidth < 1024) return '100'; 
+    return '90';
+};
+
+const sizeClass = getSizeClass();
+// console.log(sizeClass);
 
 const generateSeats = (count) =>
+   
+
     Array.from({ length: count }, (_, i) => ({
         id: `s${i + 1}`,
         booked: Math.random() < 0.5,
@@ -12,8 +27,12 @@ const generateSeats = (count) =>
         total: 0,
     }));
 
+ 
+ 
 // Component SeatList
 const SeatList = ({ count, onSeatsUpdate }) => {
+
+   
     const [seats, setSeats] = useState(generateSeats(count));
     const price = 77675;
 
@@ -40,8 +59,8 @@ const SeatList = ({ count, onSeatsUpdate }) => {
                 <MdChair
                     key={seat.id}
                     id={seat.id}
-                    size={37}
-                    className={`cursor-pointer ${seat.selected ? 'text-chairSelected' : seat.booked ? 'text-chairBooked' : 'text-chairAvailable'}`}
+                    size={sizeClass}
+                    className={`cursor-pointer    ${seat.selected ? 'text-chairSelected' : seat.booked ? 'text-chairBooked' : 'text-chairAvailable'}`}
                     onClick={() => handleSeatClick(seat.id)}
                     style={{ color: seat.selected ? colors.chairSelected : seat.booked ? colors.chairBooked : colors.chairAvailable }}
                 />
@@ -50,10 +69,15 @@ const SeatList = ({ count, onSeatsUpdate }) => {
     );
 };
 
+// console.log(si);
+
 const Select = () => {
     const [seatss, setSeatss] = useState([]);
-
-    // Hàm xử lý cập nhật dữ liệu ghế từ SeatList
+    const theme = useTheme()
+    
+    
+    const {backGround,textClasses} = useThemeClasses()
+    const {color} =useTheme()
     const handleSeatsUpdate = (updatedSeats) => {
         setSeatss(updatedSeats);
     };
@@ -62,21 +86,21 @@ const Select = () => {
 
     return (
 
-        <div className="iphone-12-pro-max:flex flex flex-col h-[100vh] iphone-12:w-[390px] font-movie  ">
+        <div className={`iphone-12-pro-max:flex flex flex-col max-h-full min-w-fit font-movie ${backGround}${textClasses}  `}>
 
             <div className="px-5">
                 <div className="translate-y-9">
                     <Link to="/lmovie">
-                        <box-icon name='chevron-left' size={"40px"}> </box-icon>
+                        <box-icon name='chevron-left' size={"40px"} color={color}>  </box-icon>
                     </Link>
 
                 </div>
                 <h1 className='text-center font-logo'>Select Seats</h1>
                 <div className="mt-20">
-                    <div className='mt-10 p-2'>
+                    <div className='mt-10 p-2 '>
                         <div className="flex">
                             <div className='flex mr-5'>
-                                <div className='p-2 mt-5'>
+                                <div className='p-2 mt-5 '>
                                     <SeatList count={5} onSeatsUpdate={handleSeatsUpdate} />
                                 </div>
 
@@ -129,7 +153,7 @@ const Select = () => {
                 </div>
 
             </div>
-            <div className='bg-[#f6f6f6] h-[100vh] mt-10 rounded-t-[50px] py-10'>
+            <div className={` ${theme.theme == 'dark' ? 'bg-[#221c1c]' :'bg-[#f6f6f6]'}  h-[50vh] mt-10 rounded-t-[50px] py-10`}>
                 <h2 className="text-center font-bold ">Select date and time</h2>
                 <ul className='flex p-4 w-full' >
                     <li className='flex flex-col'>

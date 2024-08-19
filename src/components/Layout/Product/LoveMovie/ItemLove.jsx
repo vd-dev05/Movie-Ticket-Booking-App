@@ -8,19 +8,16 @@ import { IoMdTime } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
 import {convertMinutesToHhMm,truncateText} from '../GetApi/GetApi'
-
+import { useTheme  } from '../../Theme';
+import { useThemeClasses } from '../../Theme/themeStyles';
 const ItemLove = () => {
+    const themeCtx = useTheme()
+    const {color}  = useTheme()
     const location = useLocation();
-    // console.log(locations.state);
-    
-    // const {test }= locations. stateLove|| {}
-    // console.log(test);
-    // console.log(stateLove);
-    
-    // const data = Movie
-
     const { data } = location.state || {};
-   
+    const { buttonClasses, inputClasses, textClasses ,backGround } = useThemeClasses();
+    // console.log(backGround );
+    
     if (!data) {
         return <div>No data found</div>;
     }
@@ -29,23 +26,23 @@ const ItemLove = () => {
     return (    
         <div>
 
-            <div className="iphone-12-pro-max:flex flex flex-col h-[100vh] iphone-12:w-[390px] font-movie px-5  ">
+            <div className={` iphone-12-pro-max:flex flex flex-col h-[100vh] max-w-max font-movie px-5 ${backGround}${textClasses} `}>
                 <div>
                     <div className="translate-y-9">
                         <Link to="/love">
-                            <box-icon name='chevron-left' size={"40px"}> </box-icon>
+                            <box-icon name='chevron-left' size={"40px"} color={color} > </box-icon>
                         </Link>
 
                     </div>
                     <h1 className='text-center font-logo'>Movie Details</h1>
                 </div>
 
-                <div className='flex mt-10'>
-                    <div >
-                        <img src={data.poster} alt="helo" className='rounded-2xl  h-[300px] w-[250px]  bg-cover ' />
+                <div className='flex mt-10 '>
+                    <div className=' w-full' >
+                        <img src={data.poster} alt="helo" className='rounded-2xl  h-[300px] w-full   object-cover ' />
                     </div>
 
-                    <div className='flex flex-col justify-between px-5 text-center'>
+                    <div className='flex flex-col justify-between px-10 text-center '>
 
                         <div className='flex flex-col items-center'>
                             <AiOutlineVideoCamera className='text-primary-textMovie' size={35} />
@@ -73,11 +70,12 @@ const ItemLove = () => {
                 </div>
                 <div>
                     <h2 className='font-w900'>Descriptions</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p>
+                    <p>{data.description}</p>
+                    {/* <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p> */}
                 </div>
                 <div className=''>
                     <Link className='text-white' to="/boking" state={data}>
-                        <Button className="bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full">Select Seat</Button>
+                        <Button className={`bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
                         </Link>
 
                 </div>

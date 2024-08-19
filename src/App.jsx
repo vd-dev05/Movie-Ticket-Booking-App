@@ -1,8 +1,6 @@
 // src/App.jsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '@/components/firebase/firebase'; // Đảm bảo đường dẫn chính xác
 import Home from './components/Layout/Home/homebaner';
 import Login from './components/Layout/Dasboard/Login';
 import Otp from './components/Layout/Dasboard/OtpLog';
@@ -20,33 +18,36 @@ import Search from './components/Layout/Product/Search';
 import LoveMovie from './components/Layout/Product/LoveMovie';
 import ItemLove from './components/Layout/Product/LoveMovie/ItemLove';
 import Myticket from './components/Layout/Product/Myticket';
-import {ThemeProvider} from './components/Layout/Theme/index';
-import { UserProvider } from './components/Layout/Product/GetApi/GetContext'; 
+import { ThemeProvider } from './components/Layout/Theme/index';
+import { UserProvider } from './components/Layout/Product/GetApi/GetContext';
+import { ItemProvider } from './components/Layout/Product/GetApi/ItemContext';
 
 const App = () => {
- 
     return (
-        <ThemeProvider >
-            <UserProvider > 
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/L" element={<Otp />} />
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/reset" element={<Password />} />
-                    <Route path="/lmovie" element={<LatestMovie />} />
-                    <Route path="/item" element={<ItemMovie />} />
-                    <Route path="/boking" element={<Select />} />
-                    <Route path="/pay" element={<Pay />} />
-                    <Route path="/profile" element={<HomeFile />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/itemlove" element={<ItemLove />} />
-                    <Route path="/love" element={<LoveMovie />} />
-                    <Route path="/ticket" element={<Myticket />} />
-                </Routes>
+        <ThemeProvider>
+            <UserProvider>
+                <ItemProvider>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/L" element={<Otp />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/reset" element={<Password />} />
+                        <Route path="/profile" element={<HomeFile />} />
+                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/terms" element={<Terms />} />
+                        <Route path="/item" element={<ItemMovie />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/itemlove" element={<ItemLove />} />
+                        <Route path="/love" element={<LoveMovie />} />
+                        <Route path="/ticket" element={<Myticket />} />
+                        <Route path="/lmovie" element={<LatestMovie />} />
+                        <Route path="/boking" element={<Select />} />
+                        <Route path="/pay" element={<Pay />} />
+                        {/* <Route path="/pay" element={<Pay />} /> */}
+                    </Routes>
+                </ItemProvider>
             </UserProvider>
         </ThemeProvider>
     );

@@ -1,93 +1,122 @@
 import { Input } from "@/components/ui/input";
-import { Movie, truncateText, Mobile } from "../GetApi/GetApi"
+import { dataMovie, Movie, truncateText } from "../GetApi/GetApi"
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import Nav from "../../Nav";
 import { useTheme } from "../../Theme";
-// import { useForm } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useThemeClasses } from "../../Theme/themeStyles";
 
 const Search = () => {
-    // const schema = z.object({
-    //     name: z.string().min(1, { message: 'Ko đúng với tự' }),
-    //     age: z.number().min(10,{ message: 'Ko đúng với số tuôi lớn 10' }),
-    // });
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: { errors },
-    // } = useForm({
-    //     resolver: zodResolver(schema),
-    // });
+    const schema = z.object({
+        name: z.string().min(1, { message: 'Required' }),
+        // age: z.number().min(10),
+      });
+      const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm({
+        resolver: zodResolver(schema),
+      });
 
     const themeCtx = useTheme()
+    const {inputClasses,textClasses,buttonClasses} = useThemeClasses()
     const [data, setMovieData] = useState([])
     const [search, setSearch] = useState("")
     const [isValid, setIsValid] = useState(true)
+    const [isLoading,setisLoading] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('');
     useEffect(() => {
         const getMovies = async () => {
-            const data = await Mobile
-            setMovieData(data)
+            try {
+                const data = await dataMovie('data/movies'); 
+                if (data) {
+                //    console.log(data);
+                setMovieData(data)
+                // console.log(data);
+                
+                setisLoading(true)
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setisLoading(false);
+            }
         }
-
-
+        if (search) {
+            setIsValid(true)
+        }
+    
+        
         getMovies()
     }, [search]);
     const filter = data.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            // const item = data.map((item) => item.title).filter((el) => el.toLowerCase().includes(search.toLowerCase()))
-            // if (item != search) {
-            //     setIsValid(false)
-            // }
-            const item = data.map((item) => item.title).filter((el) => el.toLowerCase().includes(search.toLowerCase()))
-            if (item != search) {
+           
+            //  console.log(search.length);
+            if (search.length === 0 ) {
+                // console.log(0);
                 setIsValid(false)
-            } else {
-                setIsValid(true)
+                setErrorMessage("Nhập tên phim")
+                return 
             }
+            const item = data.filter((el) => el.title.toLowerCase().includes(search.toLowerCase()))
+
+            if (item.length > 0) {
+               setIsValid(true)
+            }    
+             else {
+                setIsValid(false)
+                setErrorMessage("Tên phim không tồn tại hệ thống")
+                return
+            }
+
+            setTimeout(() => {
+                setErrorMessage('')
+               setIsValid(true)
+            }, 2000);
+        
+        
         }
-
-
+        
     }
+    // if (isLoading) {
+    //     return<div>Loading...</div>
+    // }
     return (
         <div>
-            {/* <form onSubmit={handleSubmit((d) => console.log(d))}>
-                <input {...register('name')} />
-                {errors.name?.message && <p>{errors.name?.message}</p>}
-                <input type="number" {...register('age', { valueAsNumber: true })} />
-                {errors.age?.message && <p>{errors.age?.message}</p>}
-                <input type="submit" />
-            </form> */}
+
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col  iphone-12:w-[390px]   font-movie  pt-10 px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg' : 'bg-[#f5f5f5]'} ${filter.length === 0 ? 'h-[200vw]' : 'h-full'}  `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col min-w-[100vw]  min-h-screen   overflow-scroll font-movie  pt-10 px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg' : 'bg-[#f5f5f5]'} ${filter.length === 0 ? 'iphone-12:h-[844px]' : 'h-full'}  `}>
                 <div className="relative">
-
+                    {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                     <Input
-
-                        type="search"
-                        value={search}
+                        //  {...register('name')}
+                        // type="search"
+                        // value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={handleKeyDown}
 
                         placeholder="Search"
-                        className={`w-full pl-10  outline-none py-7 ${themeCtx.theme == 'dark' ? "bg-[#1a1414] text-white " : 'bg-[#fafafa]'} ${!isValid ? 'border-red-400' : 'border-hidden'}`}
+                        className={`w-full pl-10  outline-none py-7 ${inputClasses} ${!isValid ? 'border-red-500' : 'border-none'}`}
                     />
-                    {!isValid ? <p className="mt-2 ml-2 text-sm text-red-500 ">Tên phim không tồn tại trên hệ thống </p> : null}
+                    <p className="text-primary-textMovie animate-pulse">  {!isValid ? errorMessage :null}</p>
+                  
                     <CiSearch
                         size={30}
-                        className={`absolute top-3 left-2 ${themeCtx.theme == 'dark' ? "text-white" : 'text-black'}`}
+                        className={`absolute top-3 left-2 ${textClasses}`}
                     />
-                    {/* {movieSearch.length > 0 && movieSearch.map((item) => console.log(item.title))  } */}
-                    {/* {movieSearch == null ? ("error") : movieSearch.map((item) => (<p>{item.title}</p>))} */}
+
                 </div>
-                <div className=" ">
-                    {filter.length > 0 ? filter.map((item) => (
+                <div className="  ">
+                    {!isLoading && filter.length > 0 ? filter.map((item) => (
                         <div>
-                            <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${themeCtx.theme == 'dark' ? 'bg-btn-dark text-light-bg' : 'bg-white'}`}>
+                            <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
                                 <div className="">
                                     <img
                                         src={item.poster}
@@ -97,16 +126,16 @@ const Search = () => {
                                     />
                                 </div>
                                 <div className="flex flex-col justify-around pl-6">
-                                    <h2 className="font-[700] text-xl">{truncateText(item.title, 18)}</h2>
+                                    <h2 className="font-[700] text-xl" >{truncateText(item.title, 15)}</h2>
                                     <p className="text-gray-400 text-xs">{item.theFirm}</p>
                                     <p className="text-xs">Language:{item.language}</p>
                                 </div>
 
                             </div>
-                            {/* "border shadow rounded-md p-4 max-w-sm w-full mx-auto" */}
+
 
                         </div>
-                    )) : <div class={`flex-shrink-0 w- pr-2 mt-10 flex  rounded-3xl p-5 ${themeCtx.theme == 'dark' ? 'bg-btn-dark text-light-bg' : 'bg-white'}`}>
+                    )) : <div class={`flex-shrink-0 w- pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
                         <div class="animate-pulse flex space-x-4">
                             <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
                             <div class="flex-1 space-y-6 py-1">

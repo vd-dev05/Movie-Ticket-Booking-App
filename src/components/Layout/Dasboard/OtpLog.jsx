@@ -106,7 +106,10 @@ const Otp = () => {
                         </div>
                         <div>Login with Apple</div>
                     </Button>
+                    <Link to={"/home"}> 
+                    
                     <Button
+
                         onClick={LoginGoogle}
                         className="w-full outline-none border-gray-300"
                         variant="outline"
@@ -116,6 +119,7 @@ const Otp = () => {
                         </div>
                         <p> Login with Google</p>
                     </Button>
+                    </Link>
                 </div>
             </div>
             <div className="relative my-10">

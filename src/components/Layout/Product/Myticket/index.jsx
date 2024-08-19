@@ -4,8 +4,10 @@ import Cancelled from "./Cancelled";
 import Upcoming from "./UpComing";
 import React, { useState } from "react";
 import Past from "./Past";
+import { useTheme } from "../../Theme";
 
 const Myticket = () => {
+    const themeCtx = useTheme()
     const [activeTab, setActiveTab] = useState("Update");
     
     const handleClick = (tab) => {
@@ -39,7 +41,7 @@ const Myticket = () => {
     ];
 
     return (
-        <div>
+        <div className={`${themeCtx.theme == 'dark' ? 'bg-dark-bg':null}`}>
             <div className="h-[100vh] px-5 pt-5 iphone-12:w-[100vw]">
                 <h1 className="text-center mb-5 font-bold font-movie">My Tickets</h1>
                 <div className="flex justify-between bg-[#f5f4f4]">

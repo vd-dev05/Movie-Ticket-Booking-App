@@ -22,7 +22,7 @@ import './index.css'
 // import ItemLove from './components/Layout/Product/LoveMovie/ItemLove';
 // import Myticket from './components/Layout/Product/Myticket';
 // import Theme from './components/Layout/Theme';
-// import Test from './components/Layout/Product/test';
+
 import 'boxicons'
 import App from './App';
 // import Test from './components/Layout/Product/test';
@@ -43,6 +43,7 @@ import App from './App';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Test from './components/Layout/Product/test';
 // import Test from './components/Layout/Product/test';
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -54,12 +55,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
             </App>
         </Router>
-        {/* <Router>
+        <Router>
             <Routes>
 
                 <Route path="/test" element={<Test />} />
             </Routes>
-        </Router> */}
+        </Router>
         {/* <Router>
             <Routes>
                 <Route path="/" element={<Home />} />

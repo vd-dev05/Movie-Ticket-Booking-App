@@ -10,12 +10,22 @@ export const fetchMovies = async () => {
         throw error;
     }
 };
-const dbRef = ref(getDatabase());
-export const Mobile = get(child(dbRef, `data/movies`)).then((snapshot) => {
-    return snapshot.val()
-}).catch((error) => {
-    console.error(error);
-});
+export const  dataMovie = (path) => {
+    const dbRef = ref(getDatabase());
+    return get(child(dbRef, path))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                return snapshot.val();
+            } else {
+                console.log('No data available');
+                return null;
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error);
+            throw error;
+        });
+}
 
 export const Movie = async () => {
 
