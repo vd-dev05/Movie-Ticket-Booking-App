@@ -85,7 +85,7 @@ const Otp = () => {
     };
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col h-max iphone-12:w-[390px] font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white'} `}>
+        <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white'} `}>
             <div className=" flex justify-center h-56 ">
                 <img src="/src/assets/img/logo1.png" className=" h-96 -translate-y-20" alt="" />
             </div>
@@ -122,9 +122,9 @@ const Otp = () => {
                     </Link>
                 </div>
             </div>
-            <div className="relative my-10">
-                <hr className="mx-6 border-[1px]" />
-                <p className={`absolute -top-3  text-gray-400 px-3 left-[70px] ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg'  :'bg-white'} `}>Or continue with social account</p>
+            <div className="my-10 mx-5 flex flex-col justify-center items-center">
+                <hr className="mx-6 border-[1px] bg-white w-full " />
+                <p className={` -translate-y-3 w-[250px]  flex justify-center text-gray-400  ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg'  :'bg-white'} `}>Or continue with social account</p>
             </div>
             <div className="p-5">
                 <form>

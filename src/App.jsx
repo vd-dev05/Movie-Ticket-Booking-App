@@ -21,9 +21,12 @@ import Myticket from './components/Layout/Product/Myticket';
 import { ThemeProvider } from './components/Layout/Theme/index';
 import { UserProvider } from './components/Layout/Product/GetApi/GetContext';
 import { ItemProvider } from './components/Layout/Product/GetApi/ItemContext';
+import QrCode from './components/Layout/Product/Booking/QrCode';
 
 const App = () => {
     return (
+        <div className=''>
+
         <ThemeProvider>
             <UserProvider>
                 <ItemProvider>
@@ -31,7 +34,7 @@ const App = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/L" element={<Otp />} />
-                        <Route path="/home" element={<HomePage />} />
+
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/reset" element={<Password />} />
                         <Route path="/profile" element={<HomeFile />} />
@@ -45,11 +48,19 @@ const App = () => {
                         <Route path="/lmovie" element={<LatestMovie />} />
                         <Route path="/boking" element={<Select />} />
                         <Route path="/pay" element={<Pay />} />
+                        <Route path="/home" element={<HomePage />} >
+                        </Route>
+                        <Route path="/qrcode" element={<QrCode/>} />
                         {/* <Route path="/pay" element={<Pay />} /> */}
                     </Routes>
                 </ItemProvider>
+                <Routes>
+
+
+                </Routes>
             </UserProvider>
         </ThemeProvider>
+        </div>
     );
 };
 

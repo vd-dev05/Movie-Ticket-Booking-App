@@ -79,7 +79,7 @@ const Login = () => {
     }
 
     return (
-        <div className={`iphone-12-pro-max:flex flex-col text-left font-movieTicket font-bold ${themeCtx.theme === 'dark' ? 'bg-black text-white' : 'bg-white'}`}>
+        <div className={`iphone-12-pro-max:flex flex-col min-h-screen text-left font-movieTicket font-bold ${themeCtx.theme === 'dark' ? 'bg-black text-white' : 'bg-white'}`}>
             <h1 className="text-[30px] p-5 ">
                 {getHighlightedText}
             </h1>
@@ -112,7 +112,7 @@ const Login = () => {
                 <img
                     src={header.img}
                     alt="Banner"
-                    className="h-[600px] w-full object-cover "
+                    className="lg:bg-slate-600 sm:bg-white xl:bg-green-500  iphone-12:min-h-svh w-full object-cover "
                 />
             </div>
         </div>

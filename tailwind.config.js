@@ -9,6 +9,7 @@ export default {
 
   theme: {
     extend: {
+      
       screens: {
         "iphone-12": "390px",
         "redmi":"360px"
@@ -65,6 +66,21 @@ export default {
         'icon-lg': '40px',
         'icon-xl': '48px',
     },
+    animation: {
+      'move': 'move 6s infinite ease-in-out alternate',
+      "caret-blink": "caret-blink 1.25s ease-out infinite",
+    },
+    keyframes: {
+      move: {
+
+        '0%': { transform: 'scale(1.25)' },
+        '100%': { transform: 'scale(0.5)' }
+      },
+      "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+    }
 
     },
   },

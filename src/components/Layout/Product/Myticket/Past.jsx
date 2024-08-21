@@ -3,9 +3,10 @@ import { Movie, truncateText } from "../GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Review from "./accept/Review";
+import { useThemeClasses } from "../../Theme/themeStyles";
 const Past = () => {
     const [data, setMovieData] = useState([])
-
+    const { inputClasses, backGround, textClasses,themePaid,themePaidDone } = useThemeClasses();
     useEffect(() => {
         const getMovies = async () => {
             try {
@@ -38,9 +39,9 @@ const Past = () => {
     
 
     return (
-        <div className="  font-movie  drop-shadow-lg">
+        <div className="  font-movie  drop-shadow-lg pb-[50px]">
             {data.map((itenm) => (
-                <div className="mt-5 flex flex-col rounded-lg bg-gray-50 " key={itenm.id}>
+                <div className={`mt-5 flex flex-col rounded-lg ${backGround}`}key={itenm.id}>
                     <div className=" flex justify-between p-2 ">
                         <div className="flex ">
                             <img src={itenm.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
@@ -53,29 +54,28 @@ const Past = () => {
                             </div>
                         </div>
 
-                        <div className="bg-[#f5f3f3] h-8 w-14 flex justify-center items-center mt-12 rounded-md">
-                            <Link className="text-black">
-                                <Button
-
-                                > Paid</Button>
+                        <div className={` h-8 w-14 flex justify-center  items-center mt-12 rounded-md ${themePaid} `}>
+                            <Link className={`${themePaidDone}`}>
+                                Paid
                             </Link>
 
                         </div>
                     </div>
-                    <div className="p-2 flex gap-2">
-                        <Link className=" border-1 w-full text-black">
+                    <div className="p-2 flex gap-2 w-full justify-between">
+                        <Link className={` border-1 w-full ${textClasses}`}>
                             <Button
                                 className="border-gray-300  w-full"
                             >View Details</Button>
                         </Link>
-                        <Link>
-                        <div
+                        <Link className="w-full">
+                        {/* <div
                                 key={itenm.id}
                                 onClick={() => clickme(itenm)
                                 
                                 }
                                     className=" bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg "
-                                ><Review data={data1} text="Write a review"  key={itenm.id} ></Review></div>
+                                ></div> */}
+                                <Review data={data1} text="Write a review"  key={itenm.id}  onClick={() => clickme(itenm)}></Review>
                             {/* {data.map((item) => 
                             (
 

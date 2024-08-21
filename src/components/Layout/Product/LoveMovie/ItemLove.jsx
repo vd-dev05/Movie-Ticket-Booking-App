@@ -21,6 +21,12 @@ const ItemLove = () => {
     if (!data) {
         return <div>No data found</div>;
     }
+    const handleClick = (item) => {
+        // console.log(item);
+      
+        setItem(item)
+        localStorage.setItem('pay',JSON.stringify(item))
+    }
 
     // console.log(data);
     return (    
@@ -74,7 +80,7 @@ const ItemLove = () => {
                     {/* <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p> */}
                 </div>
                 <div className=''>
-                    <Link className='text-white' to="/boking" state={data}>
+                    <Link className='text-white' to="/boking" state={data} onClick={() => handleClick(data)}>
                         <Button className={`bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
                         </Link>
 

@@ -25,14 +25,18 @@ const LatestMovie = () => {
                 setisLoading(false);
             }
         };
-
+      
         fetchMovies();
     }, [])
 
     const test = data.map((item) => item.id)
     const handleClick = (item) => {
+        // console.log(item);
+      
         setItem(item)
+        localStorage.setItem('pay',JSON.stringify(item))
     }
+
     if (isLoading) {
         return <>
             <div>

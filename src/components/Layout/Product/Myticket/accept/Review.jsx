@@ -20,25 +20,6 @@ import { CiStar } from "react-icons/ci";
 import { yellow } from "@mui/material/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Review = ({ data, text }) => {
-
-    // const labels = {
-    //     0.5: 'Useless',
-    //     1: 'Useless+',
-    //     1.5: 'Poor',
-    //     2: 'Poor+',
-    //     2.5: 'Ok',
-    //     3: 'Ok+',
-    //     3.5: 'Good',
-    //     4: 'Good+',
-    //     4.5: 'Excellent',
-    //     5: 'Excellent+',
-    //   };
-
-    //   function getLabelText(value) {
-    //     return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
-    //   }  
-    //   const [value, setValue] = React.useState(2);
-    //   const [hover, setHover] = React.useState(-1);
     const style = { color: " #FFD43B" }
     const test = useMemo(() => {
 
@@ -66,7 +47,7 @@ const Review = ({ data, text }) => {
         <div >
             <div >
                 <AlertDialog>
-                    <AlertDialogTrigger>{text}</AlertDialogTrigger>
+                    <AlertDialogTrigger className="bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg">{text}</AlertDialogTrigger>
                     <AlertDialogContent className="bg-white " >
 
 

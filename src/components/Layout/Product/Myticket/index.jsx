@@ -5,11 +5,13 @@ import Upcoming from "./UpComing";
 import React, { useState } from "react";
 import Past from "./Past";
 import { useTheme } from "../../Theme";
+import { useThemeClasses } from "../../Theme/themeStyles";
 
 const Myticket = () => {
     const themeCtx = useTheme()
+    const { textClasses, backGroundTow, backGround } = useThemeClasses()
     const [activeTab, setActiveTab] = useState("Update");
-    
+
     const handleClick = (tab) => {
         setActiveTab(tab);
     };
@@ -18,7 +20,7 @@ const Myticket = () => {
     const NavButton = ({ label, isActive, onClick }) => (
         <div>
             <button
-                className={`flex justify-center items-center text-sm px-8 py-4 ${isActive ? 'bg-chairMovie-chairSelected text-white' : 'text-black'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
+                className={`flex justify-center items-center text-sm px-8 py-4 ${textClasses} ${isActive ? 'bg-chairMovie-chairSelected text-white' : 'text-black'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
                 onClick={onClick}
             >
                 {label}
@@ -41,10 +43,10 @@ const Myticket = () => {
     ];
 
     return (
-        <div className={`${themeCtx.theme == 'dark' ? 'bg-dark-bg':null}`}>
-            <div className="h-[100vh] px-5 pt-5 iphone-12:w-[100vw]">
+        <div className={`${textClasses} ${backGroundTow} h-full`}>
+            <div className=" px-5 pt-5 iphone-12:w-[100vw] ">
                 <h1 className="text-center mb-5 font-bold font-movie">My Tickets</h1>
-                <div className="flex justify-between bg-[#f5f4f4]">
+                <div className={`flex justify-between  ${backGround} `}>
                     {tabs.map((tab, index) => (
                         <NavButton
                             key={index}
@@ -64,9 +66,10 @@ const Myticket = () => {
                     ))}
                 </div>
             </div>
-            <div>
-                <Nav data={"tickets"} />
-            </div>
+                <div>
+                    <Nav data={"tickets"} />
+                </div>
+
         </div>
     );
 };
