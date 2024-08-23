@@ -20,14 +20,37 @@ import {
 
 import { useThemeClasses } from "../../Theme/themeStyles";
 import { Link } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
+import Susses from "./Susses";
 const SendOTp = ({ text, phone }) => {
     const { buttonClasses, backGround, textClasses, backGroundTow } = useThemeClasses();
+    const [count, setCount] = useState('');
+    const [isResendDisabled, setIsResendDisabled] = useState(true);
+
+    useEffect(() => {
+      if (count > 0) {
+        const intervalId = setInterval(() => {
+            setCount(prev => prev - 1);
+        }, 1000);
+        return () => clearInterval(intervalId);
+      } else {
+        setIsResendDisabled(false);
+      }
+    }, [count]);
+
+    const handleResendCode = () => {
+        // Reset timer and disable the resend button
+        setCount(30);
+        setIsResendDisabled(true);
+    
+        // Simulate code resend logic here
+        console.log('Resending code...');
+      };
 
     return (
         <div>
             <AlertDialog>
-                <AlertDialogTrigger className="w-full border-2 border-blac p-[22px] bg-primary-textMovie text-2xl text-white">{text}</AlertDialogTrigger>
+                <AlertDialogTrigger className="w-full border-2 border-blac p-[22px] bg-primary-textMovie text-2xl text-white" onClick={handleResendCode}>{text}</AlertDialogTrigger>
                 <AlertDialogContent className={`${backGroundTow} ${textClasses} border-none top-[30%] left-10 h-[400px] rounded-2xl iphone-12:w-full   max-w-[90%]  sm:max-w-[80%] iphone-12:left-5 min-[400px]:left-7  lg:max-w-[60%]  `}>
 
                     <AlertDialogHeader>
@@ -51,12 +74,8 @@ const SendOTp = ({ text, phone }) => {
                         </InputOTP>
                      
                         </div>
-                        <AlertDialogAction className="flex gap-2 p-2 w-full mt-10">
-                            hello
-                            <Link>
-
-                            </Link>
-                        </AlertDialogAction>
+                        <Susses text={'Verify'}></Susses>
+                        <p >Didn't receive the code ? <span className="text-primary-textMovie cursor-pointer" onClick={() => setCount(30)}>Resend {count == 0 ? "code" : count}</span></p>
                     </AlertDialogHeader>
 
 
@@ -66,4 +85,4 @@ const SendOTp = ({ text, phone }) => {
     );
 }
 
-export default SendOTp;
+export default memo(SendOTp);

@@ -13,8 +13,10 @@ const Pay = () => {
     const { buttonClasses, backGround, textClasses, inputClasses } = useThemeClasses()
     const { color } = useTheme()
     const themeCtx = useTheme()
-    const item = JSON.parse(localStorage.getItem('pay'))
-    // console.log(test);
+    const value = useItem()
+    //    console.log(value);
+    const payData = JSON.parse(localStorage.getItem('pay'))
+ 
     // const [state, setState] = useState({
     //     value: [],
     // })
@@ -47,11 +49,20 @@ const Pay = () => {
             [name]: value
         });
     };
+    // useEffect(() => {
+    //     console.log(formValues);
+    //     console.log(item);
+    //     // setItem(pre => ({
+    //     //     ...pre,
+    //     //     formValues
+    //     // }) )
+       
+    // }, [formValues])
+    
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formValues);
-
-
+        // console.log(item);
+        
     };
     const Test = () => {
         console.log(selectedValue);
@@ -63,7 +74,7 @@ const Pay = () => {
 
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full    font-movie px-5 ${backGround}${textClasses}`}>
+        <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full    font-movie px-5 ${backGround} ${textClasses}`}>
             <div>
                 <div className="translate-y-9">
                     <Link to="/lmovie">
@@ -74,23 +85,23 @@ const Pay = () => {
                 <h1 className='text-center font-logo'>Checkout</h1>
             </div>
             <div>
-                <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses} drop-shadow-xl`}>
+                <div key={payData.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses} drop-shadow-xl`}>
                     <div className="">
                         <img
-                            src={item.poster}
-                            alt={item.Title}
+                            src={payData.poster}
+                            alt={payData.Title}
                             loading="lazy"
                             className="rounded-xl h-[100px] w-[100px] bg-contain object-cover "
                         />
                     </div>
                     <div className="flex flex-col justify-around pl-6">
-                        <h2 className="font-[700] text-xl" >{truncateText(item.title, 15)}</h2>
-                        <p className="text-gray-300 text-xs">{item.theFirm}</p>
-                        {/* <p className="text-xs">Language:{item.language}</p> */}
+                        <h2 className="font-[700] text-xl" >{truncateText(payData.title, 15)}</h2>
+                        <p className="text-gray-300 text-xs">{payData.theFirm}</p>
+                        {/* <p className="text-xs">Language:{payData.language}</p> */}
                         <div className='flex'>
                             < FaStar color='yellow' />
-                            <span>{item.rateLive}</span>
-                            <p>({item.review} Reviews)</p>
+                            <span>{payData.rateLive}</span>
+                            <p>({payData.review} Reviews)</p>
                         </div>
 
                     </div>

@@ -5,9 +5,16 @@ import { Link } from "react-router-dom";
 import { dataMovie, Movie,truncateText } from "../GetApi/GetApi";
 import { useTheme } from "../../Theme";
 import { useItem } from "../GetApi/ItemContext";
+import { useThemeClasses } from "../../Theme/themeStyles";
 const LatestMovie = () => {
     const themeCtx = useTheme()
-    const { item,setItem } = useItem();
+    // console.log(themeCtx);
+    
+    const dataCtx = useItem();
+    const { value } = useItem();
+    // console.log(dataCtx);
+    
+ 
     const [data, setData] = useState([])
     const [isLoading,setisLoading] = useState(true)
     useEffect(() => {
@@ -30,13 +37,33 @@ const LatestMovie = () => {
     }, [])
 
     const test = data.map((item) => item.id)
+    // useEffect(() => {
+    //     console.log('Updated item:', item);
+    // }, [item]);
     const handleClick = (item) => {
-        // console.log(item);
-      
-        setItem(item)
+        // console.log(item.id);
+        // if ( item.id )
+        // dataCtx.value.updateItem(item)
+        // console.log(dataCtx.value.item.id);
+        // dataCtx.value.updateItem(pre =>({...pre,dataTicket:item.id}))
+        // const data = {
+        //     dataTicket:item
+        // }
+        dataCtx.setItem(pre => ({...pre,dataTicket:item}))
+        console.log(dataCtx.item);
+        
+        // updateItem()
         localStorage.setItem('pay',JSON.stringify(item))
     }
-
+    const clickTets = () => {
+       const data = {
+        home: "hello",
+        phone :"1231"
+       }
+       dataCtx.setItem(pre => ({...pre,userTest:data}))
+       console.log(dataCtx.item)
+       
+    }
     if (isLoading) {
         return <>
             <div>
@@ -57,10 +84,10 @@ const LatestMovie = () => {
                 </div>
                 <h1 className={` text-center font-logo ${themeCtx.theme == 'dark' ? 'text-light-bg ': 'text-black'}`}>Latest Movies</h1>
                 <div className="grid grid-cols-2 gap-5 mt-10 ">
-
+                    <div onClick={clickTets}>test</div>
                     {data.map((item) => (
                         <div key={item.id} >
-                            <Link  to={'/item'}  state={{ item ,test}} className={`${themeCtx.theme == 'dark' ? 'text-light-bg ': 'text-black'}`} >
+                            <Link    state={{ item ,test}} className={`${themeCtx.theme == 'dark' ? 'text-light-bg ': 'text-black'}`} >
                                 <div className=" saturate-100  " onClick={() =>handleClick(item)}>
                                     <img src={item.poster} alt={item.title} loading="lazy" className="rounded-2xl  h-[210px] w-full object-cover"></img>
                                 </div>

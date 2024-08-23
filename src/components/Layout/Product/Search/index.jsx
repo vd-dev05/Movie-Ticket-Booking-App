@@ -92,7 +92,7 @@ const Search = () => {
         <div>
 
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col min-w-[100vw]  min-h-screen   overflow-scroll font-movie  pt-10 px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg' : 'bg-[#f5f5f5]'} ${filter.length === 0 ? 'iphone-12:h-[844px]' : 'h-full'}  `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col   min-h-screen   overflow-scroll font-movie  pt-10 px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg' : 'bg-[#f5f5f5]'} ${filter.length === 0 ? 'iphone-12:h-[844px]' : 'h-full'}  `}>
                 <div className="relative">
                     {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                     <Input

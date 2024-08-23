@@ -78,9 +78,10 @@ const AddCard = ({ text, onSubmit, onChange, formValues }) => {
                                     </div>
                                 </div>
                             </div>  
+                            <button type="submit" className="w-full bg-primary-textMovie text-white mt-2 text-xl"> Add Card</button>
+
                             <AlertDialogAction className="flex gap-2 p-2 w-full mt-10">
 
-                            <button type="submit" className="w-full bg-primary-textMovie text-white mt-2 text-xl"> Add Card</button>
                             </AlertDialogAction>
                             </form>
                         </AlertDialogHeader>

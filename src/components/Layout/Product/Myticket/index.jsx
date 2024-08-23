@@ -43,8 +43,8 @@ const Myticket = () => {
     ];
 
     return (
-        <div className={`${textClasses} ${backGroundTow} h-full`}>
-            <div className=" px-5 pt-5 iphone-12:w-[100vw] ">
+        <div className={`${textClasses} ${backGroundTow} h-full min-w-full`}>
+            <div className=" px-5 pt-5  ">
                 <h1 className="text-center mb-5 font-bold font-movie">My Tickets</h1>
                 <div className={`flex justify-between  ${backGround} `}>
                     {tabs.map((tab, index) => (

@@ -9,10 +9,10 @@ export default {
 
   theme: {
     extend: {
-      
+
       screens: {
         "iphone-12": "390px",
-        "redmi":"360px"
+        "redmi": "360px"
       },
 
       fontWeight: {
@@ -33,7 +33,7 @@ export default {
         'light-text': '#000000',
         'btn-light': '#e2e8f0',
         'btn-light-text': '#1a202c',
-        'btn-light-icon':'#fafafc',
+        'btn-light-icon': '#fafafc',
 
         primary: {
 
@@ -65,22 +65,36 @@ export default {
         'icon-md': '32px',
         'icon-lg': '40px',
         'icon-xl': '48px',
-    },
-    animation: {
-      'move': 'move 6s infinite ease-in-out alternate',
-      "caret-blink": "caret-blink 1.25s ease-out infinite",
-    },
-    keyframes: {
-      move: {
-
-        '0%': { transform: 'scale(1.25)' },
-        '100%': { transform: 'scale(0.5)' }
       },
-      "caret-blink": {
+      animation: {
+        'move': 'move 6s infinite ease-in-out alternate',
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
+        countdown: 'countdown 4s linear forwards',
+        show_slide: 'show_slide 1s ease-out',
+      },
+     
+      keyframes: {
+        move: {
+
+          '0%': { transform: 'scale(1.25)' },
+          '100%': { transform: 'scale(0.5)' }
+        },
+        "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
-    }
+        countdown: {
+          '20%': {  transform: "translateX(100%)" },
+          '100%': {  width: '0' },
+        },
+        show_slide: {
+          '0%': { transform: 'translateX(50%)' , width: "100%"},
+          // '40%': { transform: 'translateX(60%)' },
+          // '80%': { transform: 'translateX(30%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+      }
+    
 
     },
   },

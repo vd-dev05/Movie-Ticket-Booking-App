@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Privacy = () => {
     return ( 
 
-        <div className="iphone-12-pro-max:flex flex flex-col  iphone-12:w-[390px] text-center font-movie  mt-10 relative ">
+        <div className="iphone-12-pro-max:flex flex flex-col   text-center font-movie  mt-10 relative ">
             
             <div className="flex w-full justify-between px-5 ">
                 <Link className="text-black " to="/profile">

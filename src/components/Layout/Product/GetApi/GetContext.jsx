@@ -20,9 +20,11 @@ export const UserProvider = ({ children }) => {
         },
         dataTicket:[],
     });
+    
+    const [dataMovie,setDataMovie] = useState([])
 
     return (
-        <UserContext.Provider value={{ dataUser, setDataUser }}>
+        <UserContext.Provider value={{ dataUser, setDataUser,setDataMovie ,dataMovie}}>
             {children}
         </UserContext.Provider>
     );

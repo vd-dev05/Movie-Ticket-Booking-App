@@ -1,6 +1,6 @@
 import { useTheme } from "@/components/Layout/Theme";
 import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 // import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
 import { Link } from "react-router-dom";
@@ -74,4 +74,4 @@ const QrCode = () => {
     );
 }
 
-export default QrCode;
+export default memo(QrCode);

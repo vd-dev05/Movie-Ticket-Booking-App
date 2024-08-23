@@ -17,18 +17,18 @@ const ItemMovie = () => {
     // console.log(themeCtx.theme);
     
     const {item} = useItem()
-    console.log(item);
+    // console.log(item);
     
     // const location = useLocation();
     // const { item ,test } = location.state || {};
     // console.log(test);
     
     
-    console.log(item);
+    // console.log(item);
     return (
         
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col  h-[100vh] min-w-full font-movie px-5 ${backGround}${textClasses}  `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col  h-[100vh] min-w-full font-movie px-5 ${backGround} ${textClasses}  `}>
                 <div> 
                     <div className="translate-y-9">
                         <Link to="/lmovie">

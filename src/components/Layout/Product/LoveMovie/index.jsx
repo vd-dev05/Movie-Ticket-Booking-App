@@ -36,7 +36,7 @@ const LoveMovie = () => {
     // console.log(test);
     return (
         <div >
-            <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen iphone-12:min-w-max font-movie px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-dark-text': null} `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen font-movie px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-dark-text': null} `}>
                 <div className="translate-y-9">
                     <Link to="/home">
                         <box-icon name='chevron-left' size={"40px"} color={` ${themeCtx.theme == 'dark' ? 'white':'black'}`}> </box-icon>

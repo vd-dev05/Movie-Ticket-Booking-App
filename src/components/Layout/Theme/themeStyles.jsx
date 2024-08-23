@@ -5,6 +5,8 @@ export const useThemeClasses = () => {
     const { theme, color } = useTheme();
     const themeCtx = useTheme()
 
+    const oppositeTheme = useMemo(() => (themeCtx.theme === 'light' ? 'dark' : 'light'), [themeCtx.theme]);
+
     const themePaid = useMemo(() => {
         return themeCtx.theme === 'dark' 
             ? 'bg-[#524444]' 
@@ -16,25 +18,44 @@ export const useThemeClasses = () => {
             ? 'text-white' 
             : 'text-[#a7a1a1]';
     }, [themeCtx.theme]);
+    
+    const themeSusses = useMemo(() => {
+        return themeCtx.theme === 'dark' 
+            ? 'bg-[#261616]' 
+            : 'bg-[#d3f1e0]';
+    }, [themeCtx.theme]);
+    const themeSussesOTp = useMemo(() => {
+        return themeCtx.theme === 'dark' 
+            ? 'bg-[#261616]' 
+            : 'bg-[#d3f1e0]';
+    }, [themeCtx.theme]);
+    // 
+    //
 
-    const backGround = `
-        ${theme === "dark" ? 'bg-[#1a1a1a]' : 'bg-white'}
-        ${theme === 'dark' ? 'text-white' : 'text-black'}
-    `
-    const backGroundTow = `
-        ${theme === "dark" ? 'bg-[#130d0d]' : 'bg-[#fbfbfb]'}
-    `
-    const buttonClasses = `
-        ${theme === 'dark' ? 'bg-[#1a1414] text-white' : 'bg-[#ffffff] text-black'}
-    `;
-    const inputClasses = `
-        ${theme === 'dark' ? 'bg-[#1a1414] text-white' : 'bg-[#fafafa] text-black'}
-    `;
+    const backGround = useMemo(() => {
+        return themeCtx.theme === 'dark' 
+          ? 'bg-[#1a1a1a] text-white' : 'bg-white text-black'
+    }, [themeCtx.theme]);
+    
+    const  backGroundTow = useMemo(() => {
+        return themeCtx.theme === 'dark' 
+        ? 'bg-[#130d0d]' : 'bg-[#fbfbfb]'
+    }, [themeCtx.theme]);
 
-    // Các lớp CSS cho văn bản
-    const textClasses = `
-        ${theme === 'dark' ? 'text-white' : 'text-black'}
-    `;
+    const  buttonClasses= useMemo(() => {
+        return themeCtx.theme === 'dark' 
+        ? 'bg-[#1a1414] text-white' : 'bg-[#ffffff] text-black'
+    }, [themeCtx.theme]);
 
-    return { buttonClasses, inputClasses, textClasses ,backGround,backGroundTow ,themePaid,themePaidDone };
+    const inputClasses= useMemo(() => {
+        return themeCtx.theme === 'dark' 
+        ? 'bg-[#1a1414] text-white' : 'bg-[#fafafa] text-black'
+    }, [themeCtx.theme]);
+    const textClasses= useMemo(() => {
+        return themeCtx.theme === 'dark' 
+         ? 'text-white' : 'text-black'
+    }, [themeCtx.theme]);
+
+
+    return { buttonClasses, inputClasses, textClasses ,backGround,backGroundTow ,themePaid,themePaidDone,themeSusses,themeSussesOTp,oppositeTheme };
 };

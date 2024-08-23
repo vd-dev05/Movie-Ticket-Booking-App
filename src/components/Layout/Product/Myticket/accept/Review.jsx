@@ -19,7 +19,10 @@ import { Rating } from "@mui/material";
 import { CiStar } from "react-icons/ci";
 import { yellow } from "@mui/material/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const Review = ({ data, text }) => {
+const Review = ({ data, text, setRatingandReview, starReveiew, onSubmit }) => {
+    // console.log(data);
+
+
     const style = { color: " #FFD43B" }
     const test = useMemo(() => {
 
@@ -28,27 +31,31 @@ const Review = ({ data, text }) => {
         }
         return '';
     }, [data]);
-    const [rating, setRating] = useState(0);
 
     const handleClick = (star) => {
-        if (rating === star) {
-            setRating(0);
+        if (starReveiew.rating === star) {
+            setRatingandReview(pre => ({
+                ...pre,
+                id: 0,
+                rating: 0
+            }));
         } else {
-            setRating(star);
+            setRatingandReview(pre => ({
+                ...pre,
+                id: 1,
+                rating: star
+            }))
         }
-    };
-    const handleSubmit = () => {
-        const test = confirm("Xác nhânj đánh giá")
-        //    console.log(test);
 
-        if (test == true) alert("")
-    }
+
+    };
+
     return (
         <div >
             <div >
                 <AlertDialog>
                     <AlertDialogTrigger className="bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg">{text}</AlertDialogTrigger>
-                    <AlertDialogContent className="bg-white " >
+                    <AlertDialogContent className="bg-white w-full" >
 
 
                         <AlertDialogHeader >
@@ -85,8 +92,8 @@ const Review = ({ data, text }) => {
                                     {[1, 2, 3, 4, 5].map((item, index) => (
                                         <div key={item} className="">
                                             <i
-                                                class={`fa-star fa-xl ${index < rating ? 'fa-solid' : 'fa-regular'}`}
-                                                style={{ cursor: 'pointer', color: index < rating ? 'gold' : 'black ' }}
+                                                class={`fa-star fa-xl ${index < starReveiew.rating ? 'fa-solid' : 'fa-regular'}`}
+                                                style={{ cursor: 'pointer', color: index < starReveiew.rating ? 'gold' : 'black ' }}
                                                 onClick={() => handleClick(index + 1)}
                                             ></i>
                                         </div>
@@ -97,11 +104,12 @@ const Review = ({ data, text }) => {
 
                                 </div>
 
-                                {/* <Rating name="size-large" defaultValue={0} size="large" /> */}
+
                             </div>
                         </div>
                         <textarea
 
+                            onChange={(e) => setRatingandReview(pre => ({ ...pre, review: e.target.value }))}
                             className="p-5    w-full outline-none border-gray-400 border-[1px] h-[210px]   opacity: 1 bg-none"
                             placeholder="Add a Comment"
                         />
@@ -110,7 +118,7 @@ const Review = ({ data, text }) => {
                                 className="w-full bg-[#fafafa] text-xl "
                             >Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                                onClick={handleSubmit}
+                                onClick={onSubmit}
                                 className="w-full bg-primary-textMovie text-white mt-2 text-xl "
                             >Submit</AlertDialogAction>
                         </AlertDialogFooter>

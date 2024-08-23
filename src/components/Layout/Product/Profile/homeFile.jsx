@@ -16,15 +16,36 @@ import {
     DialogTrigger,
     DialogClose,
 } from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 import Nav from "../../Nav";
 import { useTheme } from "../../Theme";
+import { useThemeClasses } from "@/components/Layout/Theme/themeStyles"
+import { Regex } from "@/components/Regex";
 // import { db, doc, setDoc, getDoc } from "../../../firebase/firebase";
+
+const notify = (oppositeTheme) => toast.success('Rename done', {
+    autoClose: 3000,
+
+
+    theme: oppositeTheme,
+    //    theme: 'light'
+});
+const notifyW = (oppositeTheme,msg) => toast.warning(msg, {
+    autoClose: 3000,
+    theme: oppositeTheme
+
+});
+
+
 const HomeFile = () => {
     // const UserData = useContext(useUser);
     // console.log(UserData);
     const themeCtx = useTheme()
-    // console.log(themeCtx);
-
+    const { oppositeTheme } = useThemeClasses()
+    const {reNumber1to10,reNameSpace,test} = Regex()
     const [reset, setReset] = useState({
         // user: UserData.dataUser.user || "",
         // phone: UserData.dataUser.phone || "",
@@ -39,41 +60,80 @@ const HomeFile = () => {
             ...prevData,
             [name]: value,
         }));
-    };
 
-    const handleSubmit = async (e) => {
+
+    };
+    // if (!isDialogOpen) {
+
+    // }
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
+        console.log(reset.user);
 
-            await setDoc(doc(db, "users", "user-id"), reset);
-            setDialogOpen(false);
-        } catch (error) {
-            console.error("Error updating document: ", error);
+        // if (reset.user && reset.mail  ) {
+        //     // const t = 
+        //     // console.log(t);
+
+
+        // } else {
+        //     notifyW(oppositeTheme)
+        // }
+        if (!reNumber1to10.test(reset.phone)) {
+            const msg = "Số đủ 10 và không có kí tự"
+            notifyW(oppositeTheme,msg)
         }
+        else if (!reNameSpace.test(reset.user)) {
+            const msg = "Tên không được để số và kí tự  "
+            notifyW(oppositeTheme,msg)
+            // console.log(reNameSpace.test(reset.user));
+            
+        } 
+        else {
+            notify(oppositeTheme)   
+            setTimeout(() => {
+                setDialogOpen(false)
+            }, 1000);
+        }
+        
+        
+        // if () {
+
+        // }
+        // if ()
+        // fire base 
+        // try {
+
+        //     await setDoc(doc(db, "users", "user-id"), reset);
+        //     setDialogOpen(false);
+        // } catch (error) {
+        //     console.error("Error updating document: ", error);
+        // }
+
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const docRef = doc(db, "users", "user-id");
-                const docSnap = await getDoc(docRef);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const docRef = doc(db, "users", "user-id");
+    //             const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    setReset(docSnap.data());
-                } else {
-                    console.log("No such document!");
-                }
-            } catch (error) {
-                console.error("Error fetching document: ", error);
-            }
-        };
-
-        fetchData();
-    }, []);
+    //             if (docSnap.exists()) {
+    //                 setReset(docSnap.data());
+    //             } else {
+    //                 console.log("No such document!");
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching document: ", error);
+    //         }
+    //     };
+    //     console.log(reset);
+    //     fetchData();
+    // }, []);
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col  iphone-12:h-[844px] iphone-12:w-[390px] text-center font-movie   relative ${themeCtx.theme === 'dark' ? 'bg-[#130d0d] text-white' : 'bg-white'}`}>
+        <div className={`iphone-12-pro-max:flex flex flex-col h-screen    text-center font-movie   relative ${themeCtx.theme === 'dark' ? 'bg-[#130d0d] text-white' : 'bg-white'}`}>
             <h1 className="text-center font-bold text-xl ">Profile</h1>
+            {/* <button onClick={notify}>CLick</button> */}
             <div className="flex justify-center items-center mt-10">
                 <img
                     src="https://github.com/shadcn.png"
@@ -83,13 +143,13 @@ const HomeFile = () => {
                 />
             </div>
 
-            <div className="mt-5">
+            <div className="my-5" >
                 <p className="font-bold text-2xl">{reset.user}</p>
                 <p className="text-gray-500">{reset.phone}</p>
             </div>
 
-            <div className="px-5">
-                <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+            <div className="px-5    ">
+                <Dialog open={isDialogOpen} onOpenChange={setDialogOpen} >
                     <DialogTrigger asChild>
                         <div className="flex justify-between items-center py-5">
                             <div className="flex">
@@ -101,7 +161,7 @@ const HomeFile = () => {
                             <FaChevronRight size={24} />
                         </div>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px] bg-gray-50">
+                    <DialogContent className="sm:max-w-[425px] rounded-lg bg-gray-50">
                         <DialogHeader>
                             <DialogTitle>Edit Profile</DialogTitle>
                             <DialogDescription>
@@ -119,7 +179,7 @@ const HomeFile = () => {
                                     type="text"
                                     placeholder="Edit name..."
                                     onChange={handleChange}
-                                    value={reset.user}
+                                    value={reset.user || ''}
                                     className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
                                     required
                                 />
@@ -134,16 +194,33 @@ const HomeFile = () => {
                                     type="text"
                                     placeholder="Edit phone..."
                                     onChange={handleChange}
-                                    value={reset.phone}
+                                    value={reset.phone || ''}
                                     className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
                                     required
                                 />
                             </div>
-                            <DialogFooter>
-                                <Button type="submit" className="bg-chairMovie-chairSelected text-white">
-                                    Save changes
-                                </Button>
-                            </DialogFooter>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <label htmlFor="phone" className="text-right">
+                                    Enter Address
+                                </label>
+                                <input
+                                    id="mail"
+                                    name="mail"
+                                    type="email"
+                                    placeholder="Edit Mail..."
+                                    onChange={handleChange}
+                                    value={reset.mail || ''}
+                                    className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
+                                    required
+                                />
+                            </div>
+                            <Button type="submit" className="bg-chairMovie-chairSelected hover:bg-primary-textMovie  text-white">
+                                Save changes
+                            </Button>
+
+                            {/* <DialogFooter>
+                               
+                            </DialogFooter> */}
                         </form>
                     </DialogContent>
                 </Dialog>
@@ -195,7 +272,7 @@ const HomeFile = () => {
 
                         <FaChevronRight size={24} />
                     </div>
-                    
+
                 </Link>
             </div>
 
@@ -211,6 +288,18 @@ const HomeFile = () => {
             <div className="fixed bottom-0 w-full">
                 <Nav data={"user"} />
             </div>
+            <ToastContainer
+                // bodyStyle={{backgroundColor:"red"}}
+                position="top-right"
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 };

@@ -12,6 +12,7 @@ import {
 import { useThemeClasses } from "../../Theme/themeStyles";
 import { Link } from "react-router-dom";
 import SendOTp from "./SendOtp";
+import { memo } from "react";
 const OTPVery = ({ text, phone }) => {
     const { buttonClasses, backGround, textClasses, backGroundTow } = useThemeClasses();
     return (
@@ -48,4 +49,4 @@ const OTPVery = ({ text, phone }) => {
     );
 }
 
-export default OTPVery;
+export default memo(OTPVery);

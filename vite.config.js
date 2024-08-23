@@ -10,6 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['/assets/index-BmWpCgn-.js']
+    }
+  }
   // server: {
   //   host: true,
   //   port: 3000,

@@ -145,7 +145,7 @@ const HomePage = () => {
                     </div>
 
                     <div className="flex mt-5">
-                        <div className="relative  w-[100vw]">
+                        <div className="relative  w-full">
                             <Input
                                 className={`px-10 py-5  focus:border-white ${inputClasses} `}
                                 placeholder="Search"
@@ -206,7 +206,7 @@ const HomePage = () => {
                     <Link to="/lmovie" className="text-chairMovie-chairSelected">See all</Link>
                 </div>
 
-                <div className="iphone-12-pro-max:flex flex flex-col iphone-12:w-[100vw] redmi: font-movie pl-5">
+                <div className="iphone-12-pro-max:flex flex flex-col     font-movie pl-5">
                     <MovieDe data={data.dataMovie} />
                 </div>
                 <div className="flex justify-between mt-10 px-5">

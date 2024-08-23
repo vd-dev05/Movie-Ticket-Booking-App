@@ -1,47 +1,53 @@
 import { useEffect, useState } from "react";
-import { Movie, truncateText } from "../GetApi/GetApi";
+import { Movie, truncateText,dataMovie } from "../GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Review from "./accept/Review";
 import { useThemeClasses } from "../../Theme/themeStyles";
 const Past = () => {
     const [data, setMovieData] = useState([])
+
+    const [starReveiew, setRatingandReview] = useState({
+        rating:0,
+        review:"",
+        id:0
+    });
+    const handleSubmit = () => {
+        // const test = confirm("Xác nhânj đánh giá")
+        //    console.log(test);
+        console.log(starReveiew);
+        
+        if (starReveiew.id == 1 ) {
+            console.log("Xóa thành công");
+            
+        }
+        // if (test == true) alert("")
+    }
     const { inputClasses, backGround, textClasses,themePaid,themePaidDone } = useThemeClasses();
     useEffect(() => {
-        const getMovies = async () => {
+        const fetchMovies = async () => {
             try {
-                const data = await Movie();
+                const data = await dataMovie('data/movies'); 
+                if (data) {
                 setMovieData(data);
-                // console.log(data);
-            } catch {
-                console.log("error");
-            }
+                }
+            } catch (err) {
+                console.error(err);
+            } 
         };
+        // if (starReveiew) {
+        //     console.log("Đánh giá thành công");
+            
+        // }
+        console.log(starReveiew);
+        
 
-        getMovies();
+        fetchMovies();
     }, []);
-
-    const [data1, setMovieData1] = useState([])
-   
-    const clickme = (id) => {
-        setMovieData1(id)
-
-}
-    // console.log(data1);
-    // if (data1 == null ) {
-    //     setMovieData1(id)
-    // }
-  
-    // console.log(data1);
-    
-    // console.log(data1);
-    // alert(data1)
-    
-
     return (
         <div className="  font-movie  drop-shadow-lg pb-[50px]">
             {data.map((itenm) => (
-                <div className={`mt-5 flex flex-col rounded-lg ${backGround}`}key={itenm.id}>
+                <div className={`mt-5 flex flex-col rounded-lg ${backGround}`}key={itenm.id} >
                     <div className=" flex justify-between p-2 ">
                         <div className="flex ">
                             <img src={itenm.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
@@ -68,28 +74,7 @@ const Past = () => {
                             >View Details</Button>
                         </Link>
                         <Link className="w-full">
-                        {/* <div
-                                key={itenm.id}
-                                onClick={() => clickme(itenm)
-                                
-                                }
-                                    className=" bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg "
-                                ></div> */}
-                                <Review data={data1} text="Write a review"  key={itenm.id}  onClick={() => clickme(itenm)}></Review>
-                            {/* {data.map((item) => 
-                            (
-
-                                
-                                <Button 
-                                key={item.id}
-                                    onclick={clickme}
-                                    className=" bg-chairMovie-chairSelected text-white w-full "
-                                ><Review ></Review></Button>
-                            )
-                        )
-                            }
- */}
-
+                                <Review data={itenm} text="Write a review" onSubmit={handleSubmit}  key={itenm.id} setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
                         </Link>
 
 
