@@ -18,7 +18,9 @@ export const UserProvider = ({ children }) => {
             date:"",
             cvv:""
         },
-        dataTicket:[],
+        dataTicket:null,
+        dataTimeBook:null,
+        dataDayBook:null,
     });
     
     const [dataMovie,setDataMovie] = useState([])

@@ -4,27 +4,43 @@ import { useEffect, useState } from "react";
 import { Link  } from "react-router-dom";
 import Nav from "../../Nav";
 import { useTheme } from "../../Theme";
+import { useThemeClasses } from "../../Theme/themeStyles";
 const LoveMovie = () => {
     const themeCtx = useTheme()
+    const {textClasses,themeUniver} = useThemeClasses()
     const [data, setData] = useState([])
     const [isLoading,setisLoading] = useState(false)
     useEffect(() => {
-        const fetchMovies = async () => {
+        // const fetchMovies = async () => {
+        //     try {
+        //         const data = await dataMovie('data/movies'); 
+        //         if (data) {
+        //         //    console.log(data);
+        //         setData(data);
+        //         setisLoading(true)
+        //         }
+        //     } catch (err) {
+        //         console.error(err);
+        //     } finally {
+        //         setisLoading(false);
+        //     }
+        // };
+
+        // fetchMovies();
+        (async () => {
             try {
                 const data = await dataMovie('data/movies'); 
                 if (data) {
-                //    console.log(data);
-                setData(data);
+
+                setData(data)
                 setisLoading(true)
                 }
             } catch (err) {
                 console.error(err);
             } finally {
                 setisLoading(false);
-            }
-        };
-
-        fetchMovies();
+            } }
+        )()
     }, [])
     if (isLoading) {
         return <div>Loading...</div>
@@ -36,27 +52,22 @@ const LoveMovie = () => {
     // console.log(test);
     return (
         <div >
-            <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen font-movie px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-dark-text': null} `}>
-                <div className="translate-y-9">
-                    <Link to="/home">
-                        <box-icon name='chevron-left' size={"40px"} color={` ${themeCtx.theme == 'dark' ? 'white':'black'}`}> </box-icon>
-                    </Link>
-
-                </div>
+            <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen font-movie px-5 pt-10 pb-20 ${themeUniver} `}>
+             
                 <h1 className="text-center font-logo">Favourite Movies</h1>
                 <div className="grid grid-cols-2 gap-10 mt-10    ">
 
                     {data.map((item) => (
 
                         <div key={item.id} >
-                            <Link to="/itemlove"  state={{ data: item }} className={`text-black  ${themeCtx.theme == 'dark' ? 'text-dark-text':'text-btn-dark'}`}>
+                            <Link to="/itemlove"  state={{ data: item }} className={`${textClasses} hover:${textClasses}`}>
                                 <div className=" saturate-100" >
                                     <img src={item.poster} alt={item.title} loading="lazy" className="rounded-2xl  h-[210px] w-full  bg-cover  object-cover"></img>
                                 </div>
                                 <div className="mt-2">
                                     <h2 className="font-[700] ">{truncateText(item.title, 15)}</h2>
                                     {/* {truncateText(item.author, 39)} */}
-                                    <p className="text-gray-400 text-xs">{item.type}</p>
+                                    <p className="text-gray-400 text-xs">{(item.type).join(",")}</p>
                                 </div>
                             </Link>
 

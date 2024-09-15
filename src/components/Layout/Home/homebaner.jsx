@@ -12,7 +12,7 @@ const Home = () => {
       }, [navigate]);
     return (
     <div className={` iphone-12-pro-max:flex flex justify-center items-center h-[100vh] ${themeCtx.theme == "dark" ? "bg-black" : "bg-white"}`} >
-        <img src="/src/assets/img/logo.png"  alt="" />
+        <img src="/assets/img/logo.png"  alt="" />
     </div>
     );
 }

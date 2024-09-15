@@ -10,12 +10,16 @@ import { Button } from '@/components/ui/button';
 import {convertMinutesToHhMm,truncateText} from '../GetApi/GetApi'
 import { useTheme  } from '../../Theme';
 import { useThemeClasses } from '../../Theme/themeStyles';
+import { useItem } from '../GetApi/ItemContext';
 const ItemLove = () => {
     const themeCtx = useTheme()
     const {color}  = useTheme()
     const location = useLocation();
     const { data } = location.state || {};
-    const { buttonClasses, inputClasses, textClasses ,backGround } = useThemeClasses();
+    
+    const {item} = useItem()
+    // console.log(item);
+    const { buttonClasses, inputClasses, textClasses ,backGround,themeUniver } = useThemeClasses();
     // console.log(backGround );
     
     if (!data) {
@@ -24,7 +28,7 @@ const ItemLove = () => {
     const handleClick = (item) => {
         // console.log(item);
       
-        setItem(item)
+        // setItem(item)
         localStorage.setItem('pay',JSON.stringify(item))
     }
 
@@ -32,10 +36,10 @@ const ItemLove = () => {
     return (    
         <div>
 
-            <div className={` iphone-12-pro-max:flex flex flex-col h-[100vh] max-w-max font-movie px-5 ${backGround}${textClasses} `}>
+            <div className={` iphone-12-pro-max:flex flex flex-col  max-w-max font-movie px-5 ${themeUniver}  `}>
                 <div>
                     <div className="translate-y-9">
-                        <Link to="/love">
+                        <Link to="/lmovie">
                             <box-icon name='chevron-left' size={"40px"} color={color} > </box-icon>
                         </Link>
 
@@ -80,10 +84,9 @@ const ItemLove = () => {
                     {/* <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p> */}
                 </div>
                 <div className=''>
-                    <Link className='text-white' to="/boking" state={data} onClick={() => handleClick(data)}>
-                        <Button className={`bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
-                        </Link>
-
+                <Link className='text-white hover:text-white' to="/boking" state={data} onClick={() => handleClick(data)}>
+                        <Button className={`bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
+                </Link>
                 </div>
 
             </div>

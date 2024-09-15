@@ -15,15 +15,18 @@ import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
 import { CiCircleCheck } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/components/Layout/Theme';
-const DoneBooking = ({ text }) => {
+import { toast, ToastContainer } from 'react-toastify';
+const DoneBooking = ({ text,isOpenPay }) => {
     const { buttonClasses, backGround, textClasses } = useThemeClasses();
     const themeCtx = useTheme()
+
+   
     return (
         <div>
-            <AlertDialog className={``}>
-                <AlertDialogTrigger className={`bg-chairMovie-chairSelected   min-w-full flex items-center justify-center rounded-lg py-4 text-white  ${backGround}`}>
+            <AlertDialog open={isOpenPay} >
+                {/* <AlertDialogTrigger >
                     {text}
-                </AlertDialogTrigger>
+                </AlertDialogTrigger> */}
                 <AlertDialogContent className={`${themeCtx.theme == 'dark' ? 'bg-[#130d0d]': 'bg-white'} ${textClasses} max-w-[96vw] right-3  h-max top-[25%] rounded-lg border-none`}>
 
                     <AlertDialogHeader >
@@ -70,6 +73,7 @@ const DoneBooking = ({ text }) => {
 
                 </AlertDialogContent>
             </AlertDialog>
+            <ToastContainer></ToastContainer>
         </div>
     );
 };

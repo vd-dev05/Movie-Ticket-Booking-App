@@ -25,7 +25,7 @@ import './index.css'
 
 import 'boxicons'
 import App from './App';
-// import Test from './components/Layout/Product/test';
+import Test from './components/Layout/Product/test';
 // import FireBase from './components/firebase/test';
 
 // import About from './Component/Layout/About/about.jsx'
@@ -43,7 +43,7 @@ import App from './App';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Test from './components/Layout/Product/test';
+// import Test from './components/Layout/Product/test';
 // import Test from './components/Layout/Product/test';
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -55,12 +55,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
             </App>
         </Router>
-        {/* <Router>
+        <Router>
             <Routes>
 
                 <Route path="/test" element={<Test />} />
             </Routes>
-        </Router> */}
+        </Router>
         {/* <Router>
             <Routes>
                 <Route path="/" element={<Home />} />

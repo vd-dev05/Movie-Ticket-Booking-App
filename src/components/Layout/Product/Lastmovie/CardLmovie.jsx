@@ -8,17 +8,19 @@ import { useItem } from "../GetApi/ItemContext";
 import { useThemeClasses } from "../../Theme/themeStyles";
 const LatestMovie = () => {
     const themeCtx = useTheme()
+    const {textClasses,themeUniver} = useThemeClasses()
     // console.log(themeCtx);
     
     const dataCtx = useItem();
-    const { value } = useItem();
-    // console.log(dataCtx);
+    const { setItem } = useItem();
+    // console.log(useItem());
     
  
     const [data, setData] = useState([])
     const [isLoading,setisLoading] = useState(true)
     useEffect(() => {
-        const fetchMovies = async () => {
+        
+        (async () => {
             try {
                 const data = await dataMovie('data/movies'); 
                 if (data) {
@@ -30,10 +32,8 @@ const LatestMovie = () => {
                 console.error(err);
             } finally {
                 setisLoading(false);
-            }
-        };
-      
-        fetchMovies();
+            } }
+        )()
     }, [])
 
     const test = data.map((item) => item.id)
@@ -49,19 +49,18 @@ const LatestMovie = () => {
         // const data = {
         //     dataTicket:item
         // }
-        dataCtx.setItem(pre => ({...pre,dataTicket:item}))
-        console.log(dataCtx.item);
+        // dataCtx.setItem(pre => ({...pre,dataTicket:item}))
+        // console.log(dataCtx.item);
         
         // updateItem()
+        setItem(pre => ({...pre,
+            dataTicket:item}))
         localStorage.setItem('pay',JSON.stringify(item))
     }
     const clickTets = () => {
-       const data = {
-        home: "hello",
-        phone :"1231"
-       }
+      
        dataCtx.setItem(pre => ({...pre,userTest:data}))
-       console.log(dataCtx.item)
+    //    console.log(dataCtx.item)
        
     }
     if (isLoading) {
@@ -75,28 +74,30 @@ const LatestMovie = () => {
     
     return (
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col h-full min-w-max font-movie px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg  ': null} `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col h-full min-w-max font-movie px-5 ${themeUniver} `}>
                 <div className="translate-y-9">
                     <Link to="/home">
                         <box-icon name='chevron-left' size={"40px"}  color={themeCtx.theme == 'dark' ? 'white' : 'black'}> </box-icon>
                     </Link>
 
                 </div>
-                <h1 className={` text-center font-logo ${themeCtx.theme == 'dark' ? 'text-light-bg ': 'text-black'}`}>Latest Movies</h1>
+                <h1 className={` text-center font-logo ${textClasses}'}`}>Latest Movies</h1>
                 <div className="grid grid-cols-2 gap-5 mt-10 ">
-                    <div onClick={clickTets}>test</div>
+                    {/* <div onClick={clickTets}>test</div> */}
                     {data.map((item) => (
                         <div key={item.id} >
-                            <Link    state={{ item ,test}} className={`${themeCtx.theme == 'dark' ? 'text-light-bg ': 'text-black'}`} >
+                            <Link   to={'/itemlove'} state={{data:item}} className={`${textClasses} hover:${textClasses}`} >
                                 <div className=" saturate-100  " onClick={() =>handleClick(item)}>
                                     <img src={item.poster} alt={item.title} loading="lazy" className="rounded-2xl  h-[210px] w-full object-cover"></img>
                                 </div>
                                 <div className="mt-2">
                                     <h2 className="font-[700]">{truncateText(item.title, 15)}</h2>
                                     {/* {truncateText(item.author, 39)} */}
-                                    <p className="text-gray-400 text-xs">{item.type}</p>
+                                    <p className="text-gray-400 text-xs">{(item.type.join(","))}</p>
                                 </div>
                             </Link>
+
+                            
 
 
 

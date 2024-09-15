@@ -11,21 +11,21 @@ const Upcoming = () => {
     const [data, setMovieData] = useState([]);
     const [data1, setMovieData1] = useState([]);
 
-    const { inputClasses, backGround, textClasses,themePaid } = useThemeClasses();
+    const { inputClasses, backGround, textClasses,themePaid,buttonClasses,btnSubmit } = useThemeClasses();
     const themeCtx = useTheme();
     useEffect(() => {
-        const fetchMovies = async () => {
+        (async () => {
             try {
                 const data = await dataMovie('data/movies'); 
                 if (data) {
-                setMovieData(data);
+
+                setMovieData(data)
                 }
             } catch (err) {
                 console.error(err);
-            } 
-        };
-
-        fetchMovies();
+            } finally {
+            } }
+        )()
     }, []);
 
    
@@ -44,7 +44,7 @@ const Upcoming = () => {
         <div className="translate-y-7 font-movie drop-shadow-lg pb-[50px]">
             {processedData.map((item) => (
                 <div 
-                    className={`mt-5 flex flex-col rounded-lg ${backGround} ${textClasses}`} 
+                    className={`mt-5 flex flex-col rounded-lg ${buttonClasses}`} 
                     key={item.id}
                 >
                     <div className="flex justify-between p-2">
@@ -60,7 +60,7 @@ const Upcoming = () => {
                                     <h2 className="font-movie font-bold text-sm">
                                         {item.truncatedTitle}
                                     </h2>
-                                    <p className="text-gray-500 text-[11px] text-nowrap">
+                                    <p className="text-gray-400  text-[11px] text-nowrap">
                                         {item.theFirm}
                                     </p>
                                     <p className="text-[11px]">
@@ -85,12 +85,14 @@ const Upcoming = () => {
                         >
                             <CancelTicket data={data1} text="Cancel Booking" />
                         </div>
+                        <div className={`${btnSubmit}  rounded-lg drop-shadow-xl  w-full group-hover:opacity-1 flex justify-center items-center`}>
                         <Link  
-                            className="bg-chairMovie-chairSelected text-white hover:text-white  rounded-lg w-full group-hover:opacity-1 flex justify-center items-center"
+                            className={` text-white hover:text-white  `} 
                             to={'/qrcode'}
                         >
                             View Ticket
                         </Link>
+                        </div>
                     </div>
                 </div>
             ))}

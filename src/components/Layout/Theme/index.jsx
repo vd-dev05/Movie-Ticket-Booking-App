@@ -21,10 +21,11 @@
 // export const useTheme = () => useContext(ThemeContext);
 import { createContext, useContext, useState, useEffect } from 'react';
 
+
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-
+    const themes = ['light', 'dark', 'universi'];
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [color, setColor] = useState(localStorage.getItem('color') || 'white');
 
@@ -33,7 +34,7 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem('color', color);
     }, [theme, color]);
 
-    const value = { theme, setTheme, color, setColor };
+    const value = { theme, setTheme, color, setColor, themes };
 
     return (
         <ThemeContext.Provider value={value}>

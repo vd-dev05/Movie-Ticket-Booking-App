@@ -23,13 +23,13 @@ import { Link } from "react-router-dom";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { useTheme } from "../../Theme";
 import { CiCircleCheck } from "react-icons/ci";
-const Susses = ({ text}) => {
+const Susses = ({ text,isTrue}) => {
     const { buttonClasses, backGround, textClasses, backGroundTow ,themeSussesOTp} = useThemeClasses();
     const themeCtx = useTheme()
     return (
         <div>
-              <AlertDialog className={``}>
-                <AlertDialogTrigger className={`bg-primary-textMovie    min-w-full flex items-center justify-center rounded-lg py-4 text-white  `}>
+              <AlertDialog className={``} open={isTrue}>
+                <AlertDialogTrigger >
                     {text}
                 </AlertDialogTrigger>
                 <AlertDialogContent className={`${themeCtx.theme == 'dark' ? 'bg-[#130d0d]': 'bg-white'} ${textClasses} max-w-[96vw] right-3 h-max  top-[25%] rounded-lg border-none outline-none`}>
@@ -62,7 +62,7 @@ const Susses = ({ text}) => {
 
                         <AlertDialogAction className="gap-y-5  py-10 w-full mt-5 flex flex-col  ">
 
-                            <div className='w-full border-none bg-chairMovie-chairSelected h-20 flex justify-center items-center rounded-lg'>
+                            <div className='w-full border-none bg-chairMovie-chairSelected h-20 flex justify-center items-center rounded-lg hover:scale-105'>
                                 <Link className='w-full text-white hover:text-white ' to={'/home'}>
                                     <button type="submit" className="   text-xl">Go to Home</button>
                                 </Link>

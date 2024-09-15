@@ -19,9 +19,11 @@ import { Rating } from "@mui/material";
 import { CiStar } from "react-icons/ci";
 import { yellow } from "@mui/material/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const Review = ({ data, text, setRatingandReview, starReveiew, onSubmit }) => {
-    // console.log(data);
-
+const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOpen,setIsOpen }) => {
+    // console.log(dataProps);
+    // console.log(key);    
+    // console.log(starReveiew);
+    
 
     const style = { color: " #FFD43B" }
     const test = useMemo(() => {
@@ -33,6 +35,8 @@ const Review = ({ data, text, setRatingandReview, starReveiew, onSubmit }) => {
     }, [data]);
 
     const handleClick = (star) => {
+        console.log(star);
+        
         if (starReveiew.rating === star) {
             setRatingandReview(pre => ({
                 ...pre,
@@ -53,8 +57,8 @@ const Review = ({ data, text, setRatingandReview, starReveiew, onSubmit }) => {
     return (
         <div >
             <div >
-                <AlertDialog>
-                    <AlertDialogTrigger className="bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg">{text}</AlertDialogTrigger>
+                <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                    {/* <AlertDialogTrigger className="bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg">{text}</AlertDialogTrigger> */}
                     <AlertDialogContent className="bg-white w-full" >
 
 
@@ -116,7 +120,8 @@ const Review = ({ data, text, setRatingandReview, starReveiew, onSubmit }) => {
                         <AlertDialogFooter className=" flex gap-2 p-5 ">
                             <AlertDialogCancel
                                 className="w-full bg-[#fafafa] text-xl "
-                            >Cancel</AlertDialogCancel>
+                            >Cancel
+                            </AlertDialogCancel>
                             <AlertDialogAction
                                 onClick={onSubmit}
                                 className="w-full bg-primary-textMovie text-white mt-2 text-xl "

@@ -1,6 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  /* Act as a border */
+  .card-wrapper {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-700 to-slate-800;
+  }
+
+  /* Gradient */
+  .card-wrapper::before {
+    background: conic-gradient(
+      #130B2B 0deg,
+       #60FFCA 0deg,
+      transparent 80deg
+    );
+
+    @apply absolute left-[-25%] top-[-25%] h-[150%] w-[150%] animate-border-spin content-[''];
+  }
+
+  /* Body */
+  .card-content {
+    @apply absolute left-[1px] top-[1px] h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-2xl bg-gradient-to-b from-[#311e64] to-[#2E1371];
+  }
+}
 :root {
   
   /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
@@ -79,3 +101,35 @@ input[type="radio"]{
   }
 }
 
+/* .react-tel-input .flag-dropdown {
+  background-color: black;
+} */
+ 
+ .text-shadow-light  {
+  text-shadow:0px 0px 3px white ;
+
+ }
+ .text-shadow-dark  {
+  text-shadow:0px 0px 10px black ;
+
+ }
+
+ .gradient-border {
+  position: relative;
+  background: linear-gradient(55deg, #60FFCA, #130B2B);
+  /* -webkit-background-clip: border-box; */
+
+  border-radius: 0.375rem; /* Adjust the border radius as needed */
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(55deg, #60FFCA, #130B2B);
+  z-index: -1;
+  border-radius: inherit;
+}

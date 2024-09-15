@@ -11,7 +11,7 @@ const Login = () => {
     const [header, setHeader] = useState({
         text: 'Find the latest and greatest movie here',
         highlight: 'latest and greatest',
-        img: 'src/assets/img/1.png'
+        img: 'assets/img/1.png'
     });
     const navigate = useNavigate();
 

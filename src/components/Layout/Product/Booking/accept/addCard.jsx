@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,81 +12,133 @@ import {
 } from "@/components/ui/alert-dialog";
 import { truncateText } from "../../GetApi/GetApi";
 import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { validationPayCard } from '@/lib/useYupForm'
+import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
 
-const AddCard = ({ text, onSubmit, onChange, formValues }) => {
+const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setData ,selectedValue}) => {
+    // console.log(isOpen);
+
     const { buttonClasses, backGround, textClasses } = useThemeClasses();
+    const handleSubmit = async (values, actions) => {
+        // console.log(values.numberCard);
+        // console.log(actions);
+
+        try {
+            // Thực hiện submit form và hiển thị thông báo thành công
+            // await onSubmit(values);
+            setData(prevData => prevData.map(i =>
+                i.name === selectedValue ? { ...i, number: values.numberCard , select:!i.select } : i
+            ));
+            toast.success('Card added successfully!');
+            setItem(prev => ({ ...prev, userCard: values }))
+            setIsOpen(false)
+        } catch (error) {
+            console.log(error);
+
+            // toast.error('Failed to add card. Please try again.');
+            // setIsOpen(false)
+        }
+    }
+    // useEffect(() => {
+
+    //     setData(prevData => prevData.map(i => 
+    //         i.name === selectedValue ? { ...i, number: item.userCard.numberCard ? item.userCard.numberCard :null } : i
+    //     ));
+    // }, [item, selectedValue]);
 
     return (
         <div>
-            <AlertDialog>
-                <AlertDialogTrigger className={`border-primary-textMovie border-[1px] min-w-full flex items-center justify-center rounded-lg py-4 text-primary-textMovie ${backGround}`}>
+            <AlertDialog open={isOpen} >
+                {/* <AlertDialogTrigger >
                     {text}
-                </AlertDialogTrigger>
+                </AlertDialogTrigger> */}
                 <AlertDialogContent className={`${backGround} ${textClasses}  max-w-full`}>
-                 
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Add New Card</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                <p className="text-gray-500 mb-5">Add your card details here</p>
-                            </AlertDialogDescription>
-                            <form onSubmit={onSubmit}>
-                            <div className="flex w-full flex-col gap-5">
-                                <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
-                                    <label htmlFor="numberCard" className="text-left text-primary-textMovie">Card Number</label>
-                                    <input
-                                        className={`${backGround} ${textClasses} outline-none w-full`}
-                                        type="number"
-                                        name="numberCard"
-                                        id="numberCard"
-                                        onChange={onChange}
-                                        value={formValues.numberCard}
-                                    />
-                                </div>
-                                <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
-                                    <label htmlFor="name" className="text-left text-primary-textMovie">Card Holder Name</label>
-                                    <input
-                                        className={`${backGround} ${textClasses} outline-none w-full`}
-                                        type="text"
-                                        name="nameCard"
-                                        id="name"
-                                        onChange={onChange}
-                                        value={formValues.nameCard}
-                                    />
-                                </div>
-                                <div className="flex w-full justify-between gap-x-5">
-                                    <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 w-full">
-                                        <label htmlFor="date" className="text-left text-primary-textMovie">Expiry Date</label>
-                                        <input
-                                            className={`${backGround} ${textClasses} outline-none w-full`}
-                                            type="text"
-                                            name="date"
-                                            id="date"
-                                            onChange={onChange}
-                                            value={formValues.date}
-                                        />
-                                    </div>
-                                    <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 w-full">
-                                        <label htmlFor="numberCVV" className="text-left text-primary-textMovie">CVV</label>
-                                        <input
-                                            className={`${backGround} ${textClasses} outline-none w-full`}
-                                            type="number"
-                                            name="numberCVV"
-                                            id="numberCVV"
-                                            onChange={onChange}
-                                            value={formValues.numberCVV}
-                                        />
-                                    </div>
-                                </div>
-                            </div>  
-                            <button type="submit" className="w-full bg-primary-textMovie text-white mt-2 text-xl"> Add Card</button>
 
-                            <AlertDialogAction className="flex gap-2 p-2 w-full mt-10">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle><p>Add New Card</p></AlertDialogTitle>
+                        <AlertDialogDescription>
+                            <p className="text-gray-500 mb-5">Add your card details here</p>
+                        </AlertDialogDescription>
+                        <Formik
+                            initialValues={formValues}
+                            validationSchema={validationPayCard}
+                            onSubmit={handleSubmit}
+                        >
+                            {({ errors, touched }) => {
 
-                            </AlertDialogAction>
-                            </form>
-                        </AlertDialogHeader>
-                     
-                  
+                                return (
+                                    <Form>
+                                        <div className="flex w-full flex-col gap-5">
+                                            <div className=''>
+                                                <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
+                                                    <label htmlFor="numberCard" className="text-left text-primary-textMovie">Card Number</label>
+                                                    <Field
+                                                        className={`${backGround} ${textClasses} outline-none w-full`}
+                                                        type="text"
+                                                        name="numberCard"
+                                                        id="numberCard"
+
+                                                    />
+
+                                                </div>
+                                                <ErrorMessage name="numberCard" component="div" className="text-red-600 text-sm text-left" />
+                                            </div>
+                                            <div>
+
+                                                <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
+                                                    <label htmlFor="nameCard" className="text-left text-primary-textMovie">Card Holder Name</label>
+                                                    <Field
+                                                        className={`${backGround} ${textClasses} outline-none w-full`}
+                                                        type="text"
+                                                        name="nameCard"
+                                                        id="nameCard"
+                                                    />
+                                                </div>
+                                                <ErrorMessage name="nameCard" component="div" className="text-red-600 text-sm  text-left" />
+                                            </div>
+
+                                            <div className="flex w-full justify-between gap-x-5 ">
+                                                <div className='w-full'>
+
+                                                    <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 ">
+                                                        <label htmlFor="date" className="text-left text-primary-textMovie">Expiry Date</label>
+                                                        <Field
+                                                            className={`${backGround} ${textClasses} outline-none w-full`}
+                                                            type="text"
+                                                            name="date"
+                                                            id="date"
+                                                            placeholder="MM/YY"
+                                                        />
+                                                    </div>
+                                                    <ErrorMessage name="date" component="div" className="text-red-600 text-sm  text-left" />
+                                                </div>
+                                                <div className='w-full'>
+
+                                                    <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 ">
+                                                        <label htmlFor="numberCVV" className="text-left text-primary-textMovie">CVV</label>
+                                                        <Field
+                                                            className={`${backGround} ${textClasses} outline-none w-full`}
+                                                            type="password"
+                                                            name="numberCVV"
+                                                            id="numberCVV"
+                                                        />
+                                                    </div>
+                                                    <ErrorMessage name="numberCVV" component="div" className="text-red-600 text-sm  text-left" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" className="w-full bg-primary-textMovie text-white mt-2 text-xl">Add Card</button>
+                                    </Form>
+                                )
+                            }
+                            }
+                        </Formik>
+                        <ToastContainer />
+                    </AlertDialogHeader>
+
+
                 </AlertDialogContent>
             </AlertDialog>
         </div>

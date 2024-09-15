@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useThemeClasses } from "../../Theme/themeStyles";
+import { Link } from "react-router-dom";
 
 const Search = () => {
     const schema = z.object({
@@ -23,35 +24,31 @@ const Search = () => {
       });
 
     const themeCtx = useTheme()
-    const {inputClasses,textClasses,buttonClasses} = useThemeClasses()
+    const {inputClasses,textClasses,buttonClasses,themeUniver} = useThemeClasses()
+    
     const [data, setMovieData] = useState([])
     const [search, setSearch] = useState("")
     const [isValid, setIsValid] = useState(true)
     const [isLoading,setisLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState('');
     useEffect(() => {
-        const getMovies = async () => {
+        (async () => {
             try {
                 const data = await dataMovie('data/movies'); 
                 if (data) {
-                //    console.log(data);
+
                 setMovieData(data)
-                // console.log(data);
-                
                 setisLoading(true)
                 }
             } catch (err) {
                 console.error(err);
             } finally {
                 setisLoading(false);
-            }
-        }
+            } }
+        )()
         if (search) {
             setIsValid(true)
         }
-    
-        
-        getMovies()
     }, [search]);
     const filter = data.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
     const handleKeyDown = (event) => {
@@ -92,7 +89,7 @@ const Search = () => {
         <div>
 
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col   min-h-screen   overflow-scroll font-movie  pt-10 px-5 ${themeCtx.theme == 'dark' ? 'bg-dark-bg' : 'bg-[#f5f5f5]'} ${filter.length === 0 ? 'iphone-12:h-[844px]' : 'h-full'}  `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col   min-h-screen   overflow-scroll font-movie  pt-10 px-5 ${themeUniver}  `}>
                 <div className="relative">
                     {/* <form onSubmit={handleSubmit(onSubmit)}> */}
                     <Input
@@ -103,7 +100,7 @@ const Search = () => {
                         onKeyDown={handleKeyDown}
 
                         placeholder="Search"
-                        className={`w-full pl-10  outline-none py-7 ${inputClasses} ${!isValid ? 'border-red-500' : 'border-none'}`}
+                        className={`w-full pl-10  outline-none py-7  ${inputClasses} ${!isValid ? 'border-red-500' : 'border-none'}`}
                     />
                     <p className="text-primary-textMovie animate-pulse">  {!isValid ? errorMessage :null}</p>
                   
@@ -116,22 +113,26 @@ const Search = () => {
                 <div className="  ">
                     {!isLoading && filter.length > 0 ? filter.map((item) => (
                         <div>
-                            <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
-                                <div className="">
-                                    <img
-                                        src={item.poster}
-                                        alt={item.Title}
-                                        loading="lazy"
-                                        className="rounded-xl h-[100px] w-[100px] bg-contain object-cover "
-                                    />
-                                </div>
-                                <div className="flex flex-col justify-around pl-6">
-                                    <h2 className="font-[700] text-xl" >{truncateText(item.title, 15)}</h2>
-                                    <p className="text-gray-400 text-xs">{item.theFirm}</p>
-                                    <p className="text-xs">Language:{item.language}</p>
-                                </div>
+                             <Link to={'/itemLove'} state={{data:item}}>
+                             <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
+                               
+                               <div className="">
+                                   <img
+                                       src={item.poster}
+                                       alt={item.Title}
+                                       loading="lazy"
+                                       className="rounded-xl h-[100px] w-[100px] bg-contain object-cover "
+                                   />
+                               </div>
+                               <div className="flex flex-col justify-around pl-6">
+                                   <h2 className="font-[700] text-xl" >{truncateText(item.title, 15)}</h2>
+                                   <p className="text-gray-400 text-xs">{item.theFirm}</p>
+                                   <p className="text-xs">Language:{item.language}</p>
+                               </div>
 
-                            </div>
+                           </div>
+                                </Link>
+                           
 
 
                         </div>

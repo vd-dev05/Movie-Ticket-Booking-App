@@ -12,6 +12,14 @@ const Past = () => {
         review:"",
         id:0
     });
+    const [isOpen,setIsOpen] = useState(false)
+     const [props,setProps] = useState([])
+     
+    const handleData = (itenm) => {
+        // console.log(itenm);
+        setProps(itenm)
+    }
+
     const handleSubmit = () => {
         // const test = confirm("Xác nhânj đánh giá")
         //    console.log(test);
@@ -23,38 +31,33 @@ const Past = () => {
         }
         // if (test == true) alert("")
     }
-    const { inputClasses, backGround, textClasses,themePaid,themePaidDone } = useThemeClasses();
+    const { inputClasses, backGround, textClasses,themePaid,themePaidDone,buttonClasses,btnSubmit } = useThemeClasses();
     useEffect(() => {
-        const fetchMovies = async () => {
+        (async () => {
             try {
                 const data = await dataMovie('data/movies'); 
                 if (data) {
-                setMovieData(data);
+                 setMovieData(data)
                 }
             } catch (err) {
                 console.error(err);
-            } 
-        };
-        // if (starReveiew) {
-        //     console.log("Đánh giá thành công");
-            
-        // }
-        console.log(starReveiew);
-        
-
-        fetchMovies();
+            } finally {
+            } }
+        )()
     }, []);
     return (
         <div className="  font-movie  drop-shadow-lg pb-[50px]">
-            {data.map((itenm) => (
-                <div className={`mt-5 flex flex-col rounded-lg ${backGround}`}key={itenm.id} >
+            {data.map((itenm,idx) => (
+                <div className={`mt-5 flex flex-col rounded-lg ${buttonClasses}`} key={itenm.id} >
+                     <Review  data={props} isOpen={isOpen}  setIsOpen={setIsOpen} key={itenm.id} onSubmit={handleSubmit}  setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
+
                     <div className=" flex justify-between p-2 ">
                         <div className="flex ">
                             <img src={itenm.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
                             <div>
                                 <div className="pl-5 flex flex-col h-full justify-around">
                                     <h2 className="font-movie font-bold text-nowrap">{truncateText(itenm.title, 15)}</h2>
-                                    <p className="text-gray-500 text-[11px]  text-nowrap">{itenm.theFirm}</p>
+                                    <p className="text-gray-400 text-[11px]  text-nowrap">{itenm.theFirm}</p>
                                     <p className="text-[11px] ">Language: {itenm.language}</p>
                                 </div>
                             </div>
@@ -73,9 +76,23 @@ const Past = () => {
                                 className="border-gray-300  w-full"
                             >View Details</Button>
                         </Link>
-                        <Link className="w-full">
+                        <button 
+                        onClick={() => {
+                            handleData(itenm)
+                            setIsOpen(!isOpen)
+
+                            // console.log(isOpen);
+                            // console.log(itenm);
+                            
+                        } }
+                        className={`${btnSubmit} w-full h-10 text-nowrap rounded-lg`}                      >
+                        Write a review  
+
+                        </button>
+
+                        {/* <Link className="w-full">
                                 <Review data={itenm} text="Write a review" onSubmit={handleSubmit}  key={itenm.id} setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
-                        </Link>
+                        </Link> */}
 
 
 

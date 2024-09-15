@@ -11,17 +11,26 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'dist',
     rollupOptions: {
-      external: ['/assets/index-BmWpCgn-.js']
-    }
-  }
+  
+      output: {
+
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },  
   // server: {
-  //   host: true,
+  //   host: '192.168.16.128',
   //   port: 3000,
   //   proxy: {
     
   //     '/api': {
-  //       target: 'http://192.168.1.225:3000',
+  //       target: '',
   //       changeOrigin: true,
   //       rewrite: (path) => path.replace(/^\/api/, ''),
   //     },

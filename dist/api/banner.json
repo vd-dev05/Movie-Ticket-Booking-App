@@ -5,7 +5,7 @@
             "titleColor": "latest and greatest",
             "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
             "imgName": "the girl is ya",
-            "url": "/src/assets/img/1.png"
+            "url": "/assets/img/1.png"
     },
     {
             "id": 2,
@@ -13,7 +13,7 @@
             "titleColor": "favourite movie",
             "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
             "imgName": "the girl is love",
-            "url": "/src/assets/img/2.png"
+            "url": "/assets/img/2.png"
     },
     {
             "id": 3,
@@ -21,6 +21,6 @@
             "titleColor": "favourite movie",
             "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
             "imgName": "the girl is oh",
-            "url": "/src/assets/img/3.png"
+            "url": "/assets/img/3.png"
     }
 ]

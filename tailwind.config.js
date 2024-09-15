@@ -14,7 +14,16 @@ export default {
         "iphone-12": "390px",
         "redmi": "360px"
       },
-
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(30deg, #130B2B, #2E1371, #60FFCA, #FF53C0)', // Gradient nền với tất cả các màu
+        'Movie-gradient': 'linear-gradient(to bottom, #2E1371, #130B2B)'
+        ,'Input-gradient' :'linear-gradient(to left,#311e64,#2E1371)',
+        'btn-gradient':'linear-gradient(30deg,#FE53BB,#2E1371)',
+        'navBar-gradient':'linear-gradient(30deg,#482397,#bf51bb)'
+      },
+      borderColor: {
+        'btn-45': 'linear-gradient(55deg, #60FFCA, #130B2B)'
+      },
       fontWeight: {
         w400: "400",
         w700: "700",
@@ -71,12 +80,13 @@ export default {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         countdown: 'countdown 4s linear forwards',
         show_slide: 'show_slide 1s ease-out',
+        'border-spin': 'border-spin 7s linear infinite',
       },
      
       keyframes: {
         move: {
 
-          '0%': { transform: 'scale(1.25)' },
+          '0%': { transform: 'scale(1.25)' }, 
           '100%': { transform: 'scale(0.5)' }
         },
         "caret-blink": {
@@ -93,11 +103,32 @@ export default {
           // '80%': { transform: 'translateX(30%)' },
           '100%': { transform: 'translateX(0%)' },
         },
+        boxShadow: {
+          'text-light': '-1px 2px black',
+          'text-dark': '-1px 2px white',
+        },
+        'border-spin': {
+          '100%': {
+            transform: 'rotate(-360deg)',
+          },
+        },
+       
       }
     
 
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.border-gradient-45': {
+          borderImage: 'linear-gradient(55deg, #60FFCA, #130B2B) 1',
+          borderWidth: '1px',
+          // borderRadius:'100px'
+        },
+      }, ['responsive', 'hover']);
+    },
+
+  ],
 }
 

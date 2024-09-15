@@ -9,7 +9,7 @@ import { useThemeClasses } from "../../Theme/themeStyles";
 
 const Myticket = () => {
     const themeCtx = useTheme()
-    const { textClasses, backGroundTow, backGround } = useThemeClasses()
+    const { textClasses, backGroundTow, backGround ,themeUniver,buttonClasses,inputClasses,btnSubmit} = useThemeClasses()
     const [activeTab, setActiveTab] = useState("Update");
 
     const handleClick = (tab) => {
@@ -20,7 +20,7 @@ const Myticket = () => {
     const NavButton = ({ label, isActive, onClick }) => (
         <div>
             <button
-                className={`flex justify-center items-center text-sm px-8 py-4 ${textClasses} ${isActive ? 'bg-chairMovie-chairSelected text-white' : 'text-black'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
+                className={`flex justify-center items-center text-sm px-8 py-4 ${textClasses} ${isActive ? btnSubmit : 'text-black'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
                 onClick={onClick}
             >
                 {label}
@@ -43,10 +43,10 @@ const Myticket = () => {
     ];
 
     return (
-        <div className={`${textClasses} ${backGroundTow} h-full min-w-full`}>
+        <div className={`${themeUniver} h-full min-w-full`}>
             <div className=" px-5 pt-5  ">
                 <h1 className="text-center mb-5 font-bold font-movie">My Tickets</h1>
-                <div className={`flex justify-between  ${backGround} `}>
+                <div className={`flex justify-between  ${inputClasses} rounded-lg `}>
                     {tabs.map((tab, index) => (
                         <NavButton
                             key={index}
