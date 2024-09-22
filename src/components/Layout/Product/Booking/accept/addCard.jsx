@@ -16,11 +16,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { validationPayCard } from '@/lib/useYupForm'
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
+import { useTheme } from '@/components/Layout/Theme';
 
 const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setData ,selectedValue}) => {
     // console.log(isOpen);
-
-    const { buttonClasses, backGround, textClasses } = useThemeClasses();
+    const themeCtx = useTheme()
+    const { buttonClasses, backGround, textClasses,themeUniver } = useThemeClasses();
     const handleSubmit = async (values, actions) => {
         // console.log(values.numberCard);
         // console.log(actions);
@@ -54,7 +55,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                 {/* <AlertDialogTrigger >
                     {text}
                 </AlertDialogTrigger> */}
-                <AlertDialogContent className={`${backGround} ${textClasses}  max-w-full`}>
+                <AlertDialogContent className={`${themeUniver}  max-w-full`}>
 
                     <AlertDialogHeader>
                         <AlertDialogTitle><p>Add New Card</p></AlertDialogTitle>
@@ -75,7 +76,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                                                 <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
                                                     <label htmlFor="numberCard" className="text-left text-primary-textMovie">Card Number</label>
                                                     <Field
-                                                        className={`${backGround} ${textClasses} outline-none w-full`}
+                                                        className={`${themeCtx.theme == 'travel' ? 'bg-[#2E1371] ':backGround} outline-none w-full`}
                                                         type="text"
                                                         name="numberCard"
                                                         id="numberCard"
@@ -90,7 +91,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                                                 <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3">
                                                     <label htmlFor="nameCard" className="text-left text-primary-textMovie">Card Holder Name</label>
                                                     <Field
-                                                        className={`${backGround} ${textClasses} outline-none w-full`}
+                                                        className={`${themeCtx.theme == 'travel' ? 'bg-[#2E1371] ':backGround} ${textClasses} outline-none w-full`}
                                                         type="text"
                                                         name="nameCard"
                                                         id="nameCard"
@@ -105,7 +106,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                                                     <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 ">
                                                         <label htmlFor="date" className="text-left text-primary-textMovie">Expiry Date</label>
                                                         <Field
-                                                            className={`${backGround} ${textClasses} outline-none w-full`}
+                                                            className={`${themeCtx.theme == 'travel' ? 'bg-[#2E1371] ':backGround} ${textClasses} outline-none w-full`}
                                                             type="text"
                                                             name="date"
                                                             id="date"
@@ -119,7 +120,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                                                     <div className="border-[1px] rounded-lg border-primary-textMovie p-3 flex flex-col gap-3 ">
                                                         <label htmlFor="numberCVV" className="text-left text-primary-textMovie">CVV</label>
                                                         <Field
-                                                            className={`${backGround} ${textClasses} outline-none w-full`}
+                                                            className={`${themeCtx.theme == 'travel' ? 'bg-[#2E1371] ':backGround} ${textClasses} outline-none w-full`}
                                                             type="password"
                                                             name="numberCVV"
                                                             id="numberCVV"

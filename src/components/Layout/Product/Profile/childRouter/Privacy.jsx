@@ -10,7 +10,7 @@ const Privacy = () => {
                 <FaChevronLeft size={24} /> 
                 </Link>
                 <h1 className="text-center font-bold">Privacy Policy</h1>
-                <p className="text-white"></p>
+                <p className=""></p>
             </div>
             <div className="text-left px-5 ">
             <p className="mt-10">Last update 17/2/2023</p>

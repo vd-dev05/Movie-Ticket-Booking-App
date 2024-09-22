@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
         user: '', 
         phone: '',
         email:"",
-        total:"",
+       
         loveMovie:[],
         dataComent:[],
         card: {
@@ -18,9 +18,15 @@ export const UserProvider = ({ children }) => {
             date:"",
             cvv:""
         },
-        dataTicket:null,
-        dataTimeBook:null,
-        dataDayBook:null,
+        dataIdBook:null,
+        dataTicket:{
+            dataMovieBook:null,
+            dataTimeBook:null,
+            dataDayBook:null,
+            total:"",
+        },
+        select:false
+ 
     });
     
     const [dataMovie,setDataMovie] = useState([])

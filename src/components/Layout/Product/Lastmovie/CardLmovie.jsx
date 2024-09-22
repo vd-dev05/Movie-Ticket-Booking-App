@@ -22,7 +22,7 @@ const LatestMovie = () => {
         
         (async () => {
             try {
-                const data = await dataMovie('data/movies'); 
+                const data = await dataMovie('users/dataLastMovie'); 
                 if (data) {
 
                 setData(data)
@@ -55,7 +55,7 @@ const LatestMovie = () => {
         // updateItem()
         setItem(pre => ({...pre,
             dataTicket:item}))
-        localStorage.setItem('pay',JSON.stringify(item))
+        // localStorage.setItem('pay',JSON.stringify(item))
     }
     const clickTets = () => {
       
@@ -74,10 +74,10 @@ const LatestMovie = () => {
     
     return (
         <div>
-            <div className={`iphone-12-pro-max:flex flex flex-col h-full min-w-max font-movie px-5 ${themeUniver} `}>
+            <div className={`iphone-12-pro-max:flex flex flex-col h-screen min-w-max font-movie px-5 ${themeUniver} `}>
                 <div className="translate-y-9">
                     <Link to="/home">
-                        <box-icon name='chevron-left' size={"40px"}  color={themeCtx.theme == 'dark' ? 'white' : 'black'}> </box-icon>
+                        <box-icon name='chevron-left' size={"40px"}  color={themeCtx.theme == 'dark' || 'travel '? 'white' : 'black'}> </box-icon>
                     </Link>
 
                 </div>

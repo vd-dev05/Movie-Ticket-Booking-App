@@ -53,10 +53,12 @@ const HomePage = () => {
     const [data, setMovieData] = useState({
         dataMovie: [],
         dataUser: null,
+        dataLastMovie:[],
+        dataLoveMovie:[],
     });
 
     const [isAuthChecked, setIsAuthChecked] = useState(false);
-    const [checkLogin, setChecLogin] = useState(false)
+    const [checkLogin, setCheckLogin] = useState(false)
     const [user,setUser] = useState()
     const authenticateUser = useCallback(async () => {
         try {
@@ -78,6 +80,7 @@ const HomePage = () => {
         //         console.log("Error fetching movies:", error);
         //     }
         // };
+        
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 const currentUser = {
@@ -94,6 +97,8 @@ const HomePage = () => {
                     ...prevState,
                     dataUser: currentUser,
                 }));
+                setCheckLogin(true)
+                
             } else {
                 localStorage.removeItem('user');
                 setMovieData(prevState => ({
@@ -108,11 +113,31 @@ const HomePage = () => {
             async () => {
                 try {
                     const data = await dataMovie('data/movies');
+                    const dataLove = await dataMovie('users/loveMovie')
+                    const dataLastMovie = await dataMovie('users/dataLastMovie')
+                    const Logout = await dataMovie('user/auth')
+                    // console.log(Logout);
+                    const currentUser = {
+                        uid: '',
+                        email: '',
+                        displayName: '',
+                        photoURL: '',
+                    };
+                    if (Logout == null) {
+                        setUser(currentUser.displayName)
+                        setMovieData(prevState => ({
+                            ...prevState,
+                            dataUser: currentUser,
+                        }));
+                        setCheckLogin(false)
+                    }
                     if (data) {
                         //    console.log(data);
                         setMovieData(prevState => ({
                             ...prevState,
                             dataMovie: data,
+                            dataLoveMovie:dataLove,
+                            dataLastMovie:dataLastMovie
                         }));
                         setisLoading(true)
                     }
@@ -130,27 +155,28 @@ const HomePage = () => {
                 onValue(starCountRef, (snapshot) => {
                     const data = snapshot.val();
                     // console.log(data);
+                    // console.log(data.name);
                     
                     setUser(data.name)
                 });
 
                 //  create acc profile data
-                const userRefData = ref(database, 'users/');
-                await update(userRefData, {
-                    total: "",
-                    loveMovie: Array(''),
-                    dataComent: Array(''),
-                    card: {
-                        name: "",
-                        numberCard: "",
-                        date: "",
-                        cvv: ""
-                    },
-                    dataTicket: Array(''),
-                    dataLastMovie:Array(''),
-                    dataTimeBook: "",
-                    dataDayBook: "",
-                })
+                // const userRefData = ref(database, 'users/');
+                // await update(userRefData, {
+                //     // total: "",
+                //     // loveMovie: Array(''),
+                //     dataComent: Array(''),
+                //     // card: {
+                //     //     name: "",
+                //     //     numberCard: "",
+                //     //     date: "",
+                //     //     cvv: ""
+                //     // },
+                //     dataTicket:'',
+                //     dataLastMovie:Array(''),
+                //     // dataTimeBook: "",
+                //     // dataDayBook: "",
+                // })
 
             } catch (error) {
                 console.error("Error initializing user data:", error);
@@ -184,7 +210,10 @@ const HomePage = () => {
         console.log(user);
         
     };
-
+   
+    
+    // console.log(data);
+    
     return (
         <div>
 
@@ -221,24 +250,28 @@ const HomePage = () => {
                                 <box-icon name='search' color={` ${color}`}></box-icon>
                             </div>
                         </div>
-                        <div className="">
+                        <div className="relative ">
                             <div
                                 onClick={handleThemeToggle}
-                                className="w-[40px] "
+                                className="w-[40px] relative"
                             //  onClick={() => console.log("hello")
                             //  }
                             >
-                                <img src="/assets/icons/filter.png" className="cursor-pointer" alt="Filter" />
+                                <img src="/assets/icons/filter.png" className="cursor-pointer "  alt="Filter" />
+                              
+                        
                             </div>
-                            <DropdownMenu open={check} onOpenChange={setCheck}>
-                                < DropdownMenuTrigger></DropdownMenuTrigger>
-                                <DropdownMenuContent className={`-translate-y-8 mx-5 ${themeCtx.theme === 'dark' ? 'bg-gray-50' : 'bg-white'}`}>
+                        
+                            <DropdownMenu open={check} onOpenChange={setCheck} >
+                                {/* < DropdownMenuTrigger className="-translate-y-3 -z-20 bg-none"></DropdownMenuTrigger> */}
+                                <DropdownMenuContent className={` absolute top-44  ${themeCtx.theme === 'dark' ? 'bg-gray-50' : 'bg-white'}`}>
                                     <DropdownMenuLabel>Theme </DropdownMenuLabel>
                                     <DropdownMenuItem onClick={() => onSelectTheme({ target: { value: "dark", color: "white" } })}>Dark</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => onSelectTheme({ target: { value: "light", color: "black" } })}>Light</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => onSelectTheme({ target: { value: "travel", color: "white" } })}>Universe</DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
+                         
                         </div>
                     </div>
                     <div className="flex justify-between mt-10 ">
@@ -287,11 +320,15 @@ const HomePage = () => {
                 <div className="z-10">
                     <div className="flex justify-between mt-10 px-5">
                         <h2 className="font-bold">Latest Movie</h2>
-                        <Link to="/lmovie" className="text-chairMovie-chairSelected">See all</Link>
+                        <Link
+                         to="/lmovie"
+                        
+                        className="text-chairMovie-chairSelected">See all</Link>
                     </div>
 
                     <div className="iphone-12-pro-max:flex flex flex-col     font-movie pl-5">
-                        <MovieDe data={data.dataMovie} />
+                       {/* {data.dataLastMovie.length  ?  : <p>Not Data Last Movie</p>} */}
+                       <MovieDe data={data.dataLastMovie} />
                     </div>
                     <div className="flex justify-between mt-10 px-5">
                         <h2 className="font-bold">Favourite Movie</h2>
@@ -299,7 +336,7 @@ const HomePage = () => {
                     </div>
 
                     <div className="iphone-12-pro-max:flex flex flex-col iphone-12:w-[100vw ] font-movie pl-5 mb-20">
-                        <MovieDe data={data.dataMovie} />
+                       {data.dataLoveMovie ?  <MovieDe data={data.dataLoveMovie} />:<p>Not Data Love</p>}
                     </div>
                 </div>
             </div>

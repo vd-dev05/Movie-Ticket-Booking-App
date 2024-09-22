@@ -23,8 +23,8 @@ import { Link } from "react-router-dom";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { useTheme } from "../../Theme";
 import { CiCircleCheck } from "react-icons/ci";
-const Susses = ({ text,isTrue}) => {
-    const { buttonClasses, backGround, textClasses, backGroundTow ,themeSussesOTp} = useThemeClasses();
+const Susses = ({ text,isTrue,paraPass1,paraPass2, titlePass}) => {
+    const { buttonClasses, backGround, textClasses, backGroundTow ,themeSussesOTp,themeUniver} = useThemeClasses();
     const themeCtx = useTheme()
     return (
         <div>
@@ -32,9 +32,9 @@ const Susses = ({ text,isTrue}) => {
                 <AlertDialogTrigger >
                     {text}
                 </AlertDialogTrigger>
-                <AlertDialogContent className={`${themeCtx.theme == 'dark' ? 'bg-[#130d0d]': 'bg-white'} ${textClasses} max-w-[96vw] right-3 h-max  top-[25%] rounded-lg border-none outline-none`}>
+                <AlertDialogContent className={`${themeUniver} ${textClasses} max-w-[96vw] right-3 h-max  top-[25%] rounded-lg border-none outline-none text-center`}>
 
-                    <AlertDialogHeader className="flex items-center">
+                    <AlertDialogHeader className="flex items-center ">
                         <div className='flex justify-center items-center h-[200px] '>
                             <div className={` fixed w-[92px] h-[92px] ${themeSussesOTp} animate-move bg-[#d3f1e0] rounded-full flex items-center justify-center`}>
 
@@ -43,14 +43,15 @@ const Susses = ({ text,isTrue}) => {
                                 <CiCircleCheck size={50} color='white' />
 
                             </div>
-
+                            {/* Account Created Successfully' */}
                         </div>
-                        <AlertDialogTitle className="text-2xl w-[200px] ">Account Created Successfully</AlertDialogTitle>
-                        <AlertDialogDescription  >
-                            <div className=' flex justify-center items-center flex-col gap-3'>
+                        <AlertDialogTitle className="text-2xl w-[300px] text-center "> { titlePass ?  titlePass : 'not found'}</AlertDialogTitle>
+                        <AlertDialogDescription  className="text-center" >
+                            <div className=' flex justify-center items-center flex-col gap-3 pb-10'>
                                 <div className='w-[300px] text-base translate-y-5   '>
-                                    <p>Your account created successfully.</p>
-                                    <p>Listen your favourite music</p>
+                                    <p>{paraPass1 ? paraPass1 : 'not found'}</p>
+                                    <p>{paraPass2 ? paraPass2 : 'not found'  }</p>
+                                 
                                 </div>
 
                             </div>
@@ -63,8 +64,8 @@ const Susses = ({ text,isTrue}) => {
                         <AlertDialogAction className="gap-y-5  py-10 w-full mt-5 flex flex-col  ">
 
                             <div className='w-full border-none bg-chairMovie-chairSelected h-20 flex justify-center items-center rounded-lg hover:scale-105'>
-                                <Link className='w-full text-white hover:text-white ' to={'/home'}>
-                                    <button type="submit" className="   text-xl">Go to Home</button>
+                                <Link className='w-full text-white hover:text-white text-xl p-6 ' to={'/home'}>
+                                    Go to Home
                                 </Link>
                             </div>
                         </AlertDialogAction>

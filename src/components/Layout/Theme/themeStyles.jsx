@@ -77,8 +77,49 @@ export const useThemeClasses = () => {
             case 'travel':
                 return 'bg-navBar-gradient text-white';
             case 'light':
-            default:
+                 default:
                 return 'bg-[#ffffff] text-black';
+        }
+    }, [themeCtx.theme]);
+
+    const  buttonNav= useMemo(() => {
+        // return themeCtx.theme === 'dark' 
+        // ? 'bg-[#1a1414] text-white' : 'bg-[#ffffff] text-black'
+        switch (themeCtx.theme) {
+            case 'dark':
+                return 'bg-[#1a1414] text-white';
+            case 'travel':
+                return 'bg-navBar-gradient text-white';
+            case 'light':
+                return 'bg-[#ffffff] text-black';
+        }
+    }, [themeCtx.theme]);
+
+    const DatePickerButton = useMemo(() => {
+        // return themeCtx.theme === 'dark' 
+        // ? 'bg-[#1a1414] text-white' : 'bg-[#ffffff] text-black'
+        switch (themeCtx.theme) {
+            case 'dark':
+                return 'bg-[#221c1c] text-white';
+            case 'travel':
+                return 'bg-navBar-gradient text-white';
+            case 'light':
+            default:
+                return 'bg-[#f6f6f6] text-black';
+        }
+    }, [themeCtx.theme]);
+
+    const  buttonCLick = useMemo(() => {
+        // return themeCtx.theme === 'dark' 
+        // ? 'bg-[#1a1414] text-white' : 'bg-[#ffffff] text-black'
+        switch (themeCtx.theme) {
+            case 'dark':
+                return 'bg-chairMovie-chairSelected   text-white  flex items-center justify-center rounded-lg';
+            case 'travel':
+                return 'bg-btn-gradient text-white  flex items-center justify-center rounded-lg ';
+            case 'light':
+            default:
+                return 'bg-chairMovie-chairSelected   text-white  flex items-center justify-center rounded-lg';
         }
     }, [themeCtx.theme]);
 
@@ -117,7 +158,7 @@ export const useThemeClasses = () => {
             case 'dark':
                 return 'text-white';
             case 'travel':
-                return 'text-white';
+                return 'text-[#e1e1e1]';
             case 'light':
             default:
                 return 'text-black';
@@ -128,7 +169,8 @@ export const useThemeClasses = () => {
     return {
      buttonClasses, inputClasses, textClasses ,backGround,backGroundTow ,
      themePaid,themePaidDone,themeSusses,themeSussesOTp,oppositeTheme,
-     themeBackGround,themeFocus,themeUniver, btnSubmit
+     themeBackGround,themeFocus,themeUniver, btnSubmit,buttonCLick,buttonNav,
+     DatePickerButton
     
     };
 };

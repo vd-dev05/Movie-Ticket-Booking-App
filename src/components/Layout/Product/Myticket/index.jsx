@@ -20,7 +20,7 @@ const Myticket = () => {
     const NavButton = ({ label, isActive, onClick }) => (
         <div>
             <button
-                className={`flex justify-center items-center text-sm px-8 py-4 ${textClasses} ${isActive ? btnSubmit : 'text-black'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
+                className={`flex justify-center items-center text-sm px-8 py-4 ${textClasses} ${isActive ? btnSubmit :inputClasses } p-2 rounded-lg transition-colors duration-300 ease-in-out`}
                 onClick={onClick}
             >
                 {label}

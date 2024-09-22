@@ -6,7 +6,7 @@ const Password = () => {
     const themeCtx = useTheme()
     return ( 
         
-        <div className={`iphone-12-pro-max:flex flex flex-col h-[100vh] iphone-12:w-[390px] font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white' } `}>
+        <div className={`iphone-12-pro-max:flex flex flex-col h-[100vh]  font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg':'bg-white' } `}>
             <div className=" flex justify-center h-56">
             <img src="/assets/img/logo1.png" className=" h-96 -translate-y-20" alt="" />
             </div>

@@ -10,17 +10,19 @@ import { collection, getDocs } from "firebase/firestore";
 import { useTheme } from '../Theme';
 import { useFormik } from 'formik';
 import { toast, ToastContainer } from 'react-toastify';
-import { userSchemaSignUp } from '@/lib/useYupForm';
+import { userSchemaSignUp,userSchemaSignUpLogin } from '@/lib/useYupForm';
 import { EyeInvisibleFilled, EyeOutlined } from '@ant-design/icons'
 import { Label } from '@/components/ui/label';
 import { useThemeClasses } from '../Theme/themeStyles';
+import {dataMovie} from '@/components/Layout/Product/GetApi/GetApi'
+
 const Otp = () => {
     const themeCtx = useTheme()
     const { dataUser, setDataUser } = useUser(); 
     const navigate = useNavigate();
     // const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const { themeFocus, themeBackGround } = useThemeClasses()
+    const { themeFocus, themeBackGround ,buttonNav } = useThemeClasses()
 
     const [isOpen, setIsOpen] = useState(false)
     const LoginGoogle = () => {
@@ -61,27 +63,50 @@ const Otp = () => {
         },
 
 
-        onSubmit: (value) => {
-            console.log(value);
-            console.log("hello");
+        onSubmit: async (value) => {
+            const data =   await dataMovie('users/auth')
+            // console.log(data.phone);
+            if (value.phone === data.phone && value.password === data.password  ) {
+               setTimeout(() => {
+                formik.values.phone = " "
+                formik.values.password = " "
+             navigate('/home')
+            }, 1900);
+                toast.success('Login Success done!', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            
+            }else {
+                toast.error('Login Failed.Check your account again!', {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+          
+            // console.log(value);
+            // console.log("hello");
 
-            toast.success('Login Success done!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            navigate('/home')
+        
+         
+         
         },
-        validationSchema: userSchemaSignUp
+        validationSchema: userSchemaSignUpLogin
     })
     // console.log(formik.values);
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg' : 'bg-white'} `}>
+        <div className={`iphone-12-pro-max:flex flex flex-col h-[100vh] w-full font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg' : 'bg-white'} `}>
             <div className=" flex justify-center h-56 ">
                 <img src="/assets/img/logo1.png" className=" h-96 -translate-y-20" alt="" />
             </div>
@@ -94,7 +119,7 @@ const Otp = () => {
             <div>
                 <div className=" px-6 mt-5">
                     <Button
-                        className="w-full flex mb-10 p-6 border-gray-300"
+                        className={`w-full flex mb-10 p-6 border-gray-300  ${buttonNav}`}
                         variant="outline"
                     >
                         <div className="mr-2">
@@ -107,7 +132,7 @@ const Otp = () => {
                     <Button
 
                         onClick={LoginGoogle}
-                        className="w-full outline-none border-gray-300"
+                        className={`w-full outline-none border-gray-300 p-6 ${buttonNav}`}
                         variant="outline"
                     >
                         <div className="mr-2">
@@ -149,7 +174,7 @@ const Otp = () => {
       duration-300 peer-focus:-top-0  peer-focus:left-3 peer-focus:${formik.errors.phone ? 'text-primary-textMovie' : 'text-gray-500'} peer-focus:text-xs
       peer-focus:${themeFocus} peer-focus:px-2 ${formik.values.phone ? 'top-0 px-2 left-3 text-xs text-primary-textMovie' + { themeFocus } : ''}`}
                         >
-                            Phone Coming soom ... 
+                            Phone  
                         </Label>
                     </div>
                     <div>
@@ -191,7 +216,6 @@ const Otp = () => {
                         <Link to="/reset" className='text-primary-textMovie'>Forgot Password ?</Link>
                     </div>
                     <button
-                        // onClick={LoginUser}
                         type="submit"
                         className="w-full bg-primary-textMovie text-white h-14 "
                         variant="outline"

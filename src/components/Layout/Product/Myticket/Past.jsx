@@ -1,55 +1,113 @@
 import { useEffect, useState } from "react";
-import { Movie, truncateText,dataMovie } from "../GetApi/GetApi";
+import { Movie, truncateText, dataMovie } from "../GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Review from "./accept/Review";
 import { useThemeClasses } from "../../Theme/themeStyles";
+import updateDataBase from "../GetApi/PostRating";
+// import { get, ref } from "firebase/database";
+// import { database } from "@/components/firebase/firebase";
+import updateBookingStatus from '@/components/Layout/Product/GetApi/GetRemoveData'
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const Past = () => {
     const [data, setMovieData] = useState([])
 
     const [starReveiew, setRatingandReview] = useState({
-        rating:0,
-        review:"",
-        id:0
+        rating: 0,
+        review: "",
+        id: 0
     });
-    const [isOpen,setIsOpen] = useState(false)
-     const [props,setProps] = useState([])
-     
+    const [isOpen, setIsOpen] = useState(false)
+    const [props, setProps] = useState([])
+    const [dataLoad,setDataLoad] = useState(false)
     const handleData = (itenm) => {
         // console.log(itenm);
         setProps(itenm)
     }
 
-    const handleSubmit = () => {
-        // const test = confirm("Xác nhânj đánh giá")
-        //    console.log(test);
-        console.log(starReveiew);
-        
-        if (starReveiew.id == 1 ) {
-            console.log("Xóa thành công");
-            
+    const handleSubmit = async () => {
+       
+        try {
+            const refData = 'data/movies'
+            const refPost = 'data/movies/'
+            await updateDataBase(refData, refPost, starReveiew.id, {
+                rate: starReveiew.rating,
+                review: starReveiew.review
+
+            })
+            await updateBookingStatus(starReveiew.id, {
+                past: true
+            })
+           
+            setDataLoad(!dataLoad)
+            setRatingandReview('')
+            // alert("done")
+            // toast.success('Review Successful! Thank you <3');
+        } catch (error) {
+            console.log(error);
+            toast.error('An error occurred. Please try again.');
+
         }
-        // if (test == true) alert("")
     }
-    const { inputClasses, backGround, textClasses,themePaid,themePaidDone,buttonClasses,btnSubmit } = useThemeClasses();
+    if (dataLoad) {
+        toast.success('Review SuccessFull ! Thank you <3')
+    }
+    const { inputClasses, backGround, textClasses, themePaid, themePaidDone, buttonClasses, btnSubmit } = useThemeClasses();
     useEffect(() => {
-        (async () => {
+        const fetech = async () => {
             try {
-                const data = await dataMovie('data/movies'); 
-                if (data) {
-                 setMovieData(data)
-                }
+                const data = await dataMovie('users/dataTicket/book');
+                // console.log(data);
+                const dataTic = data.filter((item => item.paid == true))
+               
+                setMovieData(dataTic)
+
             } catch (err) {
                 console.error(err);
-            } finally {
-            } }
-        )()
-    }, []);
+                toast.error('An error occurred. Please try again.');
+
+            }
+        }
+       fetech()
+      
+    }, [dataLoad]);
+    const test = async () => {
+        // console.log(data);
+        
+        // const userRefData = ref(database, '/data/movies');
+        // // console.log(userRefData);
+
+        // const dataBook = await get(userRefData) 
+        // let arrBook = dataBook.exists() ? dataBook.val() :[];
+        // if (arrBook.some(item => item.id === starReveiew.id) ) {
+
+        //     // console.log(arrBook);
+
+        // }
+        // console.log(starReveiew);
+
+        // console.log(arrBook);
+    }
+
     return (
-        <div className="  font-movie  drop-shadow-lg pb-[50px]">
-            {data.map((itenm,idx) => (
+        <div className="  font-movie  drop-shadow-lg pb-[50px] h-screen ">
+                {data.length === 0 &&
+                <div class={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
+                    <div class="animate-pulse flex space-x-4">
+                        <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
+                        <div class="flex-1 space-y-6 py-1">
+                            {/* <div class="h-2 bg-slate-700 rounded w-[200px]"></div> */}
+                            <div class="space-y-10">
+                                No Data Ticket . Please Book Ticket Movie
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            {data.map((itenm, idx) => (
                 <div className={`mt-5 flex flex-col rounded-lg ${buttonClasses}`} key={itenm.id} >
-                     <Review  data={props} isOpen={isOpen}  setIsOpen={setIsOpen} key={itenm.id} onSubmit={handleSubmit}  setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
+                    <Review data={props} isOpen={isOpen} setIsOpen={setIsOpen} key={itenm.id} onSubmit={handleSubmit} setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
 
                     <div className=" flex justify-between p-2 ">
                         <div className="flex ">
@@ -76,23 +134,34 @@ const Past = () => {
                                 className="border-gray-300  w-full"
                             >View Details</Button>
                         </Link>
-                        <button 
-                        onClick={() => {
-                            handleData(itenm)
-                            setIsOpen(!isOpen)
+                        {itenm.past ? <button
+                            onClick={() => {
+                                handleData(itenm)
+                                setIsOpen(!isOpen)
 
-                            // console.log(isOpen);
-                            // console.log(itenm);
-                            
-                        } }
-                        className={`${btnSubmit} w-full h-10 text-nowrap rounded-lg`}                      >
-                        Write a review  
+                                // console.log(isOpen);
+                                // console.log(itenm);
+
+                            }}
+                            className={`${btnSubmit} w-full h-10 text-nowrap rounded-lg`}                      >
+                            Edit a review
 
                         </button>
+                            : <button
+                                onClick={() => {
+                                    handleData(itenm)
+                                    setIsOpen(!isOpen)
 
-                        {/* <Link className="w-full">
-                                <Review data={itenm} text="Write a review" onSubmit={handleSubmit}  key={itenm.id} setRatingandReview={setRatingandReview} starReveiew={starReveiew}  ></Review>
-                        </Link> */}
+                                    // console.log(isOpen);
+                                    // console.log(itenm);
+
+                                }}
+                                className={`${btnSubmit} w-full h-10 text-nowrap rounded-lg`}                      >
+                                Write a review
+
+                            </button>
+                        }
+
 
 
 

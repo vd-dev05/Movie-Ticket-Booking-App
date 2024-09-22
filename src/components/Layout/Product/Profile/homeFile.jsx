@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaRegEdit, FaChevronRight } from "react-icons/fa";
 import { LuTicket } from "react-icons/lu";
 import { TbBrandSamsungpass } from "react-icons/tb";
 import { RiTodoLine } from "react-icons/ri";
-import { AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -27,12 +27,11 @@ import { Regex } from "@/components/Regex";
 import Privacy from "./childRouter/Privacy";
 import { doc, getDoc } from "firebase/firestore";
 import { database, db } from "@/components/firebase/firebase";
-import { onValue, ref, set, update } from "firebase/database";
+import { child, get, onValue, ref, remove, set, update } from "firebase/database";
 import Terms from "./childRouter/Terms";
 import UserRename from "./childRouter/UserRename";
 import ChangePassWord from "./childRouter/ChangePass";
-// import { db, doc, setDoc, getDoc } from "../../../firebase/firebase";
-
+import {deleteData} from '@/components/Layout/Product/GetApi/GetApi'
 
 const HomeFile = () => {
     // const UserData = useContext(useUser);
@@ -46,36 +45,96 @@ const HomeFile = () => {
     // const ChildRouter = location.pathname !== '/profile';
     // const ChildEditPass = location.pathname != '/';
     const themeCtx = useTheme()
-    const { oppositeTheme, themeUniver } = useThemeClasses()
+    const { oppositeTheme, themeUniver,textClasses } = useThemeClasses()
     const [reset, setReset] = useState({
         user: '',
         phone: '',
         passWord: ''
     })
-
+    const nav  = useNavigate()
     const [True, setTrue] = useState(false)
-
+    const [dataLoad,setDataLoad] = useState(false)
     // if (!isDialogOpen) {
 
     // }
 
     useEffect(() => {
-        onValue(ref(database, 'users/' + 'auth'), (snapshot) => {
-            const data = snapshot.val();
-            console.log(data);
-
-            setReset(pre => ({
-                ...pre,
-                user: data.name,
-                phone: data.phone
-            }))
+        // get(child(ref(database), `users/auth`)).then((snapshot) => {
+        //     if (snapshot.exists()) {
+        //         const data = snapshot.val();
+        //             console.log(data);
+        
+        //             setReset(pre => ({
+        //                 ...pre,
+        //                 user: data.name,
+        //                 phone: data.phone
+        //             }))
+        //     } else {
+        //       console.log("No data available");
+        //     }
+        //   }).catch((error) => {
+        //     console.error(error);
+        //   });
+            
+            onValue(ref(database, 'users/' + 'auth'), (snapshot) => {
+                const data = snapshot.val();
+                // const data =  {
+                //     name:'alex' ,
+                //     phone:'012'
+                // }
+                console.log(data);
+                if (data) {
+                    setReset(pre => ({
+                        ...pre,
+                        user: data.name  ,
+                        phone: data.phone 
+                    }))
+                    setTrue(!True)
+                    setDataLoad(true)
+                }
+              
+               
+            });
+    }, [dataLoad])
+    const handleLogout = async () => {
+        const currentUser = {
+            displayName:"user",
+            photoURL:''
+        }
+        localStorage.setItem('user', JSON.stringify(currentUser))
+    
+        deleteData(`users/auth`) 
+            .then(() => {
+             setDataLoad(false)
+             toast.success("Logout SuccessFull !" , {
+                autoClose:2000
+            })
+            })
+            .catch((error) => {
+                console.error('Error deleting movie:', error);
+            });
+            
+        deleteData(`users/userCard`) 
+        .then(() => {
+         setDataLoad(false)
+         toast.success("Logout SuccessFull !" , {
+            autoClose:2000
+        })
+        })
+        .catch((error) => {
+            console.error('Error deleting movie:', error);
         });
-    }, [])
+            setDataLoad(false)
+            setTimeout(() => {
+                setReset('')
+                setTrue(!True)
+            }, 1900);
+        
 
-
-    const CLickTest = () => {
-
-
+    }
+    const handleLogin = () => {
+       
+        nav('/l')
     }
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col h-[200vw]    text-center font-movie   relative ${themeUniver}`}>
@@ -100,16 +159,14 @@ const HomeFile = () => {
                     </div>
 
                     <div className="px-5    ">
-                        <Link className={`${themeCtx.theme === 'dark' ? ' text-[#e1e1e1]' : 'text-black'}`} to="/profile/rename">
+                        <Link className={textClasses} to="/profile/rename">
 
                             <div className="flex justify-between items-center py-5"
                             // onClick={() => setDialogOpen(!isDialogOpen)}
                             >
                                 <div className="flex">
                                     <FaRegEdit size={30} />
-                                    <Button variant="outline" className="text-2xl ml-3">
-                                        Edit Profile
-                                    </Button>
+                                   <p className="text-2xl pl-5"> Edit Profile</p>
                                 </div>
                                 <FaChevronRight size={24} />
                             </div>
@@ -118,7 +175,7 @@ const HomeFile = () => {
 
                         <hr />
 
-                        <Link className={``} to="/tickets">
+                        <Link className={textClasses} to="/tickets">
                             <div className="flex justify-between items-center py-5">
                                 <div className="flex">
                                     <LuTicket size={30} />
@@ -129,7 +186,7 @@ const HomeFile = () => {
                             <hr />
                         </Link>
 
-                        <Link className={`${themeCtx.theme === 'dark' ? ' text-[#e1e1e1]' : 'text-black'}`} to="/profile/change-password">
+                        <Link className={textClasses} to="/profile/change-password">
                             <div className="flex justify-between items-center py-5">
                                 <div className="flex">
                                     <TbBrandSamsungpass size={30} />
@@ -140,11 +197,11 @@ const HomeFile = () => {
                             <hr />
                         </Link>
 
-                        <Link className={`  ${themeCtx.theme === 'dark' ? ' text-[#e1e1e1]' : 'text-black'}`} to="/profile/privacy">
+                        <Link className={textClasses} to="/profile/privacy">
                             <div className="flex  justify-between items-center py-5">
                                 <div className="flex">
 
-                                    <box-icon name="check-shield" size="34px" color={`${themeCtx.theme === 'dark' ? '#e1e1e1' : 'black'}`}> </box-icon>
+                                    <box-icon name="check-shield" size="34px" color={`${themeCtx.theme === 'dark' && 'travel' ? '#e1e1e1' : 'black'}`}> </box-icon>
                                     <p className="text-2xl pl-5">Privacy Policy</p>
                                 </div>
 
@@ -153,11 +210,11 @@ const HomeFile = () => {
                             <hr />
                         </Link>
 
-                        <Link className={`${themeCtx.theme === 'dark' ? ' text-[#e1e1e1]' : 'text-black'}`} to="/profile/terms">
+                        <Link className={`${textClasses} hover:${textClasses}`}  to="/profile/terms">
                             <div className="flex  justify-between items-center py-5">
                                 <div className="flex">
 
-                                    <box-icon name="check-shield" size="34px" color={`${themeCtx.theme === 'dark' ? '#e1e1e1' : 'black'}`}> </box-icon>
+                                    <box-icon name="check-shield" size="34px" color={`${themeCtx.theme === 'dark' && 'travel'? '#e1e1e1' : 'black'}`}> </box-icon>
                                     <p className="text-2xl pl-5">Terms & Conditions</p>
                                 </div>
 
@@ -167,75 +224,29 @@ const HomeFile = () => {
                         </Link>
                     </div>
 
-                    <div className="px-5 mt-10">
-                        <Link className="text-white" to="/logout">
-                            <Button className="bg-chairMovie-chairSelected w-full p-7 text-xl">
-                                <AiOutlineLogout size={24} className="mr-2" />
-                                Logout
-                            </Button>
-                        </Link>
+                    <div className="px-5">
+                   
+                        {!!True
+                         ?
+                         <Button 
+                        onClick={handleLogin}
+                         className="text-xl mt-10 bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected text-white focus:bg-chairMovie-chairSelected w-full p-5 h-[60px] rounded-lg  ">
+                             <AiOutlineLogin size={24} className="mr-2 " />
+                             Login
+                         </Button>
+                        : 
+                        <Button
+                        onClick={handleLogout}
+                        className="text-xl mt-10 bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  ">
+                        <AiOutlineLogout size={24} className="mr-2" />
+                        Logout
+                    </Button>
+                        }
+                     
+                  
                     </div>
-                    {/* 
-                    <Dialog open={isDialogOpen} onOpenChange={setDialogOpen} >
-                        <DialogContent className="sm:max-w-[425px] rounded-lg bg-gray-50">
-                            <DialogHeader>
-                                <DialogTitle>Edit Profile</DialogTitle>
-                                <DialogDescription>
-                                    Make changes to your profile here. Click save when you're done.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <label htmlFor="user" className="text-right">
-                                        Name
-                                    </label>
-                                    <input
-                                        id="user"
-                                        name="user"
-                                        type="text"
-                                        placeholder="Edit name..."
-                                        onChange={handleChange}
-                                        value={reset.user || ''}
-                                        className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
-                                        required
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <label htmlFor="phone" className="text-right">
-                                        Phone
-                                    </label>
-                                    <input
-                                        id="phone"
-                                        name="phone"
-                                        type="text"
-                                        placeholder="Edit phone..."
-                                        onChange={handleChange}
-                                        value={reset.phone || ''}
-                                        className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
-                                        required
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <label htmlFor="phone" className="text-right">
-                                        Enter Address
-                                    </label>
-                                    <input
-                                        id="mail"
-                                        name="mail"
-                                        type="email"
-                                        placeholder="Edit Mail..."
-                                        onChange={handleChange}
-                                        value={reset.mail || ''}
-                                        className="col-span-3 text-black outline-none border-2 p-2 rounded-lg"
-                                        required
-                                    />
-                                </div>
-                                <Button type="submit" className="bg-chairMovie-chairSelected hover:bg-primary-textMovie  text-white">
-                                    Save changes
-                                </Button>
-                            </form>
-                        </DialogContent>
-                    </Dialog> */}
+                 
+                  
                 </div>
             )}
             {isPrivacyRoute && <Privacy />}

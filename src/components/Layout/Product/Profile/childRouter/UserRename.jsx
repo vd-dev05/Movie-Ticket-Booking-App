@@ -151,7 +151,7 @@ const UserRename = () => {
                     type="submit"
                     className="bg-primary-textMovie w-full mt-10 p-6 hover:-translate-y-1 delay-150 hover:scale-105 transition duration-700 ease-in-out focus:bg-chairMovie-chairSelected hover:bg-primary-textMovie"
                 >
-                    <span className="text-white ">Signup</span>
+                    <span className="text-white ">Update</span>
                 </Button>
             </form>
             <ToastContainer

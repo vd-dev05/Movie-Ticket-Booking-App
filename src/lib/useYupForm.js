@@ -21,6 +21,24 @@ export const userSchemaSignUp = Yup.object().shape({
     ),
 
 })
+
+export const userSchemaSignUpLogin = Yup.object().shape({
+  password: Yup.string()
+    .required("Required")
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/,
+      "Password must be 7-19 characters and contain at least one letter, one number and a special character"
+    ),
+  phone: Yup.string()
+    .required("Required")
+    .matches(
+      //   /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+      /^\+?\d{1,4}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+      "Must be a valid phone number"
+    ),
+
+})
+
 export const userSchemaChangePassword = Yup.object().shape({
   password :Yup.string()
     .required("Required"),

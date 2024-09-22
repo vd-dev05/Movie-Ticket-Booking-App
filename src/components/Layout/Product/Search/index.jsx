@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useThemeClasses } from "../../Theme/themeStyles";
 import { Link } from "react-router-dom";
-
+import useDebounce from '@/components/Layout/Product/GetApi/SearchOP'
 const Search = () => {
     const schema = z.object({
         name: z.string().min(1, { message: 'Required' }),
@@ -31,6 +31,8 @@ const Search = () => {
     const [isValid, setIsValid] = useState(true)
     const [isLoading,setisLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState('');
+    const debouncedSearch = useDebounce(search, 1000)
+    
     useEffect(() => {
         (async () => {
             try {
@@ -50,38 +52,75 @@ const Search = () => {
             setIsValid(true)
         }
     }, [search]);
-    const filter = data.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
+
+    useEffect(() => {
+        // console.log(debouncedSearch.length);
+        
+        if (debouncedSearch.length === 0) {
+            setIsValid(false);
+            setErrorMessage("Nhập tên phim");
+            return;
+        }
+
+        const item = data.filter((el) => el.title.toLowerCase().includes(debouncedSearch.toLowerCase()));
+        // console.log(item);
+        setMovieData(item)
+
+        if (item.length > 0) {
+            setIsValid(true);
+        } else {
+            setIsValid(false);
+            setErrorMessage("Tên phim không tồn tại hệ thống");
+        }
+        
+        // console.log(search.trim());
+        
+        setTimeout(() => {
+            setErrorMessage('');
+            setIsValid(true);
+        }, 3000);
+    }, [debouncedSearch, data,search]);
+    // const filter = data.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-           
-            //  console.log(search.length);
-            if (search.length === 0 ) {
-                // console.log(0);
-                setIsValid(false)
-                setErrorMessage("Nhập tên phim")
-                return 
-            }
-            const item = data.filter((el) => el.title.toLowerCase().includes(search.toLowerCase()))
-
-            if (item.length > 0) {
-               setIsValid(true)
-            }    
-             else {
-                setIsValid(false)
-                setErrorMessage("Tên phim không tồn tại hệ thống")
-                return
-            }
-
-            setTimeout(() => {
-                setErrorMessage('')
-               setIsValid(true)
-            }, 2000);
-        
-        
+            setSearch(event.target.value);
+            // console.log(search);
+            console.log(debouncedSearch);
+            
         }
+    };
+    // const handleKeyDown = (event) => {
+    //     if (event.key === 'Enter') {
+    //         event.preventDefault();
+           
+    //         //  console.log(search.length);
+    //         if (search.length === 0 ) {
+    //             // console.log(0);
+    //             setIsValid(false)
+    //             setErrorMessage("Nhập tên phim")
+    //             return 
+    //         }
+    //         const item = data.filter((el) => el.title.toLowerCase().includes(search.toLowerCase()))
+
+    //         if (item.length > 0) {
+    //            setIsValid(true)
+    //         }    
+    //          else {
+    //             setIsValid(false)
+    //             setErrorMessage("Tên phim không tồn tại hệ thống")
+    //             return
+    //         }
+
+    //         setTimeout(() => {
+    //             setErrorMessage('')
+    //            setIsValid(true)
+    //         }, 2000);
         
-    }
+        
+    //     }
+        
+    // }
     // if (isLoading) {
     //     return<div>Loading...</div>
     // }
@@ -111,7 +150,7 @@ const Search = () => {
 
                 </div>
                 <div className="  ">
-                    {!isLoading && filter.length > 0 ? filter.map((item) => (
+                    {!isLoading && data.length > 0 ? data.map((item) => (
                         <div>
                              <Link to={'/itemLove'} state={{data:item}}>
                              <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>

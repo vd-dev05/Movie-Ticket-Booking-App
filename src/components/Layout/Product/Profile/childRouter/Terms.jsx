@@ -10,8 +10,7 @@ const Terms = () => {
                 <FaChevronLeft size={24} /> 
                 </Link>
                 <h1 className="text-center font-bold">Privacy Policy</h1>
-                <p className="text-white">l</p>
-            </div>
+                <p className=""></p>            </div>
             <div className="text-left px-5 ">
             <p className="mt-10">Last update 17/2/2023</p>
             <p className="mt-5 text-lg">Please read these privacy policy , carefuly before using our app operated us</p>

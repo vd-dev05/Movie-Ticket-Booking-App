@@ -15,9 +15,10 @@ import React, { useEffect, useCallback, memo, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { truncateText } from "../../GetApi/GetApi";
 import { Box, Typography } from "@mui/joy";
+import updateBookingStatus from '@/components/Layout/Product/GetApi/GetRemoveData'
+import { toast } from "react-toastify";
 
-
-const CancelTicket = ({ data, text }) => {
+const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
     const test = useMemo(() => {
 
         if (data && data.title) {
@@ -40,18 +41,28 @@ const CancelTicket = ({ data, text }) => {
         "Another reason"
     ];
 
-    // const handleSubmit = () => {
-    //     const test = confirm("Xác nhânj đánh giá")
-    //     //    console.log(test);
-
-    //     if (test == true) alert("")
-    // }
+    const handleSubmit = async () => {
+        await updateBookingStatus (data,{paid:false})
+        setIsOpen(!isOpen)
+        setDataLoad(!dataLoad)
+        toast('🦄 Wow so easy!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+            });
+    }
     return (
         <div >
-            <div >
-                <AlertDialog>
-                    <AlertDialogTrigger>{text}</AlertDialogTrigger>
-                    <AlertDialogContent className="bg-white " >
+            <div className="" >
+                <AlertDialog open={isOpen} onOpenChange={setIsOpen} >
+                    {/* <AlertDialogTrigger>{text}</AlertDialogTrigger> */}
+                    <AlertDialogContent className="bg-white max-w-[96vw] right-3   rounded-lg border-none " >
 
 
                         <AlertDialogHeader >
@@ -84,7 +95,7 @@ const CancelTicket = ({ data, text }) => {
                         <AlertDialogFooter className=" flex gap-2 p-2">
 
                             <AlertDialogAction
-                                // onClick={handleSubmit}
+                                onClick={handleSubmit}
                                 className="w-full bg-primary-textMovie text-white mt-2 text-xl "
                             >Submit</AlertDialogAction>
                         </AlertDialogFooter>

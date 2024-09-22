@@ -19,13 +19,14 @@ import { Rating } from "@mui/material";
 import { CiStar } from "react-icons/ci";
 import { yellow } from "@mui/material/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOpen,setIsOpen }) => {
+const Review = ({ data, key, text, setRatingandReview, starReveiew, onSubmit, isOpen, setIsOpen }) => {
     // console.log(dataProps);
     // console.log(key);    
     // console.log(starReveiew);
+    // console.log(data);
     
 
-    const style = { color: " #FFD43B" }
+    // const style = { color: " #FFD43B" }
     const test = useMemo(() => {
 
         if (data && data.title) {
@@ -36,7 +37,7 @@ const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOp
 
     const handleClick = (star) => {
         console.log(star);
-        
+
         if (starReveiew.rating === star) {
             setRatingandReview(pre => ({
                 ...pre,
@@ -46,7 +47,7 @@ const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOp
         } else {
             setRatingandReview(pre => ({
                 ...pre,
-                id: 1,
+                id: data.id,
                 rating: star
             }))
         }
@@ -59,7 +60,7 @@ const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOp
             <div >
                 <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                     {/* <AlertDialogTrigger className="bg-chairMovie-chairSelected text-white w-full h-10 text-nowrap rounded-lg">{text}</AlertDialogTrigger> */}
-                    <AlertDialogContent className="bg-white w-full" >
+                    <AlertDialogContent className="bg-white max-w-[96vw] right-3 " >
 
 
                         <AlertDialogHeader >
@@ -69,13 +70,16 @@ const Review = ({ data,key ,text, setRatingandReview, starReveiew, onSubmit,isOp
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <div className="drop-shadow-2xl">
-                            <div className="flex bg-gray-50 p-2 rounded-lg  ">
-                                <img src={data.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
-                                <div>
-                                    <div className="pl-5 flex flex-col h-[100px] justify-evenly  text-left ">
-                                        <h2 className="font-movie font-bold ">{test}</h2>
-                                        <p className="text-gray-500 text-[11px]  text-nowrap">{data.theFirm}</p>
-                                        <p className="text-[11px] ">Language: {data.language}</p>
+                            <div className="flex bg-gray-50 p-2 rounded-lg justify-between  ">
+                                <div className="flex">
+
+                                    <img src={data.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
+                                    <div>
+                                        <div className="pl-5 flex flex-col h-[100px] justify-evenly  text-left ">
+                                            <h2 className="font-movie font-bold ">{test}</h2>
+                                            <p className="text-gray-500 text-[11px]  text-nowrap">{data.theFirm}</p>
+                                            <p className="text-[11px] ">Language: {data.language}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="  h-8 w-14 flex justify-center items-center mt-12 rounded-md">

@@ -16,18 +16,21 @@ import { CiCircleCheck } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/components/Layout/Theme';
 import { toast, ToastContainer } from 'react-toastify';
-const DoneBooking = ({ text,isOpenPay }) => {
-    const { buttonClasses, backGround, textClasses } = useThemeClasses();
+const DoneBooking = ({ text,isOpenPay,payBookData }) => {
+    const { buttonClasses, backGround, textClasses ,themeUniver} = useThemeClasses();
     const themeCtx = useTheme()
-
+//    console.log(isOpenPay);
    
+    
+    
+  
     return (
         <div>
             <AlertDialog open={isOpenPay} >
                 {/* <AlertDialogTrigger >
                     {text}
                 </AlertDialogTrigger> */}
-                <AlertDialogContent className={`${themeCtx.theme == 'dark' ? 'bg-[#130d0d]': 'bg-white'} ${textClasses} max-w-[96vw] right-3  h-max top-[25%] rounded-lg border-none`}>
+                <AlertDialogContent className={`${themeUniver} ${textClasses} max-w-[96vw] right-3  h-max top-[25%] rounded-lg border-none`}>
 
                     <AlertDialogHeader >
                         <div className='flex justify-center items-center h-[300px] '>
@@ -40,7 +43,7 @@ const DoneBooking = ({ text,isOpenPay }) => {
                             </div>
 
                         </div>
-                        <AlertDialogTitle><h2 className='text-xl'>Congratulations !</h2></AlertDialogTitle>
+                        <AlertDialogTitle className="text-xl">Congratulations !</AlertDialogTitle>
                         <AlertDialogDescription  >
                             <div className=' flex justify-center items-center flex-col gap-3'>
                                 <div className='w-[200px] text-sm '>
@@ -57,7 +60,7 @@ const DoneBooking = ({ text,isOpenPay }) => {
 
                         <AlertDialogAction className="gap-y-5  p-2 w-full mt-5 flex flex-col  h-full">
                             <div className='w-full rounded-lg'>
-                                <Link to={'/qrcode'} className='text-white'>
+                                <Link to={'/qrcode'} className='text-white' state={{data:payBookData}}>
                                     <button type="submit" className="w-full h-20 bg-primary-textMovie  text-xl">View E-Ticket</button>
                                 </Link>
                             </div>

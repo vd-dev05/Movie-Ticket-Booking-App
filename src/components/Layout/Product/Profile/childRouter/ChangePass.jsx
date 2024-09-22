@@ -1,5 +1,6 @@
 import { database } from "@/components/firebase/firebase";
 import SendOtp from "@/components/Layout/Dasboard/accept/SendOtp";
+import Susses from "@/components/Layout/Dasboard/accept/Susses";
 import { useTheme } from "@/components/Layout/Theme";
 import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
 import { Regex } from "@/components/Regex";
@@ -142,7 +143,18 @@ const ChangePassWord = () => {
                     <span className="text-white ">Update</span>
                 </Button>
             </form>
-            <SendOtp isOpen={isPass} setIsOpen={setIsPass}/>
+            <SendOtp 
+            isOpen={isPass} 
+            setIsOpen={setIsPass} 
+            titlePass={'Account password changed successfully'}
+            paraPass1={'Your account password has been changed.'}
+            paraPass2={'Watch your favorite movies'}
+            />
+            {/* <Susses
+              titlePass={'Account password changed successfully'}
+              paraPass1={'Your account password has been changed.'}
+              paraPass2={'Watch your favorite movies'}
+            ></Susses> */}
             {/* {isPass ? > : ''} */}
             <ToastContainer
                 position="top-right"

@@ -39,7 +39,7 @@ export const ItemProvider =  ({ children }) => {
         //     date:"",
         //     cvv:""
         // },
-        user:"name",
+        // user:"name",
         dataTicket:[],
         userTest:[],
     });

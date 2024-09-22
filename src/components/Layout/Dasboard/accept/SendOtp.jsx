@@ -32,7 +32,7 @@ import { Flex, Input, Typography } from 'antd';
 
 
 // import from 'randn'
-const SendOTp = ({ text, phone, setOpen, isOpen }) => {
+const SendOTp = ({ text, phone, setOpen, isOpen, titlePass,paraPass1,paraPass2 }) => {
     // console.log('+' +phone);
     // const randn = require('randn');
     // console.log(generateRandomNumberString(5));
@@ -224,7 +224,12 @@ const SendOTp = ({ text, phone, setOpen, isOpen }) => {
                         </Button>
                         {/* <ToastContainer containerId={"Otp susscefull !"}></ToastContainer> */}
                      
-                        <Susses isTrue={isTrue.openSussces} ></Susses>
+                        <Susses 
+                        isTrue={isTrue.openSussces} 
+                         titlePass={titlePass} 
+                         paraPass1={paraPass1}
+                         paraPass2 ={paraPass2}
+                         ></Susses>
                         <p >Didn't receive the code ? <span className="text-primary-textMovie cursor-pointer" onClick={() => {
                             setCount(30) 
                             const value = generateRandomNumberString(4)

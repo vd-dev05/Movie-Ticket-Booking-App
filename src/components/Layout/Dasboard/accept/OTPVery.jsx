@@ -12,14 +12,14 @@ import {
 import { useThemeClasses } from "../../Theme/themeStyles";
 import { Link } from "react-router-dom";
 import SendOTp from "./SendOtp";
-import {customFormatPhoneNumber} from '@/lib/phone'
+import { customFormatPhoneNumber } from '@/lib/phone'
 
 import 'react-toastify/dist/ReactToastify.css';
 import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
-const OTPVery = ({ text, phone, setTrue,True }) => {
-    const [isOpen,setOpen] = useState(false)
-    
+const OTPVery = ({ text, phone, setTrue, True }) => {
+    const [isOpen, setOpen] = useState(false)
+
     const { buttonClasses, backGround, textClasses, backGroundTow } = useThemeClasses();
     return (
         <div>
@@ -29,7 +29,7 @@ const OTPVery = ({ text, phone, setTrue,True }) => {
                     <AlertDialogHeader>
                         <AlertDialogTitle className='my-5'>Verify Your Email Address</AlertDialogTitle>
                         <AlertDialogDescription className='flex flex-col justify-center items-center'>
-                            <span className="text-2xl font-bold">{ phone ?  customFormatPhoneNumber(phone) :null}</span>
+                            <span className="text-2xl font-bold">{phone ? customFormatPhoneNumber(phone) : null}</span>
                             <div className="my-5 w-[250px] ">
                                 <p>We will send the authentication code to this mobile number you entered.</p>
                                 <p>Do you want continue ?</p>
@@ -41,17 +41,24 @@ const OTPVery = ({ text, phone, setTrue,True }) => {
                                 Cancel
                             </AlertDialogAction>
                             <Button
-                            onClick={() => setOpen(true)}
-                            className="w-full h-full border-2 border-blac p-[22px] bg-primary-textMovie text-2xl text-white hover:bg-primary-textMovie hover:scale-105"
+                                onClick={() => setOpen(true)}
+                                className="w-full h-full border-2 border-blac p-[22px] bg-primary-textMovie text-2xl text-white hover:bg-primary-textMovie hover:scale-105"
                             >Next</Button>
                             {/* <AlertDialogAction className="w-full h-20 border-primary-textMovie text-primary-textMovie text-2xl" >
                             <SendOTp text={'Next'} phone={phone}></SendOTp>
                             </AlertDialogAction> */}
                             {/* <div className="w-full text ">
 
-                               
+                                 
                             </div> */}
-                             <SendOTp  phone={phone} setOpen={setOpen} isOpen={isOpen}></SendOTp>
+                            <SendOTp
+                                phone={phone}
+                                setOpen={setOpen}
+                                isOpen={isOpen}
+                                titlePass={'Account Created Successfully'}
+                                paraPass1={'Your account created successfully.'}
+                                paraPass2={'Find your favorite movie'}
+                            ></SendOTp>
                         </div>
                     </AlertDialogHeader>
 

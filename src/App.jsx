@@ -62,9 +62,8 @@ const App = () => {
                             <Route path="rename" element={<UserRename />} />
                             <Route path="change-password" element={<ChangePassWord/>} />
                         </Route>
-                      
-
                     </Routes>
+                    
                 </UserProvider>
             </ThemeProvider>
         </div>

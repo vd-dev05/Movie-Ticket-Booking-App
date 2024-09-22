@@ -8,7 +8,7 @@ import { useThemeClasses } from '../Theme/themeStyles';
 // import {}
 const Nav = ({ data }) => {
 
-    const { buttonClasses, btnSubmit } = useThemeClasses()
+    const { buttonClasses, btnSubmit,buttonNav } = useThemeClasses()
 
     const [activeTab, setActiveTab] = useState(data);
     const handleClick = (tab) => {
@@ -18,7 +18,7 @@ const Nav = ({ data }) => {
         <div >
             <div>
             <button
-                className={`flex  justify-center items-center text-sm ${isActive ? btnSubmit : 'text-gray-400'} p-2 rounded-lg transition-colors duration-300 ease-in-out`}
+                className={`flex  justify-center items-center text-sm ${isActive ? btnSubmit : `text-gray-400 ${buttonClasses}`  } p-2 rounded-lg transition-colors duration-300 ease-in-out`}
                 onClick={onClick}
             >
                 <div className="text-xl">{icon}</div>
@@ -31,7 +31,7 @@ const Nav = ({ data }) => {
     );
     return (
         <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 xl:hidden ${buttonClasses} `}>
-            <Link to="/home">
+            <Link to="/home" className='bg-none'>
                 <NavButton
                     label="Home"
                     icon={<FaHome />}

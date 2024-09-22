@@ -86,7 +86,7 @@ const ItemMovie = () => {
                 </div>
                 <div className=''>
                     <Link className='text-white hover:text-white' to="/boking" state={data} onClick={() => handleClick(data)}>
-                        <Button className={`bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
+                        <Button className={`bg-btn-gradient hover:bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
                         </Link>
 
                 </div>

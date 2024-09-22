@@ -94,12 +94,12 @@ const SignUp = () => {
     return (
         <div >
 
-            <div className={` iphone-12-pro-max:flex  flex-col  text-left font-movie  ${themeUniver} `}>
+            <div className={` iphone-12-pro-max:flex  flex-col  h-[100vh] text-left font-movie  ${themeUniver} `}>
                 <div className="p-3 text-center">
                     <div className="flex justify-center h-56">
                         <img src="assets/img/logo1.png" className="h-96 -translate-y-20" alt="Logo" />
                     </div>
-                    <div className="text-gray-400">
+                    <div className="">
                         <h1 className={`font-logo text-[29px] text-nowrap  font-movieTicket  `}>Create New Account</h1>
                         <p className="text-xl mt-2">Set up your username and password</p>
                         <p className="text-xl mb-4">You can always change it later</p>

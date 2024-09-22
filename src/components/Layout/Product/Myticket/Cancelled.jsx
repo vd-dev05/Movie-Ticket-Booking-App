@@ -5,27 +5,43 @@ import { Link } from "react-router-dom";
 import { useThemeClasses } from "../../Theme/themeStyles";
 const Cancelled = () => {
     const [data, setMovieData] = useState([])
-    const {btnSubmit} = useThemeClasses()
+    const {btnSubmit,buttonClasses} = useThemeClasses()
     useEffect(() => {
         (async () => {
             try {
-                const data = await dataMovie('data/movies'); 
-                if (data) {
+                const data = await dataMovie('users/dataTicket/book');
+                const dataTic = data.filter((item => item.paid == false))
 
-                setMovieData(data)
-                }
+                setMovieData(dataTic)
+
             } catch (err) {
                 console.error(err);
+
             } finally {
-            } }
+
+            }
+        }
         )()
     }, []);
-
+   
 
     return (
-        <div className="translate-y-7drop-shadow-2xl  font-movie  drop-shadow-lg">
-            {data.map((itenm) => (
-                <div className={` mt-5 flex flex-col rounded-lg ${btnSubmit}  `} key={itenm.id} >
+        <div className="translate-y-7drop-shadow-2xl  font-movie h-screen  drop-shadow-lg">
+                {data.length === 0 &&
+                <div class={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
+                    <div class="animate-pulse flex space-x-4">
+                        <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
+                        <div class="flex-1 space-y-6 py-1">
+                            {/* <div class="h-2 bg-slate-700 rounded w-[200px]"></div> */}
+                            <div class="space-y-10">
+                                No Data Ticket . Please Book Ticket Movie
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            { data.map((itenm) => (
+                <div className={` mt-5 flex flex-col rounded-lg  ${buttonClasses}  `} key={itenm.id} >
                     <div className=" flex justify-between p-2 ">
                         <div className="flex ">
                             <img src={itenm.poster} alt="" className="w-[120px] h-[100px] rounded-lg object-cover " />
@@ -48,7 +64,7 @@ const Cancelled = () => {
                         </div>
                     </div>
                     <div className="p-2 flex gap-2">
-                        <Link className=" border-1 w-full text-white">
+                        <Link className=" border-1 w-full text-inherit">
                             <Button
                                 className="border-gray-300  w-full"
                             >View Details</Button>

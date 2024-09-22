@@ -1,5 +1,6 @@
+import { database } from '@/components/firebase/firebase';
 import axios from 'axios';
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, child, get, remove } from "firebase/database";
 
 export const fetchMovies = async () => {
     try {
@@ -26,6 +27,19 @@ export const  dataMovie = (path) => {
             throw error;
         });
 }
+export const deleteData = (path) => {
+    // const dbRef = ref(getDatabase());
+    const dataRef = ref(database, path);
+
+    return remove(dataRef)
+        .then(() => {
+            console.log('Data deleted successfully');
+        })
+        .catch((error) => {
+            console.error('Error deleting data:', error);
+            throw error;
+        });
+};
 
 export const Movie = async () => {
 
