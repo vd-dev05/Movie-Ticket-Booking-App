@@ -2,10 +2,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { dataMovie, Movie,truncateText } from "../GetApi/GetApi";
-import { useTheme } from "../../Theme";
-import { useItem } from "../GetApi/ItemContext";
-import { useThemeClasses } from "../../Theme/themeStyles";
+import { dataMovie, Movie,truncateText } from "../../../../hooks/GetApi/GetApi";
+import { useTheme } from "../../../../context/Theme";
+import { useItem } from "../../../../hooks/GetApi/ItemContext";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 const LatestMovie = () => {
     const themeCtx = useTheme()
     const {textClasses,themeUniver} = useThemeClasses()

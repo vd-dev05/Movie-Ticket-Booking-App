@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
-import { useTheme } from '@/components/Layout/Theme/index'
+import { useTheme } from '@/context/Theme/index'
 const Home = () => {
   const themeCtx = useTheme()
     const navigate = useNavigate();

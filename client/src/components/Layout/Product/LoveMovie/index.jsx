@@ -1,10 +1,10 @@
 // import { Iron } from "@mui/icons-material";
-import { Movie, truncateText, convertMinutesToHhMm, dataMovie } from "../GetApi/GetApi";
+import { Movie, truncateText, convertMinutesToHhMm, dataMovie } from "../../../../hooks/GetApi/GetApi";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Nav from "../../Nav";
-import { useTheme } from "../../Theme";
-import { useThemeClasses } from "../../Theme/themeStyles";
+import Nav from "../../../common/Nav";
+import { useTheme } from "../../../../context/Theme";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 import { database } from "@/components/firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import {v4} from 'uuid'

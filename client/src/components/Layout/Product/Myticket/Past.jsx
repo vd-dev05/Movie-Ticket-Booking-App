@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Movie, truncateText, dataMovie } from "../GetApi/GetApi";
+import { Movie, truncateText, dataMovie } from "../../../../hooks/GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Review from "./accept/Review";
-import { useThemeClasses } from "../../Theme/themeStyles";
-import updateDataBase from "../GetApi/PostRating";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+import updateDataBase from "../../../../hooks/GetApi/PostRating";
 // import { get, ref } from "firebase/database";
 // import { database } from "@/components/firebase/firebase";
-import updateBookingStatus from '@/components/Layout/Product/GetApi/GetRemoveData'
+import updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 const Past = () => {

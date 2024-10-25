@@ -55,12 +55,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
             </App>
         </Router>
-        <Router>
+        {/* <Router>
             <Routes>
 
                 <Route path="/test" element={<Test />} />
             </Routes>
-        </Router>
+        </Router> */}
         {/* <Router>
             <Routes>
                 <Route path="/" element={<Home />} />

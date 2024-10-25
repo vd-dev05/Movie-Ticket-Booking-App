@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useTheme } from "../Theme";
+import { useTheme } from "../../../context/Theme";
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 const Password = () => {
     const themeCtx = useTheme()

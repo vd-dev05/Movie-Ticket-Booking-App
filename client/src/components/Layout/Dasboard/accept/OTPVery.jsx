@@ -9,7 +9,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useThemeClasses } from "../../Theme/themeStyles";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 import { Link } from "react-router-dom";
 import SendOTp from "./SendOtp";
 import { customFormatPhoneNumber } from '@/lib/phone'

@@ -1,13 +1,13 @@
-import { useTheme } from "@/components/Layout/Theme";
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
+import { useTheme } from "@/context/Theme";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 import React, { memo, useEffect, useState } from "react";
 // import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
 import { json, Link, useLocation } from "react-router-dom";
-import { useUser } from "../../GetApi/GetContext";
+import { useUser } from "../../../../../hooks/GetApi/GetContext";
 import { database } from "@/components/firebase/firebase";
 import { ref } from "firebase/database";
-import { dataMovie } from "../../GetApi/GetApi";
+import { dataMovie } from "../../../../../hooks/GetApi/GetApi";
 import { User } from "lucide-react";
 
 

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { useTheme } from '../../Theme';
-import { truncateText } from '../GetApi/GetApi'
+import { useTheme } from '../../../../context/Theme';
+import { truncateText } from '../../../../hooks/GetApi/GetApi'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
-import { useThemeClasses } from '../../Theme/themeStyles';
+import { useThemeClasses } from '../../../../context/Theme/themeStyles';
 
 const MovieDe = ({ data }) => {
     const {textClasses} = useThemeClasses()

@@ -7,10 +7,10 @@ import { AiOutlineVideoCamera } from "react-icons/ai";
 import { IoMdTime } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
-import {convertMinutesToHhMm ,truncateText} from '../GetApi/GetApi'
-import { useTheme  } from '../../Theme';
-import { useThemeClasses } from '../../Theme/themeStyles';
-import { useItem } from '../GetApi/ItemContext';
+import {convertMinutesToHhMm ,truncateText} from '../../../../hooks/GetApi/GetApi'
+import { useTheme  } from '../../../../context/Theme';
+import { useThemeClasses } from '../../../../context/Theme/themeStyles';
+import { useItem } from '../../../../hooks/GetApi/ItemContext';
 const ItemMovie = () => {
     // const themeCtx = useTheme()
     const {color}  = useTheme()

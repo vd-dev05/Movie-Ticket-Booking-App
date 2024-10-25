@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { dataMovie, Movie, truncateText } from "../GetApi/GetApi";
+import { dataMovie, Movie, truncateText } from "../../../../hooks/GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useThemeClasses } from "../../Theme/themeStyles";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 const Cancelled = () => {
     const [data, setMovieData] = useState([])
     const {btnSubmit,buttonClasses} = useThemeClasses()

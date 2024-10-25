@@ -3,7 +3,7 @@ import { FaHome, FaSearch, FaRegHeart } from 'react-icons/fa';
 import { TbUserSquareRounded } from "react-icons/tb";
 import { LuTicket } from "react-icons/lu";
 import { Link } from 'react-router-dom';
-import { useThemeClasses } from '../Theme/themeStyles';
+import { useThemeClasses } from '../../../context/Theme/themeStyles';
 // import {useTheme} from '../Theme';
 // import {}
 const Nav = ({ data }) => {

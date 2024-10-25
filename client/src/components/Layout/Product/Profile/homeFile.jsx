@@ -20,10 +20,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-import Nav from "../../Nav";
-import { useTheme } from "../../Theme";
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles"
-import { Regex } from "@/components/Regex";
+import Nav from "../../../common/Nav";
+import { useTheme } from "../../../../context/Theme";
+import { useThemeClasses } from "@/context/Theme/themeStyles"
+import { Regex } from "@/validations/Regex";
 import Privacy from "./childRouter/Privacy";
 import { doc, getDoc } from "firebase/firestore";
 import { database, db } from "@/components/firebase/firebase";
@@ -31,7 +31,7 @@ import { child, get, onValue, ref, remove, set, update } from "firebase/database
 import Terms from "./childRouter/Terms";
 import UserRename from "./childRouter/UserRename";
 import ChangePassWord from "./childRouter/ChangePass";
-import {deleteData} from '@/components/Layout/Product/GetApi/GetApi'
+import {deleteData} from '@/hooks/GetApi/GetApi'
 
 const HomeFile = () => {
     // const UserData = useContext(useUser);

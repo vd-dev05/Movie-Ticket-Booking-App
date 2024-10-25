@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@/components/Layout/Theme';
+import { useTheme } from '@/context/Theme';
 
 const Login = () => {
     const themeCtx = useTheme();

@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useItem } from '../GetApi/ItemContext';
-import { useThemeClasses } from '../../Theme/themeStyles';
-import { truncateText } from '../GetApi/GetApi';
-import { useTheme } from '../../Theme';
+import { useItem } from '../../../../hooks/GetApi/ItemContext';
+import { useThemeClasses } from '../../../../context/Theme/themeStyles';
+import { truncateText } from '../../../../hooks/GetApi/GetApi';
+import { useTheme } from '../../../../context/Theme';
 import { FaStar } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import AddCard from './accept/addCard';
 import DoneBooking from './accept/doneBooking';
-import { useUser } from '../GetApi/GetContext';
+import { useUser } from '../../../../hooks/GetApi/GetContext';
 import { toast, ToastContainer } from 'react-toastify';
 import { formatCardNumber } from '@/lib/fomatCard';
 import { database } from '@/components/firebase/firebase';
 import 'react-toastify/dist/ReactToastify.css';
-import { dataMovie } from '@/components/Layout/Product/GetApi/GetApi';
+import { dataMovie } from '@/hooks/GetApi/GetApi';
 import { get, ref, update } from 'firebase/database';
 
 const Pay = () => {

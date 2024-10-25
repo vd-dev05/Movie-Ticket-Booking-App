@@ -1,11 +1,11 @@
 import { database } from "@/components/firebase/firebase";
-import { useTheme } from "@/components/Layout/Theme";
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
-import { Regex } from "@/components/Regex";
+import { useTheme } from "@/context/Theme";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
+import { Regex } from "@/validations/Regex";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { userSchemaRename } from "@/lib/useYupForm";
+import { userSchemaRename } from "@/validations/useYupForm";
 import { ref, update } from "firebase/database";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import { useState } from "react";

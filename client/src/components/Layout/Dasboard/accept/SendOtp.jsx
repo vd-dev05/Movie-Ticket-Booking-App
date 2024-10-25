@@ -18,7 +18,7 @@ import {
 
 } from "@/components/ui/input-otp"
 import { customFormatPhoneNumber } from '@/lib/phone'
-import { useThemeClasses } from "../../Theme/themeStyles";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import React, { memo, useContext, useEffect, useState } from "react";
 import Susses from "./Susses";

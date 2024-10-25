@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { fetchMovies, dataMovie } from "../Product/GetApi/GetApi";
+import { fetchMovies, dataMovie } from "../../hooks/GetApi/GetApi";
 import MovieDe from "../Product/nextPage/MovieDetails";
-import Nav from "../Nav";
+import Nav from "../../components/common/Nav";
 import { useTheme } from "../Theme";
 import {
     DropdownMenu,

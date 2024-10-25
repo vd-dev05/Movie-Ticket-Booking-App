@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import React, { useEffect, useCallback, memo, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { truncateText } from "../../GetApi/GetApi";
+import { truncateText } from "../../../../../hooks/GetApi/GetApi";
 import { Box, Typography } from "@mui/joy";
 import { Rating } from "@mui/material";
 import { CiStar } from "react-icons/ci";

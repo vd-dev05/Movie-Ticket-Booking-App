@@ -18,10 +18,10 @@ import {
   
 } from "@/components/ui/input-otp"
 
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { Link } from "react-router-dom";
 import React, { memo, useContext, useEffect, useState } from "react";
-import { useTheme } from "../../Theme";
+import { useTheme } from "../../../../context/Theme";
 import { CiCircleCheck } from "react-icons/ci";
 const Susses = ({ text,isTrue,paraPass1,paraPass2, titlePass}) => {
     const { buttonClasses, backGround, textClasses, backGroundTow ,themeSussesOTp,themeUniver} = useThemeClasses();

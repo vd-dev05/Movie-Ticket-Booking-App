@@ -1,40 +1,44 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { db, database } from '../../firebase/firebase';
-import { collection, getDocs, addDoc, doc, updateDoc } from "firebase/firestore";
-import { getDatabase, ref, set, update } from 'firebase/database'
-import { getAuth } from "firebase/auth"
-import { useTheme } from "../Theme";
-import AddCard from "../Product/Booking/accept/addCard";
-import OTPVery from "./accept/OTPVery";
+// import { db, database } from '../../firebase/firebase';
+// import { collection, getDocs, addDoc, doc, updateDoc } from "firebase/firestore";
+// import { getDatabase, ref, set, update } from 'firebase/database'
+// import { getAuth } from "firebase/auth"
+import { useTheme } from "../../../context/Theme";
+// import AddCard from "../Product/Booking/accept/addCard";
+// import OTPVery from "./accept/OTPVery";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { useThemeClasses } from "../Theme/themeStyles";
+import { useThemeClasses } from "../../../context/Theme/themeStyles";
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { userSchemaSignUp } from "@/lib/useYupForm";
+import { userSchemaSignUp } from "@/validations/useYupForm";
 import { Label } from "@/components/ui/label"
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useFormik } from 'formik';
+import { addUser } from "@/controller/CreateUser.controller";
+import { useNavURL } from "@/hooks/nav/NavUrl.jsx";
 import { v4 } from 'uuid'
 
 // import {AddCard} from '../Product/Booking/accept/addCard'
 const SignUp = () => {
     // console.log(v4(12));
 
-    const auth = getAuth()
-    console.log(auth);
-    
+    // const auth = getAuth()
+    // console.log(auth);
+
     // const userId = auth.currentUser.uid;
     // console.log(userId);
-    
+
     const themeCtx = useTheme()
-    const { themeBackGround, themeFocus,themeUniver } = useThemeClasses()
+    const { themeBackGround, themeFocus, themeUniver } = useThemeClasses()
     const [True, setTrue] = useState(false)
     const [vuaState, setVuaState] = useState(false)
-
+    useEffect(() => {
+        console.log(True); // This will log the updated value whenever True changes
+    }, [True]);
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -42,28 +46,33 @@ const SignUp = () => {
             password: '',
             confirmedPassword: '',
         },
-        onSubmit: (value) => {
-            console.log(value);
-            toast.success('Create account done!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            setTrue(true)
-            ClickAddUser();
+        onSubmit:  (value) => {
+          
+            if (value.password !== value.confirmedPassword) {
+                toast.error("Passwords do not match!");
+                return;
+            }
+            addUser(value,formik);
+            console.log(localStorage.getItem('id'));
+           
+        
+            // console.log(True);
             
+            // const  reponse = await axios.get("http://localhost:8080/v1/users")
+            // console.log(reponse.data.data);
+
+          
+            // setTrue(true)
+            // ClickAddUser();
+
         },
         validationSchema: userSchemaSignUp
     })
     // console.log(formik.values);
-
-    const typePass = () => {    
+    useNavURL(localStorage.getItem("account-basic-info") ? "/home" : null, 2100);
+    const typePass = () => {
         setVuaState(true)
-
+       
     }
    
     const ClickAddUser = async () => {
@@ -76,16 +85,16 @@ const SignUp = () => {
             //     password: formik.values.password,
             //     createdAt: serverTimestamp()
             // });
-                const userRefAuth = ref(database, 'users/' + 'auth')
-                // const userRefData =  ref(database, 'users/');
-                await set(  userRefAuth , {
-                    name: formik.values.name,
-                    phone:formik.values.phone,
-                    password: formik.values.password,
-                    email:'',
-                })
-                
-           
+            // const userRefAuth = ref(database, 'users/' + 'auth')
+            // const userRefData =  ref(database, 'users/');
+            // await set(  userRefAuth , {
+            //     name: formik.values.name,
+            //     phone:formik.values.phone,
+            //     password: formik.values.password,
+            //     email:'',
+            // })
+
+
         } catch (error) {
             // setTrue(false)
             console.error("Error adding document: ", error);
@@ -94,7 +103,7 @@ const SignUp = () => {
     return (
         <div >
 
-            <div className={` iphone-12-pro-max:flex  flex-col  h-[100vh] text-left font-movie  ${themeUniver} `}>
+            <div className={` iphone-12-pro-max:flex  flex-col text-left font-movie  ${themeUniver} `}>
                 <div className="p-3 text-center">
                     <div className="flex justify-center h-56">
                         <img src="assets/img/logo1.png" className="h-96 -translate-y-20" alt="Logo" />
@@ -224,7 +233,7 @@ const SignUp = () => {
                         </form>
                         <div>
 
-                            <OTPVery phone={formik.values.phone} setTrue={setTrue} True={True} ></OTPVery>
+                            {/* <OTPVery phone={formik.values.phone} setTrue={setTrue} True={True} ></OTPVery> */}
                         </div>
                     </div>
                     <div>

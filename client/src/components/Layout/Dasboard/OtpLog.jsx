@@ -2,60 +2,61 @@ import React, { useEffect, useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from 'react-router-dom';
-import { app, db } from '../../firebase/firebase';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from '@/components/firebase/firebase'
-import { useUser } from '@/components/Layout/Product/GetApi/GetContext'; // Sử dụng hook
-import { collection, getDocs } from "firebase/firestore";
-import { useTheme } from '../Theme';
+// import { app, db } from '../../firebase/firebase';
+// import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import { auth } from '@/components/firebase/firebase'
+// import { useUser } from '@/hooks/GetApi/GetContext'; // Sử dụng hook
+// import { collection, getDocs } from "firebase/firestore";
+import { useTheme } from '@/context/Theme/index';
 import { useFormik } from 'formik';
 import { toast, ToastContainer } from 'react-toastify';
-import { userSchemaSignUp,userSchemaSignUpLogin } from '@/lib/useYupForm';
+import { userSchemaSignUp,userSchemaSignUpLogin } from '@/validations/useYupForm';
 import { EyeInvisibleFilled, EyeOutlined } from '@ant-design/icons'
 import { Label } from '@/components/ui/label';
-import { useThemeClasses } from '../Theme/themeStyles';
-import {dataMovie} from '@/components/Layout/Product/GetApi/GetApi'
-
+import { useThemeClasses } from '@/context/Theme/themeStyles';
+// import {dataMovie} from '@/hooks/GetApi/GetApi'
+import { loginUser } from '@/controller/LoginUser.controller';
+import { useNavURL } from '@/hooks/nav/NavUrl';
 const Otp = () => {
     const themeCtx = useTheme()
-    const { dataUser, setDataUser } = useUser(); 
+    // const { dataUser, setDataUser } = useUser(); 
     const navigate = useNavigate();
     // const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+    // const provider = new GoogleAuthProvider();
     const { themeFocus, themeBackGround ,buttonNav } = useThemeClasses()
 
     const [isOpen, setIsOpen] = useState(false)
-    const LoginGoogle = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                console.log(result);
-                console.log(result.user.reloadUserInfo.localId);
+    // const LoginGoogle = () => {
+    //     signInWithPopup(auth, provider)
+    //         .then((result) => {
+    //             console.log(result);
+    //             console.log(result.user.reloadUserInfo.localId);
                 
-                // setData(prevData => ({
-                //     ...prevData,
-                //     valueUser: result.user.email
-                // }));
-                setDataUser(pre => ({ ...pre, email: result.user.email, }));
-                if (dataUser.email) {
-                    toast.success('Login Successfull', {
-                        position: "top-right",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    setTimeout(() => {
-                        navigate('/home', { state: { key: "value" }});
-                    }, 2000); 
-                }
-                })
-            .catch((err) => {
-                // toast.error('Login Failed ')
-                console.log(err);
-            });
-    };
+    //             // setData(prevData => ({
+    //             //     ...prevData,
+    //             //     valueUser: result.user.email
+    //             // }));
+    //             setDataUser(pre => ({ ...pre, email: result.user.email, }));
+    //             if (dataUser.email) {
+    //                 toast.success('Login Successfull', {
+    //                     position: "top-right",
+    //                     autoClose: 2000,
+    //                     hideProgressBar: false,
+    //                     closeOnClick: true,
+    //                     pauseOnHover: true,
+    //                     draggable: true,
+    //                     progress: undefined,
+    //                 });
+    //                 setTimeout(() => {
+    //                     navigate('/home', { state: { key: "value" }});
+    //                 }, 2000); 
+    //             }
+    //             })
+    //         .catch((err) => {
+    //             // toast.error('Login Failed ')
+    //             console.log(err);
+    //         });
+    // };
     const formik = useFormik({
         initialValues: {
             phone: '',
@@ -64,25 +65,9 @@ const Otp = () => {
 
 
         onSubmit: async (value) => {
-            const data =   await dataMovie('users/auth')
-            // console.log(data.phone);
-            if (value.phone === data.phone && value.password === data.password  ) {
-               setTimeout(() => {
-                formik.values.phone = " "
-                formik.values.password = " "
-             navigate('/home')
-            }, 1900);
-                toast.success('Login Success done!', {
-                    position: "top-right",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            
-            }else {
+            loginUser(value,formik);
+
+            if (!value.phone && !value.password) {
                 toast.error('Login Failed.Check your account again!', {
                     position: "top-right",
                     autoClose: 2500,
@@ -103,10 +88,10 @@ const Otp = () => {
         },
         validationSchema: userSchemaSignUpLogin
     })
-    // console.log(formik.values);
+    useNavURL(localStorage.getItem("account-basic-info") ? "/home" : null, 2100);
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col h-[100vh] w-full font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg' : 'bg-white'} `}>
+        <div className={`iphone-12-pro-max:flex flex flex-col  w-full font-movie ${themeCtx.theme == 'dark' ? 'bg-dark-bg text-light-bg' : 'bg-white'} `}>
             <div className=" flex justify-center h-56 ">
                 <img src="/assets/img/logo1.png" className=" h-96 -translate-y-20" alt="" />
             </div>
@@ -123,7 +108,7 @@ const Otp = () => {
                         variant="outline"
                     >
                         <div className="mr-2">
-                            <box-icon type='logo' name='apple' color={themeCtx.theme == 'dark' ? 'white' : 'black'}></box-icon>
+                            {/* <box-icon type='logo' name='apple' color={themeCtx.theme == 'dark' ? 'white' : 'black'}></box-icon> */}
                         </div>
                         <div>Login with Apple</div>
                     </Button>
@@ -131,7 +116,7 @@ const Otp = () => {
 
                     <Button
 
-                        onClick={LoginGoogle}
+                        // onClick={LoginGoogle}
                         className={`w-full outline-none border-gray-300 p-6 ${buttonNav}`}
                         variant="outline"
                     >

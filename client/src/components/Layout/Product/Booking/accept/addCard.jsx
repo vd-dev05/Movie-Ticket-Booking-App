@@ -10,13 +10,13 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { truncateText } from "../../GetApi/GetApi";
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
+import { truncateText } from "../../../../../hooks/GetApi/GetApi";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { validationPayCard } from '@/lib/useYupForm'
+import { validationPayCard } from '@/validations/useYupForm'
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
-import { useTheme } from '@/components/Layout/Theme';
+import { useTheme } from '@/context/Theme';
 
 const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setData ,selectedValue}) => {
     // console.log(isOpen);

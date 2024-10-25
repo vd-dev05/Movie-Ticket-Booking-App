@@ -10,11 +10,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { truncateText } from "../../GetApi/GetApi";
-import { useThemeClasses } from "@/components/Layout/Theme/themeStyles";
+import { truncateText } from "../../../../../hooks/GetApi/GetApi";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { CiCircleCheck } from "react-icons/ci";
 import { Link } from 'react-router-dom';
-import { useTheme } from '@/components/Layout/Theme';
+import { useTheme } from '@/context/Theme';
 import { toast, ToastContainer } from 'react-toastify';
 const DoneBooking = ({ text,isOpenPay,payBookData }) => {
     const { buttonClasses, backGround, textClasses ,themeUniver} = useThemeClasses();

@@ -1,11 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
-import { dataMovie } from "../GetApi/GetApi";
+import { dataMovie } from "../../../../hooks/GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import CancelTicket from "./accept/Bookingnot";
-import { useThemeClasses } from "../../Theme/themeStyles";
-import { useTheme } from "../../Theme";
-import { truncateText } from "../GetApi/GetApi";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+import { useTheme } from "../../../../context/Theme";
+import { truncateText } from "../../../../hooks/GetApi/GetApi";
 import { toast } from "react-toastify";
 
 const Upcoming = () => {

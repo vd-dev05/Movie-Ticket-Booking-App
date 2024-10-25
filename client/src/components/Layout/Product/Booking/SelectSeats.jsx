@@ -3,21 +3,21 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { MdChair } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useLocation } from 'react-router-dom';
-import { useThemeClasses } from "../../Theme/themeStyles";
-import { useTheme } from "../../Theme";
-import { useItem } from "../GetApi/ItemContext";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+import { useTheme } from "../../../../context/Theme";
+import { useItem } from "../../../../hooks/GetApi/ItemContext";
 import { io } from "socket.io-client";
 import * as dateFns from 'date-fns'
 import { format, startOfDay, startOfWeek, endOfDay, startOfMonth, lastDayOfMonth, eachDayOfInterval, lastDayOfWeek, eachMinuteOfInterval, setMinutes } from 'date-fns';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { useUser } from "@/components/Layout/Product/GetApi/GetContext";
+import { useUser } from "@/hooks/GetApi/GetContext";
 import { database } from "@/components/firebase/firebase";
 import { get, ref, update } from "firebase/database";
 import generateRandomString from "@/lib/randomCodeMovie"
 import { toast, ToastContainer } from "react-toastify";
-import  updateBookingStatus from '@/components/Layout/Product/GetApi/GetRemoveData'
+import  updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 
 // import { useItem } from "../GetApi/ItemContext";
 // const boooking = 5

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import Nav from "../../Nav";
+import Nav from "../../../common/Nav";
 import Cancelled from "./Cancelled";
 import Upcoming from "./UpComing";
 import React, { useState } from "react";
 import Past from "./Past";
-import { useTheme } from "../../Theme";
-import { useThemeClasses } from "../../Theme/themeStyles";
+import { useTheme } from "../../../../context/Theme";
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 
 const Myticket = () => {
     const themeCtx = useTheme()

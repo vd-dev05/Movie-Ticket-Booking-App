@@ -1,6 +1,6 @@
 
 import { useMemo } from 'react';
-import { useTheme } from '../Theme'
+import { useTheme } from '.'
 export const useThemeClasses = () => {
     const { theme, color } = useTheme();
     const themeCtx = useTheme()

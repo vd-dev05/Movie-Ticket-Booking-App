@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import { dataMovie } from "../Product/GetApi/GetApi";
+import { dataMovie } from "../../hooks/GetApi/GetApi";
 import { useThemeClasses } from "../Theme/themeStyles";
 import { BarcodeOutlined, HeartOutlined } from "@ant-design/icons";
 import { useSwipeable } from 'react-swipeable';
 
-import { truncateText } from '@/components/Layout/Product/GetApi/GetApi'
+import { truncateText } from '@/hooks/GetApi/GetApi'
 import { useTheme } from "../Theme";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { get, ref, set } from "firebase/database";
 import { database } from "@/components/firebase/firebase";
-import { PostData } from "../Product/GetApi/PostApiBook";
+import { PostData } from "../../hooks/GetApi/PostApiBook";
 const MovieTop = () => {
     const [data, setData] = useState([])
     const [topMovie, setTopMovie] = useState([])
