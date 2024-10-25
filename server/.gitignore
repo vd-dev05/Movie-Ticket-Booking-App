@@ -26,6 +26,6 @@ netlify.toml
 *.njsproj
 *.sln
 *.sw?
-
+.env    
 # Local Netlify folder
 .netlify
