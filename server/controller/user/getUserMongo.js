@@ -6,9 +6,6 @@ export const getUserByPhone = async (value) => {
         if (!user) {
             throw new Error("Error: Couldn't find Phone user");
         }
-     
-        
-        
         return user;  
     } catch (error) {
         throw new Error(error.message);  

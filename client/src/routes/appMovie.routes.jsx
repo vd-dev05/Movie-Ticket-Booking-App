@@ -7,6 +7,7 @@ import { TestMongo } from '@/components/User/testMongo';
 import SignUp from '@/components/Layout/Dasboard/SignUp';
 // import HomePage from '@/pages/Home/Homepage';
 import HomeMovie from '@/pages/Home/HomeMovie';
+import Select from '@/components/Layout/Product/Booking/SelectSeats';
 const RouteMovie = () => {
     return (
         <div>
@@ -17,7 +18,7 @@ const RouteMovie = () => {
                     <Route path="/L" element={<Otp />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/home" element={<HomeMovie />} />
-
+                    <Route path="/boking" element={<Select/>} />
                     <Route path="/test" element={<TestMongo />} />
 
                 </Routes>

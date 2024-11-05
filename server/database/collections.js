@@ -3,6 +3,8 @@
     POSTS: 'posts',
     COMMENTS: 'comments',
     MOVIES: 'movies',
-    BOOKINGS: 'booking'
+    BOOKINGS: 'booking',
+    ADMIN : "admin",
+    Manager : "manager",
 } 
 export default Collections

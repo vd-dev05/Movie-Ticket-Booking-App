@@ -1,55 +1,34 @@
-
-import { Double } from 'bson';
 import { Users } from '../../models/movie/index.js';
 // import UserModel from '../../models/user/index.js'
-import { hashPass,verifyPass } from '../../utils/hashPassword.js';
-import { getUserByPhone } from './getUserMongo.js';
+import { hashPass, verifyPass } from '../../utils/hashPassword.js';
+import bcrypt from 'bcrypt';
+// import { getUserByPhone } from './getUserMongo.js';
 const Products = {
     signinUser: async (req, res) => {
-
-        const { password, phone } = req.body;
-
-        const r = await getUserByPhone(phone)
-
-         
-        const storedHash = r.password;
-        const isPasswordValid = verifyPass(password, storedHash);
-        try {    
-            if (r) {
-                if (isPasswordValid) {
-                    return res.status(200).json({
-                        data: r,
-                        message: 'User Login successfully!',
-                        success: true
-                    })
-                }else {
-                    throw new Error('Password already stored')
-                }
-              
-            }else {
-                return res.status(404).json({
-                    message: 'User not found!',
-                    success: false,
-                    data: null
+      
+            const user = await Users.findOne({ phone: req.body.phone })
+            try {
+                res.status(200).json({
+                    message: 'User signed in successfully!',
+                    success: true,
+                    data: user
                 })
             }
-           
-        } catch (error) {
-            console.log(error.message);
-            
-            res.status(400).json({
-                message: error.message,
-                success: false,
-                data: null
-            })
-        }
+            catch (error) {
+                console.log(error.message);
+
+                res.status(400).json({
+                    message: error.message,
+                    success: false,
+                    data: null
+                })}
 
     },
     getUserOneMovie: async (req, res) => {
         const { id } = req.params;
         // console.log(id)
         // console.log(name);
-        
+
         try {
             const product = await Users.find({ _id: id });
             console.log(product);
@@ -82,28 +61,38 @@ const Products = {
         }
     },
     addUser: async (req, res) => {
-        const password = hashPass(req.body.password)
-        // console.log(password.hash);
-        
-        const newUser = await Users.create({
-            name: req.body.name,
-            phone:  req.body.phone,
-            password: password.hash,
-            role: 'User',
-            hash : password.salt
-        });
-
         try {
-
-            // if (!req.body.name ) {
-            //     throw new Error("Name must be provided")
+            const { password, phone, name } = req.body;
+            const saltRounds = 10;
+            const salt = bcrypt.genSaltSync(saltRounds);
+            // thực hiện mã hoá với chuỗi salt
+            const hashPassword = bcrypt.hashSync(password, salt);
+            // const p = await hashPass(password, saltRounds)
+            // if (!hashPassword) {
+            //     throw new Error("Error: Couldn't hash password");
             // }
-            // await newUser.save();
+            // if (!phone || !name) {
+            //     throw new Error("Error: Phone and name must be provided");
+            // }
+
+            const newUser = new Users({
+                name: name,
+                phone: phone,
+                password: hashPassword,
+                role: 'User',
+                salt: salt
+            });
+            await newUser.save();
             return res.status(201).send({
                 data: newUser,
                 message: 'User added successfully!',
                 success: true
             })
+            // if (!req.body.name ) {
+            //     throw new Error("Name must be provided")
+            // }
+            // await newUser.save();
+
         } catch (error) {
             console.log(error);
 

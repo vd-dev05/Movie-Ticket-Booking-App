@@ -13,8 +13,8 @@ import { format, startOfDay, startOfWeek, endOfDay, startOfMonth, lastDayOfMonth
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useUser } from "@/hooks/GetApi/GetContext";
-import { database } from "@/components/firebase/firebase";
-import { get, ref, update } from "firebase/database";
+// import { database } from "@/components/firebase/firebase";
+// import { get, ref, update } from "firebase/database";
 import generateRandomString from "@/lib/randomCodeMovie"
 import { toast, ToastContainer } from "react-toastify";
 import  updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
@@ -110,8 +110,8 @@ const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
 
 const Select = () => {
     const nav = useNavigate()
-    const { dataUser, setDataUser } = useUser()
-    const { item } = useItem()
+    // const { dataUser, setDataUser } = useUser()
+    // const { item } = useItem()
     // console.log(dataUser);
 
     const [total, setTotal] = useState(0);
@@ -132,9 +132,9 @@ const Select = () => {
     const { backGround, textClasses, themeUniver, DatePickerButton, buttonCLick } = useThemeClasses()
     const { color } = useTheme()
 
-    useEffect(() => {
-        setDataUser(pre => ({ ...pre, dataIdBook: dataBook }))
-    }, [setDataUser])
+    // useEffect(() => {
+    //     setDataUser(pre => ({ ...pre, dataIdBook: dataBook }))
+    // }, [setDataUser])
 
     const handleSeatsUpdate = (updatedSeats) => {
         // console.log(updatedSeats);
@@ -255,30 +255,30 @@ const Select = () => {
     }
 
 
-    useEffect(() => {
-        const dD = day.filter((item) => item.clickD == true)
-        const dH = hours.filter((item) => item.clickH == true).map(hour => ({ keyHours: hour.keyHours, id: hour.id }))
+    // useEffect(() => {
+    //     const dD = day.filter((item) => item.clickD == true)
+    //     const dH = hours.filter((item) => item.clickH == true).map(hour => ({ keyHours: hour.keyHours, id: hour.id }))
 
-        //  setDataUser(pre => ({...pre,dataTicket:dD}))
+    //     //  setDataUser(pre => ({...pre,dataTicket:dD}))
 
-        setDataUser(pre => ({
-            ...pre,
-            dataTicket: {
-                dataMovieBook: Ticket,
-                dataTimeBook: dH,
-                dataDayBook: dD,
-                total: TotalPrice,
-            },
+    //     setDataUser(pre => ({
+    //         ...pre,
+    //         dataTicket: {
+    //             dataMovieBook: Ticket,
+    //             dataTimeBook: dH,
+    //             dataDayBook: dD,
+    //             total: TotalPrice,
+    //         },
 
-            // total: TotalPrice,
-            // dataTicket:Ticket,
-            // dataDayBook:dD,
-            // dataTimeBook:dH,
-        }))
-        if (!dD && !dH && !Ticket && !TotalPrice) {
-            setDataUser(pre => ({ ...pre, select: true }))
-        }
-    }, [TotalPrice, Ticket, day, hours])
+    //         // total: TotalPrice,
+    //         // dataTicket:Ticket,
+    //         // dataDayBook:dD,
+    //         // dataTimeBook:dH,
+    //     }))
+    //     if (!dD && !dH && !Ticket && !TotalPrice) {
+    //         setDataUser(pre => ({ ...pre, select: true }))
+    //     }
+    // }, [TotalPrice, Ticket, day, hours])
 
     const handlePay = async () => {
         const updateData = {
