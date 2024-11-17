@@ -2,20 +2,20 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 
-export const loginUser = async (value,formik) =>  {
+const loginUser = async (value,formik) =>  {
     
     try {
         
         const r = await axios.post("http://localhost:8080/api/v1/users/signin", {
             password: value.password,
             phone:(value.phone),
-        });
-        // console.log(r);
+        })
+        console.log(r);
         
         if (r.status === 201) {
        
             
-            localStorage.setItem("account-basic-info" , JSON.stringify({username : r.data.data.name , id : r.data.data._id}))
+           
             toast.success('Login Successfull !', {
                 position: "top-right",
                 autoClose: 2000,
@@ -26,7 +26,7 @@ export const loginUser = async (value,formik) =>  {
                 progress: undefined,
             });
           
-            formik.resetForm();
+            // formik.resetForm();
            
            
             
@@ -40,4 +40,38 @@ export const loginUser = async (value,formik) =>  {
     }
   
     
+}
+const signupHome = async (value) => {
+    // console.log(value);
+    
+try {
+    const r = await axios.post("http://localhost:8080/api/v1/users/signin", {
+        password: value.password,
+        phone:value.phone,
+        name  :value.user
+    });
+    console.log(r);
+    
+    if (r.status === 201) {
+       
+        localStorage.setItem("account-basic-info" , JSON.stringify({username : r.data.data.name , id : r.data.data._id}))
+       
+        toast.success('Login Successfull !', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });  
+        // return true
+    }
+} catch (error) {
+    console.error("Error adding user:", error);
+}
+}
+export  {
+    loginUser,
+    signupHome,
 }

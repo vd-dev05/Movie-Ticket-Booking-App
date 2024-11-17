@@ -9,22 +9,22 @@ import { useTheme } from '../../../../context/Theme';
 import { useThemeClasses } from '../../../../context/Theme/themeStyles';
 import { useItem } from '../../../../hooks/GetApi/ItemContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { get, ref, remove, set, update } from 'firebase/database';
-import { database } from '@/components/firebase/firebase';
-import { toast, ToastContainer } from 'react-toastify';
-import { useUser } from '../../../../hooks/GetApi/GetContext';
+// import { get, ref, remove, set, update } from 'firebase/database';
+// import { database } from '@/components/firebase/firebase';
+// import { toast, ToastContainer } from 'react-toastify';
+// import { useUser } from '../../../../hooks/GetApi/GetContext';
 import { PostData } from '../../../../hooks/GetApi/PostApiBook';
 const ItemLove = () => {
     const themeCtx = useTheme();
     const { color } = useTheme();
 
-    const {setDataUser} = useUser()
+    // const {setDataUser} = useUser()
 
     const location = useLocation();
     const { data } = location.state || {};
     // setDataUser(pre => ({...pre,dataIdBook:data}))
     const check = data;
-    const { item } = useItem();
+    // const { item } = useItem();
     const { buttonClasses, inputClasses, textClasses, backGround, themeUniver, buttonCLick } = useThemeClasses();
     
     const [IsTrue, setIsTrue] = useState(false);

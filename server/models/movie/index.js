@@ -1,161 +1,164 @@
 import mongoose from "mongoose";
 import Collections from "../../database/collections.js";
-const cardSchema = new mongoose.Schema({
-    number  : {
-        type : Number,
-        required : true,
-    },
-    cvv : { 
-        type : Number,
-        required : true,
-        min :1,
-        max :3
-    },
-    name : {
-        type : String,
-            required : true,
-        },
-    date : {
-        type : String,
-        required : true,
-    }
 
-})
-const ticketSchema = new mongoose.Schema({
-    movieQr : {
-        type : String,
-        // required : true,    
-        unique: true
+// Card Schema
+const cardSchema = new mongoose.Schema({
+    number: {
+        type: Number,
+        required: true,
     },
-    seat : {
-        type : Array,
-        required : true
+    cvv: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 999
     },
-    price : {
-        type : Number,
-        required : true
+    name: {
+        type: String,
+        required: true,
     },
-    status : {
-        type : String,
-        enum : ['Active', 'Canceled', 'Expired'],
-        default : 'Active',
+    date: {
+        type: String,
+        required: true,
     }
-},{
-    _id : false
-})
-ticketSchema.pre('save', function(next) {
+});
+
+// Ticket Schema
+const ticketSchema = new mongoose.Schema({
+    movieQr: {
+        type: String,
+    },
+    seat: {
+        type: [String], // Array of strings to store seat identifiers
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'Canceled', 'Expired'],
+        default: 'Active',
+    }
+});
+
+// Auto-generate movieQr if not provided
+ticketSchema.pre('save', function (next) {
     if (!this.movieQr) {
-        this.movieQr = `MOV-${new mongoose.Types.ObjectId()}`
+        this.movieQr = `MOV-${new mongoose.Types.ObjectId()}`;
     }
     next();
-})
-    const userSchema = new mongoose.Schema({
-        name : {
-            type : String,
-            // required : true,
-        },  
-        // email: {
-        //     type: String,
-        //     required: true,
-        //     unique: true,
-        // },
-        password : {
-            type : String,
-            // required : true,
-        },
-        avatar : {
-            type : String,
-        },
-        phone : {
-            type : String,
-            
-        },
-        address : {
-            type : String,
-        },
-        role : {
-            type : String,
-            enum : ['Admin', 'User'],
-            default : 'User',
-        },
-        movieLove : [{
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "movies",
-            list : {
-                type : Boolean,
-                default : false
-            },
-            required : true
-        }],
-        ticket : [{
-            _id : false,
-            movieId : {
-                type : mongoose.Schema.Types.ObjectId,
-            },
-            book : {
-                type : ticketSchema,
-                ref : "movies",
+});
 
-            },
-        
-            
-        }],
-        comment :[ {
-            _id : false,
-            movieId : {
-                type : mongoose.Schema.Types.ObjectId,
-            },
-            status : {
-                type : String,
-                enum : ['Active', 'InActive'],
-                default : 'InActive',
-            },
-            date : Date
-            
-        }],
-    history : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : "Ticket",
+// User Schema
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
     },
-    card : {
-        type : cardSchema,
-        ref : "Card",
+    password: {
+        type: String,
+        required: true,
     },
-    salt : String
-})
+    avatar: {
+        type: String,
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    address: {
+        type: String,
+    },
+    role: {
+        type: String,
+        enum: ['Admin', 'User'],
+        default: 'User',
+    },
+    movieLove: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "movies",
+        required: true,
+        list: {
+            type: Boolean,
+            default: false
+        }
+    }],
+    ticket: [{
+        movieId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "movies", // Reference to movie model
+        },
+        book: {
+            type: ticketSchema, // Embedding ticket schema here
+            ref: "Ticket", // Optionally, set this for better referencing
+        },
+    }],
+    comment: [{
+        _id: false,
+        movieId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "movies",
+        },
+        status: {
+            type: String,
+            enum: ['Active', 'InActive'],
+            default: 'InActive',
+        },
+        date: Date
+    }],
+    history: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Ticket",
+    }],
+    card: {
+        type: cardSchema,
+        ref: "Card",
+    },
+    salt: {
+        type: String,
+    }
+});
+
+// Booking Schema
 const bookSchema = new mongoose.Schema({
-    
-    seats :[mongoose.Schema.Types.Mixed]
-    
-})
+    seats: [mongoose.Schema.Types.Mixed] // Mixed can be used for dynamic data types
+});
+
+// Movie Schema
 const movieSchema = new mongoose.Schema({
-    price : Number,
+    price: Number,
     plot: String,
-    genres : Array,
-    runtime : Number,
-    rated : String,
-    cast : String,
+    genres: [String],
+    runtime: Number,
+    rated: String,
+    cast: String,
     title: String,
     fullplot: String,
-    language: Array,
-    released : Date,
-    directors : Array,
-    writers : Array,
-    awards : String,
-    lastupdated : Date,
-    year : Number,
-    imdb : Object,
-    countries : Array,
-    type : String,
-    tomatoes : Object,
-    num_mflix_comments : Number,
-   
-})
-const Users =  mongoose.model(Collections.USERS,userSchema)
-const Movies = mongoose.model(Collections.MOVIES, movieSchema)
-const Booking = mongoose.model(Collections.BOOKINGS, bookSchema)
-export  {
+    language: [String],
+    released: Date,
+    directors: [String],
+    writers: [String],
+    awards: String,
+    lastupdated: Date,
+    year: Number,
+    imdb: mongoose.Schema.Types.Mixed, // Mixed to allow flexible structure
+    countries: [String],
+    type: String,
+    tomatoes: mongoose.Schema.Types.Mixed, // Mixed type for dynamic content
+    num_mflix_comments: Number,
+});
+
+// Models
+const Users = mongoose.model(Collections.USERS, userSchema);
+const Movies = mongoose.model(Collections.MOVIES, movieSchema);
+const Booking = mongoose.model(Collections.BOOKINGS, bookSchema);
+
+// Export Models
+export {
     Movies,
     Users,
     Booking
-}
+};

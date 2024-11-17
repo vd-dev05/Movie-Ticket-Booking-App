@@ -5,7 +5,7 @@ import MovieController from '../../controller/movie/movie.controller.js'
 const MovieRouter = Router();
 
 MovieRouter.get('', MovieController.getAllMovie)
-MovieRouter.get('/search', MovieController.searchMovie)
+MovieRouter.post('/search', MovieController.searchMovie)
 MovieRouter.get('/:id', MovieController.getByID)
 MovieRouter.get('/topmovies/:id', MovieController.getTopMovie)
 MovieRouter.get('/products/company', MovieController.getProductionMovie)

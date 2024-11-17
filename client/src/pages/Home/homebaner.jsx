@@ -6,7 +6,8 @@ const Home = () => {
     const navigate = useNavigate();
     useEffect(() => {
         const timer = setTimeout(() => {
-          navigate('/login');
+          indexedDB.open("account" ,1)
+          navigate('/L');
         }, 1000);
         return () => clearTimeout(timer);
       }, [navigate]);

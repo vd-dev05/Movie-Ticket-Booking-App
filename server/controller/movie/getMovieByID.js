@@ -27,7 +27,7 @@ export const getAllMovie = async (query) => {
 } 
 
 export const getMovieByTitle = async (value) => {
-    // console.log(value.title);
+    console.log(value);
     
     try {
         const movie = await Movies.aggregate([ 
@@ -44,6 +44,8 @@ export const getMovieByTitle = async (value) => {
                     title: 1,
                     languages :1 ,
                     poster : 1 ,
+                    'tomatoes.production' : 1,
+                    countries : 1,
                 }
             }
         ])
@@ -110,13 +112,22 @@ export const getProductionMovie = async (value) => {
     try {
         const movie = await Movies
         .aggregate([
-            {$match : { 'imdb.rating': { $gte: 8 }, genres: value.genres }},
+            {$match : { 'imdb.rating': { $gte:  8  }, genres: value.genres }},
             {$project : {poster :1, title :1, imdb : 1,genres :1}},
             { $sort: { 'imdb.rating': -1 }},
             {$limit : 10}
         ])
-        console.log(movie.length);
-        
+        // console.log(movie.length);
+        if (movie.length < 10) {
+            // Fetch thêm phim nếu chưa đủ 10
+            const additionalMovies = await Movies.aggregate([
+                {$match: {'imdb.rating': {$gte: 8}, genres: {$ne: value.genres}}},
+                {$project: {poster: 1, title: 1, imdb: 1, genres: 1}},
+                {$sort: {'imdb.rating': -1}},
+                {$limit: 10 - movie.length} // Lấy đủ số phim còn thiếu
+            ]);
+            movie.push(...additionalMovies); // Thêm vào danh sách phim hiện có
+        }
         
         return movie;  
     } catch (error) {

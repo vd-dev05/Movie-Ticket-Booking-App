@@ -8,11 +8,13 @@ pnpm-debug.log*
 lerna-debug.log*
 /src/components/firebase/test
 /src/components/firebase
+/client/src/components/Layout/firebase
 node_modules
 serverTest
 dist-ssr
 *.local
-/src/components/Layout/Product/test/
+# /src/components/Layout/Product/test/
+
 node.md
 netlify.toml
 .netlify

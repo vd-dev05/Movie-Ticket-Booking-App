@@ -4,6 +4,8 @@ const MovieController = {
     searchMovie :  async (req,res) => { 
         try {
             const {title} =  req.body
+            console.log(req.body);
+            
             const r = await getMovieByTitle({ title : title})
             console.log(r);
             
@@ -46,11 +48,7 @@ const MovieController = {
             });
         }
          catch (error) {
-           return res.status(500).send({
-                message: 'Server Error',
-                data :null,
-                success: false,
-            });
+            res.status(404).json({ error : error.message });
         }
     },
     getTopMovie : async (req ,res) => {
@@ -63,11 +61,7 @@ const MovieController = {
                 message:'Top Movies fetched successfully!',
             })
         } catch (error) {
-            return res.status(500).send({
-                message: 'Server Error',
-                data :null,
-                success: false,
-            })
+             res.status(404).json({ error : error.message })
         }
     },
     getProductionMovie : async (req ,res) => {
@@ -79,11 +73,7 @@ const MovieController = {
                 message:'Product Company Movies fetched successfully!',
             })
         } catch (error) {
-            return res.status(500).send({
-                message: 'Server Error',
-                data :null,
-                success: false,
-            })
+             res.status(404).json({ error : error.message })
         }
     },
     getTopHoolyWord : async (req ,res) => {
@@ -95,11 +85,7 @@ const MovieController = {
                 message:'Hooly Wood Movie fetched successfully!',
             })
         } catch (error) {
-            return res.status(500).send({
-                message: 'Server Error',
-                data :null,
-                success: false,
-            })
+             res.status(404).json({ error : error.message })
         }
     }
 }

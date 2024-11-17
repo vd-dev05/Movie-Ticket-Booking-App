@@ -30,7 +30,7 @@ const Nav = ({ data }) => {
 
     );
     return (
-        <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 xl:hidden ${buttonClasses} `}>
+        <div className={`fixed bottom-0 w-full h-20  shadow-lg flex justify-between p-5 z-40 xl:hidden ${buttonClasses} z-50 `}>
             <Link to="/home" className='bg-none'>
                 <NavButton
                     label="Home"

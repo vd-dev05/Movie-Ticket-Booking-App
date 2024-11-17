@@ -1,27 +1,54 @@
 import * as Yup from "yup"
+import YupValid from "../utils/yupValid.js"
 const AuthValidations = {
     CreateUserValidation : async (req,res,next) => {
         try {
-            const {name,email,password} = req.body
+            const {name,phone,password,confirmPassword} = req.body
+            // const Yupschema = Yup.object().shape({
+            //     name: YupValid.nameValidation,
+            //     // email: Yup.string()
+            //     // .email("Invalid email format @example.com ")
+            //     // .matches(/^\S+@\S+\.\S+$/, "Email can not space characters")
+            //     // .required("Required email"),
+
+            //     phone: YupValid.phoneValidation,
+            //     password: YupValid.passwordValidation,
+            //     confirmPassword: YupValid.confirmPasswordValidation
+            // })
+            const data  = {
+                name , phone ,password,confirmPassword
+            }
+            try {
+                await Yupschema.validate(data)
+                next()
+            } catch (error) {
+                throw new Error(error)
+            }
+        } catch (error) {
+            res.status(401).json({
+                message : error.message,
+                success : false
+            })
+        }
+    },
+    LoginUserValidation : async (req,res,next) => {
+        try {
+            const {phone,password} = req.body
+            console.log("fix");
+            
+            console.log(req.body);
+            
             const Yupschema = Yup.object().shape({
-                name: Yup.string()
-                .required('Name is required')
-                .min(4, "Name must be 4 characters or more"), 
-
-                email: Yup.string()
-                .email("Invalid email format @example.com ")
-                .matches(/^\S+@\S+\.\S+$/, "Email can not space characters")
-                .required("Required email"),
-
-                password: Yup.string()
-                .required("Required password")
-                .matches(
-                    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/,
-                    "Password must be 7-19 characters and contain at least one letter, one number and a special character"
-                  )})
-
-            await Yupschema.validate({name , email ,password})
-            return next()
+                phone: YupValid.phoneValidation,
+                password: YupValid.passwordValidation
+            })
+            try {
+                await Yupschema.validate({phone,password}) 
+                next()
+            } catch (error) {
+                throw new Error(error.message)
+            }
+           
         } catch (error) {
             res.status(401).json({
                 message : error.message,

@@ -25,15 +25,15 @@ export default defineConfig({
     },
   },  
   // server: {
-  //   host: '192.168.16.128',
-  //   port: 3000,
-  //   proxy: {
+  //   // host: '192.168.16.128',
+  //   port: 6000,
+  //   // proxy: {
     
-  //     '/api': {
-  //       target: '',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/api/, ''),
-  //     },
-  //   },
+  //   //   '/api': {
+  //   //     target: '',
+  //   //     changeOrigin: true,
+  //   //     rewrite: (path) => path.replace(/^\/api/, ''),
+  //   //   },
+  //   // },
   // },
 });

@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv'
+dotenv.config()
 
-export const hashPass = async (password,saltRounds) => {
+
+export const hashPass =  (password) => {
+    const saltRounds = Number(process.env.SALT)
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
     return {
@@ -9,18 +13,5 @@ export const hashPass = async (password,saltRounds) => {
     };
 }
 export const verifyPass = (enteredPassword, storedHash) => {
-    return bcrypt.hashSync(enteredPassword, storedHash);
+    return bcrypt.compareSync(enteredPassword, storedHash);
 }
-// export const hashPass = {
-//     hash: async (password) => {
-//         const salt = await bcrypt.genSalt(10);
-//         const hash = await bcrypt.hash(password, 10);
-//         return {
-//             salt,
-//             hash
-//         } 
-//     },
-//     verifyPass: async (enteredPassword, hash) => {
-//         return await bcrypt.compare(enteredPassword, hash);
-//     }
-// };

@@ -12,6 +12,7 @@ node_modules
 serverTest
 dist-ssr
 *.local
+/src/components/Layout/firebase
 /src/components/Layout/Product/test/
 node.md
 netlify.toml
@@ -30,3 +31,4 @@ netlify.toml
 *.env
 # Local Netlify folder
 .netlify
+slide.md

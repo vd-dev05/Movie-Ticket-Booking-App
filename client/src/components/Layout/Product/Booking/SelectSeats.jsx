@@ -12,7 +12,7 @@ import { format, startOfDay, startOfWeek, endOfDay, startOfMonth, lastDayOfMonth
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { useUser } from "@/hooks/GetApi/GetContext";
+// import { useUser } from "@/hooks/GetApi/GetContext";
 // import { database } from "@/components/firebase/firebase";
 // import { get, ref, update } from "firebase/database";
 import generateRandomString from "@/lib/randomCodeMovie"

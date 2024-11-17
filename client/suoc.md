@@ -65,3 +65,7 @@
 // import QrCode from './components/Layout/Product/Booking/QrCode';
 // import UserRename from './components/Layout/Product/Profile/childRouter/UserRename';
 // import ChangePassWord from './components/Layout/Product/Profile/childRouter/ChangePass';
+
+
+
+QRCode.toDataURL(ticketId)

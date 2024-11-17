@@ -1,12 +1,17 @@
+import { GolbalData } from '../../cache/data.js';
+import { Sessions } from '../../models/auth/sessions.js';
 import { Users } from '../../models/movie/index.js';
 // import UserModel from '../../models/user/index.js'
 import { hashPass, verifyPass } from '../../utils/hashPassword.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+
 // import { getUserByPhone } from './getUserMongo.js';
 const Products = {
     signinUser: async (req, res) => {
       
             const user = await Users.findOne({ phone: req.body.phone })
+            // console.log(req.body);
             try {
                 res.status(200).json({
                     message: 'User signed in successfully!',
@@ -62,11 +67,13 @@ const Products = {
     },
     addUser: async (req, res) => {
         try {
-            const { password, phone, name } = req.body;
-            const saltRounds = 10;
-            const salt = bcrypt.genSaltSync(saltRounds);
-            // thực hiện mã hoá với chuỗi salt
-            const hashPassword = bcrypt.hashSync(password, salt);
+            const { password, phone_number, name } = req.body;
+           
+            
+            // const saltRounds = 10;
+            // const salt = bcrypt.genSaltSync(saltRounds);
+            // // thực hiện mã hoá với chuỗi salt
+            // const hashPassword = bcrypt.hashSync(password, salt);
             // const p = await hashPass(password, saltRounds)
             // if (!hashPassword) {
             //     throw new Error("Error: Couldn't hash password");
@@ -75,34 +82,62 @@ const Products = {
             //     throw new Error("Error: Phone and name must be provided");
             // }
 
-            const newUser = new Users({
-                name: name,
-                phone: phone,
-                password: hashPassword,
-                role: 'User',
-                salt: salt
+            // const data = {
+            //     phone : phone,
+            //      name : name, 
+            //     role : "User"
+            // }
+            const hashPassword = hashPass(password)
+            const newUser = await Users.create({
+                phone : phone_number,
+                name : name, 
+                role : "User",
+                password: hashPassword.hash,
+        
             });
-            await newUser.save();
-            return res.status(201).send({
-                data: newUser,
-                message: 'User added successfully!',
+            const token = jwt.sign(
+                { userId: newUser._id }, 
+                process.env.SECRET_KEY,
+            );
+            const sessions =  await Sessions.create({
+                role  :"User",
+                user_id : newUser._id,
+                jwt : token
+            })
+            if (sessions) {
+                GolbalData.users[token] = {
+                    name: name,
+                    phone: phone_number,
+                    // email: email ?  email :  ''
+                };
+              
+            }
+            // console.log(GolbalData.users);
+            
+            return res.status(201).json({
+                // data: newUser,
+                name : name,
+                token  : token,
+                message: 'Create account Successfully',
                 success: true
             })
+            // await newUser.save();
+            
             // if (!req.body.name ) {
             //     throw new Error("Name must be provided")
             // }
             // await newUser.save();
 
         } catch (error) {
-            console.log(error);
-
+            // console.log(error);
+            return res.status(404).json({error: error.message});
             // console.log(error.message);
 
-            res.status(400).json({
-                message: error.message,
-                success: false,
-                data: null
-            })
+            // res.status(400).json({
+            //     message: error.message,
+            //     success: false,
+            //     data: null
+            // })
         }
     }
 

@@ -26,7 +26,7 @@ const Pay = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenPay, setIsOpenPay] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    
     // const [numberCard, setNumberCard] = useState({
     //     master: '',
     //     payPal: ''

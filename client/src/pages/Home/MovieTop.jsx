@@ -1,40 +1,37 @@
 import { useEffect, useRef, useState } from "react"
 import { dataMovie } from "../../hooks/GetApi/GetApi";
-import { useThemeClasses } from "../Theme/themeStyles";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { BarcodeOutlined, HeartOutlined } from "@ant-design/icons";
 import { useSwipeable } from 'react-swipeable';
 
 import { truncateText } from '@/hooks/GetApi/GetApi'
-import { useTheme } from "../Theme";
+import { useTheme } from "@/context/Theme/index";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { get, ref, set } from "firebase/database";
-import { database } from "@/components/firebase/firebase";
-import { PostData } from "../../hooks/GetApi/PostApiBook";
+import MovieController from "@/controller/movie/getMovie.controller";
+import { showInfoToast } from "@/lib/toastUtils";
+
 const MovieTop = () => {
     const [data, setData] = useState([])
     const [topMovie, setTopMovie] = useState([])
+    const [company, setCompany] = useState([])
     const { themeUniver } = useThemeClasses()
     const themeCtx = useTheme()
     // console.log(themeCtx.theme);
 
 
     useEffect(() => {
-        (
-            async () => {
+
+        (async () => {
                 try {
-                    const data = await dataMovie('data/movies');
-                    if (data) {
-                        const test = Math.ceil(data.length / Math.ceil(Math.random() * data.length))
-                        setData(data[test])
-                        // localStorage.setItem('pay', JSON.stringify(data[test]))
-                        // setTopMovie(data)
-
-                        // console.log(data[0]);
-                        // console.log(test);
-
-                        // setisLoading(true)
+                    const r = await MovieController.getTopMovie();
+                    // console.log(r.data);
+                    
+                    if (r) {
+                        const test = Math.ceil(r.data.length / Math.ceil(Math.random() * r.data.length)) 
+                        setData(r.data[test])
+                        setTopMovie(r.data)
                     }
 
                 } catch (err) {
@@ -44,19 +41,14 @@ const MovieTop = () => {
                 }
             }
         )()
+        
         const fetchMovies = async () => {
-            // const database = getDatabase();
-            const moviesRef = ref(database, 'data/movies');
-            const snapshot = await get(moviesRef);
-
-            if (snapshot.exists()) {
-                const moviesData = snapshot.val();
-                const sortedMovies = Object.values(moviesData).sort((a, b) => b.rate - a.rate);
-                console.log(sortedMovies);
+            try {
+                const r = await MovieController.getTopMovieCompany()
+                setCompany(r.data)
                 
-                const top10Movies = sortedMovies.slice(0, 10);
-                // setMovies(top10Movies);
-                setTopMovie(top10Movies)
+            } catch (error) {
+                showInfoToast(error)
             }
         };
 
@@ -65,43 +57,43 @@ const MovieTop = () => {
     const handleClickLove = async (movie) => {
         // console.log(movie.id);
 
-        try {
-            const loveRef = ref(database, 'users/loveMovie/');
-            const snapshot = await get(loveRef);
-            let currentArray = snapshot.exists() ? snapshot.val() : [];
-            // console.log(snapshot.val()); 
+        // try {
+        //     const loveRef = ref(database, 'users/loveMovie/');
+        //     const snapshot = await get(loveRef);
+        //     let currentArray = snapshot.exists() ? snapshot.val() : [];
+        //     // console.log(snapshot.val()); 
 
 
-            if (currentArray.some(item => item.id === movie.id)) {
-                toast.warning("Movie already in the love list.");
-                return;
-            }
+        //     if (currentArray.some(item => item.id === movie.id)) {
+        //         toast.warning("Movie already in the love list.");
+        //         return;
+        //     }
 
-            currentArray.push(movie);
+        //     currentArray.push(movie);
 
 
-            await set(loveRef, currentArray);
-            toast.success("Add Successful!");
-        } catch (error) {
-            console.error('Error adding to love list:', error);
-            toast.error("Failed to add to love list.");
-        }
+        //     await set(loveRef, currentArray);
+        //     toast.success("Add Successful!");
+        // } catch (error) {
+        //     console.error('Error adding to love list:', error);
+        //     toast.error("Failed to add to love list.");
+        // }
     };
 
     const handlePay = async (data) => {
-        localStorage.setItem('pay',data.id)
-        const userRefData = ref(database, '/users/dataTicket/' + 'book');
-        const dataBook = await get(userRefData)
+        // localStorage.setItem('pay',data.id)
+        // const userRefData = ref(database, '/users/dataTicket/' + 'book');
+        // const dataBook = await get(userRefData)
 
-        let arrBook = dataBook.exists() ? dataBook.val() : [];
+        // let arrBook = dataBook.exists() ? dataBook.val() : [];
 
-        if (arrBook.some(item => item.id === data.id)) {
-            console.log("fasle");
-        } else {
-            const postData = PostData(data);
-            arrBook.push(postData)
-            await set(userRefData, arrBook)
-        }
+        // if (arrBook.some(item => item.id === data.id)) {
+        //     console.log("fasle");
+        // } else {
+        //     const postData = PostData(data);
+        //     arrBook.push(postData)
+        //     await set(userRefData, arrBook)
+        // }
 
     }
     return (
@@ -118,7 +110,8 @@ const MovieTop = () => {
                                 </div>
                                 <div className=" p-10 mt-20 absolute top-0 left-0 w-full h-full group-hover:block duration-300 hidden ">
                                     <div className="bg-black z-20 absolute w-full h-[400px] opacity-40 top-0 left-0"></div>
-                                    <p className="absolute z-20">{data.description}</p>
+                                    <p className="absolute z-20">{data.title}</p>
+                                    {/* <p>hodsajd</p> */}
                                 </div>
                             </div>
 
@@ -171,8 +164,8 @@ const MovieTop = () => {
                                                     <img
                                                         src={item.poster}
                                                         alt={item.title}
-                                                        loading="lazy"
-                                                        className="rounded-e-2xl rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
+                                                        // loading="lazy"
+                                                        className="rounded-e-2xl  drop-shadow-2xl  rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
                                                     />
                                                 </div>
                                             </Link>
@@ -191,14 +184,15 @@ const MovieTop = () => {
             </div>
             <div>
 
-                <h1 className="text-2xl my-5  font-bold"> Family  Best Movie Top 10 series</h1>
+                <h1 className="text-2xl my-5  font-bold"> 
+                Top 10 best psychological movies </h1>
                 <div>
                     <Swiper
                         // spaceBetween={10}
                         slidesPerView={2}
                         style={{ cursor: 'default', }}
                     >
-                        {topMovie.length > 0 ? topMovie.map((item,idx) => {
+                        {company.length > 0 ? company.map((item,idx) => {
                             // console.log(item);
 
                             return (

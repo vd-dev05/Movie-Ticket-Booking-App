@@ -12,7 +12,7 @@ const PORT_SERVER = 8080;
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173' 
+   origin: 'http://localhost:5173/',
 })); 
 app.use(bodyParser.json({limit: "50mb"}));
 
@@ -25,7 +25,8 @@ app.get("/", (req, res) => {
 
 app.use('/api', RootRouter )
 // app.use()
-app.listen(PORT_SERVER, () => {
+
+app.listen(PORT_SERVER,() => {
   connectDB()
   console.log(`Server running at http://localhost:${PORT_SERVER}`);
 });

@@ -25,7 +25,7 @@ import './index.css'
 
 import 'boxicons'
 import App from './App';
-import Test from './components/Layout/Product/test';
+// import Test from './components/Layout/Product/test';
 // import FireBase from './components/firebase/test';
 
 // import About from './Component/Layout/About/about.jsx'
