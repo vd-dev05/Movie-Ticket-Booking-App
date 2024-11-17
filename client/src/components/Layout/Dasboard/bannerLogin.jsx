@@ -42,7 +42,7 @@ const Login = () => {
     const handleClick = useCallback(() => {
         const nextIndex = (selectedIndex + 1) % data.length; // Avoid index out of range
         if (nextIndex === 0) {
-            navigate('/L');
+            navigate('/login');
         }
 
         if (data.length > 0) {
@@ -112,7 +112,7 @@ const Login = () => {
                 <img
                     src={header.img}
                     alt="Banner"
-                    className="lg:bg-slate-600 sm:bg-white xl:bg-green-500  iphone-12:min-h-svh w-full object-cover "
+                    className="iphone-12:min-h-svh w-full object-cover "
                 />
             </div>
         </div>

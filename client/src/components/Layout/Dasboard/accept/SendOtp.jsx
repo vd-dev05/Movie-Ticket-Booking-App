@@ -1,249 +1,139 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
-import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-
-} from "@/components/ui/input-otp"
-import { customFormatPhoneNumber } from '@/lib/phone'
-import { useThemeClasses } from "../../../../context/Theme/themeStyles";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import React, { memo, useContext, useEffect, useState } from "react";
-import Susses from "./Susses";
+import React, { memo, useEffect, useState } from "react";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
-import { auth } from '@/components/firebase/firebase'
-import generateRandomNumberString from '@/lib/radomOtp'
-import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, } from "firebase/auth";
-import { Flex, Input, Typography } from 'antd';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { customFormatPhoneNumber } from '@/lib/phone';
+import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+import { useUser } from "@/context/User";
+import { GetOtp, VerifyCodeOtp, accessToken } from "@/controller/CreateUser.controller";
+import { showErrorToast, showSuccessToast } from '@/lib/toastUtils';
+import Susses from "./Susses";
+import { Flex, Input } from "antd";
+import { InputOTP } from "@/components/ui/input-otp";  // Ensure you have this component
 
+const SendOTp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) => {
+    const { dataUser } = useUser();
+    const { buttonClasses, textClasses, themeUniver } = useThemeClasses();
 
-// import from 'randn'
-const SendOTp = ({ text, phone, setOpen, isOpen, titlePass,paraPass1,paraPass2 }) => {
-    // console.log('+' +phone);
-    // const randn = require('randn');
-    // console.log(generateRandomNumberString(5));
-    const { Title } = Typography;
-
-    const auth = getAuth();
-
-
-    const { buttonClasses, backGround, textClasses, backGroundTow,themeUniver } = useThemeClasses();
-    const [count, setCount] = useState('');
+    const [count, setCount] = useState();
     const [isResendDisabled, setIsResendDisabled] = useState(true);
+    const [send, setSend] = useState(false);
+    const [isTrue, setIsTrue] = useState({ loading: false, openSussces: false });
+    const [codeOtp, setCodeOtp] = useState("");
+    const [veryCode, setVeryCode] = useState("");
 
-    const [isTrue, setIsTrue] = useState({
-        loading: false,
-        openSussces: false
-    })
-    const [codeOtp, setCodeOtp] = useState(generateRandomNumberString(4))
-    const [veryCode, setVeryCode] = useState()
-
-
+    // Handle OTP resend timer
     useEffect(() => {
-  
-        // if (veryCode != codeOtp && !isTrue.loading) {
-        //     toast.warn('Otp not successfull !', {
-        //         position: "top-right",
-        //         autoClose: 10000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "light",
-
-        //         });
-
-        // }
-        if (count > 0) {
+        if (count > 0 ) {
             const intervalId = setInterval(() => {
                 setCount(prev => prev - 1);
             }, 1000);
-            
             return () => clearInterval(intervalId);
-            
-        } 
-       
-    }, [count]);
-
-    const onChange = (text) => {
-        console.log('onChange:', text);
-        if (text == codeOtp) {
-            setVeryCode(text)
+        } else if (count === 0) {
+            setIsResendDisabled(false);
         }
-    };
-    const sharedProps = {
-        onChange,
+    }, [count, send]);
+
+    // Fetch OTP when the modal opens and user is not already sending
+    useEffect(() => {
+        if (!send && isOpen) {
+            const fetchOtp = async () => {
+                try {
+                    const response = await GetOtp(phoneN, dataUser.token);
+                    if (response.status === 200) {
+                        setCodeOtp(response.data.otp);
+                        setSend(true);
+                    } else {
+                        showErrorToast("Failed to send OTP.");
+                    }
+                } catch (error) {
+                    showErrorToast("An error occurred while sending OTP.");
+                }
+            };
+            fetchOtp();
+        }
+    }, [send, isOpen, dataUser.token, phoneN]);
+
+    const handleResendOtp = () => {
+        setCount(30);
+        setIsResendDisabled(true);
+        setSend(false); // Reset send state to fetch a new OTP
     };
 
-    const handleClick = () => {
-        setIsTrue(pre => ({ ...pre,loading: true}))
-        setTimeout(() => {
-            if (veryCode === codeOtp) {
-                setIsTrue({
-                    loading: false,
-                    openSussces: true
-                });
-            
-            }
+    const handleCodeChange = (text) => {
+        setVeryCode(text);
+    };
+
+    const handleSubmit = async () => {
+        setIsTrue(prev => ({ ...prev, loading: true }));
+        try {
+            const response = await VerifyCodeOtp(phoneN, dataUser.token, veryCode);
             setIsTrue(prev => ({ ...prev, loading: false }));
-        }, 1000);
-        if (veryCode == codeOtp ) {
-            toast.success('Otp  successfull !', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-    
-                });   
-        
-        } else {
 
-            toast.warn('Otp not successfull !', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-    
-                });
-             
+            if (response.status === 200) {
+                showSuccessToast(response.data.message);
+                const userToken = await accessToken(dataUser);
+                localStorage.setItem('account-info', JSON.stringify({ name: userToken.data.name }));
+                setIsTrue(prev => ({ ...prev, openSussces: true }));
+            } else {
+                showErrorToast("Invalid OTP code.");
+            }
+        } catch (error) {
+            setIsTrue(prev => ({ ...prev, loading: false }));
+            showErrorToast("An error occurred while verifying OTP.");
         }
-        // if (generateRandomNumberString(5)) {
-        //     se
-        // }
-        // window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        //     'size': 'normal',
-        //     'callback': (response) => {
-        //         console.log(response);
+    };
 
-        //       // reCAPTCHA solved, allow signInWithPhoneNumber.
-        //       // ...
-        //     },
-        //     'expired-callback': () => {
-        //       // Response expired. Ask user to solve reCAPTCHA again.
-        //       // ...
-        //     }
-        //   });
-
-
-        // const appVerifier = window.recaptchaVerifier;
-        // console.log(appVerifier);
-
-
-        // console.log(new RecaptchaVerifier);
-
-        // window.recaptchaVerifier = new RecaptchaVerifier("sign-in-button", {
-        //     'callback': (response) => {
-        //       console.log("prepared phone auth process");
-        //       console.log(response);
-
-        //     }
-        //   }, auth);
-        // console.log(`+${phone}`);
-
-        // try {
-        //     const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {})
-        //     const confirmation = signInWithPhoneNumber(auth, 123456, recaptcha)
-        //     setUser(confirmation)
-        //     console.log(confirmation);
-
-        // } catch (error) {
-        //     console.log(error);
-
-        // }
-
-        //  toasttify ̣
-        // setTimeout(() => {
-        //     setIsTrue({
-        //         loading: false,
-        //         openSussces: true
-        //     })
-        //     // const value = generateRandomNumberString(4)
-        //     // setCodeOtp(value)
-        // }, 1000);
-    }
+    const sharedProps = {
+        length: 4,
+        size: "large",
+        onChange: handleCodeChange,
+        value: veryCode,
+        disabled: isTrue.loading,
+    };
 
     return (
         <div>
             <AlertDialog open={isOpen} onOpenChange={setOpen}>
-                {/* <AlertDialogTrigger className="w-full border-2 border-blac p-[22px] bg-primary-textMovie text-2xl text-white" onClick={handleResendCode}>{text}</AlertDialogTrigger> */}
-                <AlertDialogContent className={`${themeUniver} ${textClasses} border-none top-[30%] left-10 h-[400px] rounded-2xl iphone-12:w-full   max-w-[90%]  sm:max-w-[80%] iphone-12:left-5 min-[400px]:left-7  lg:max-w-[60%]  `}>
-
+                <AlertDialogContent className={`${themeUniver} ${textClasses} border-none top-[30%] left-10 h-[400px] rounded-2xl iphone-12:w-full max-w-[90%] sm:max-w-[80%] iphone-12:left-5 min-[400px]:left-7 lg:max-w-[60%]`}>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Enter Otp</AlertDialogTitle>
-                        <AlertDialogDescription className='flex justify-center items-center text-xl'>
-                            <p className="w-[300px] ">A verification codes has been sent to {phone ? customFormatPhoneNumber(phone) : null}</p>
+                        <AlertDialogTitle>Enter OTP</AlertDialogTitle>
+                        <AlertDialogDescription className="flex justify-center items-center text-xl">
+                            <span className="w-[300px]">
+                                A verification code has been sent to {phoneN ? customFormatPhoneNumber(phoneN) : null}
+                            </span>
                         </AlertDialogDescription>
-                        <div className='flex items-center justify-center px-10 py-5'>
-
-                            <Flex gap="large" className=" w-full h-[50px] justify-center " vertical>
-                                {/* <Title level={5}>With formatter (Upcase)</Title> */}
-                                <Input.OTP
-
-                                    length={4}
-                                    color=""
-                                    size="40px"
-                                    formatter={(str) => str.toUpperCase()} {...sharedProps} />
-
+                        <div className="flex items-center justify-center px-10 py-5">
+                            {/* OTP Input Component */}
+                            <Flex gap="large" className="w-full h-[50px] justify-center" vertical>
+                                <Input.OTP {...sharedProps} />
                             </Flex>
-                            {/* 
-                           coming sum update 
-                            <div id="recaptcha-container" />
-                            */}
                         </div>
-                        <p className="text-center flex justify-center text-2xl py-2">Otp Code:{codeOtp}</p>
 
-                        {/* <Button onClick={verifyOtp}>Click</Button> */}
-                        <Button
-                            onClick={handleClick}
-                            className={`bg-primary-textMovie hover:bg-primary-textMovie hover:scale-105  w-full flex items-center justify-center rounded-lg py-6 text-white  `}
-                        >
-                            <span className="flex ">{isTrue.loading ? <AiOutlineLoading3Quarters size={20} color="white" className="animate-spin mr-2 " /> : null}  Verify   </span>
+                        <Button onClick={handleSubmit} className="bg-primary-textMovie hover:bg-primary-textMovie hover:scale-105 w-full flex items-center justify-center rounded-lg py-6 text-white">
+                            <span className="flex">
+                                {isTrue.loading ? <AiOutlineLoading3Quarters size={20} color="white" className="animate-spin mr-2" /> : null}
+                                Verify
+                            </span>
                         </Button>
-                        {/* <ToastContainer containerId={"Otp susscefull !"}></ToastContainer> */}
-                     
-                        <Susses 
-                        isTrue={isTrue.openSussces} 
-                         titlePass={titlePass} 
-                         paraPass1={paraPass1}
-                         paraPass2 ={paraPass2}
-                         ></Susses>
-                        <p >Didn't receive the code ? <span className="text-primary-textMovie cursor-pointer" onClick={() => {
-                            setCount(30) 
-                            const value = generateRandomNumberString(4)
-                            setCodeOtp(value)
-                        } }>Resend {count == 0 ? "code" : count}</span></p>
+
+                        <Susses isTrue={isTrue.openSussces} titlePass={titlePass} paraPass1={paraPass1} paraPass2={paraPass2} />
+
+                        <p>
+                            Didn't receive the code?{" "}
+                            <span className="text-primary-textMovie cursor-pointer" onClick={handleResendOtp}>
+                                Resend {count === 0 ? "code" : count}
+                            </span>
+                        </p>
                     </AlertDialogHeader>
-
-
                 </AlertDialogContent>
             </AlertDialog>
-            <ToastContainer containerId={"Otp not successfull !"}></ToastContainer>
-            <ToastContainer containerId={"Otp  successfull !"}></ToastContainer>
+
+            {/* <ToastContainer /> */}
         </div>
     );
-}
+};
 
 export default memo(SendOTp);

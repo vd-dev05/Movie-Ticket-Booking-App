@@ -23,9 +23,17 @@ import { Link } from "react-router-dom";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { useTheme } from "../../../../context/Theme";
 import { CiCircleCheck } from "react-icons/ci";
+import { useUser } from "@/context/User";
+import { ToastContainer } from "react-toastify";
 const Susses = ({ text,isTrue,paraPass1,paraPass2, titlePass}) => {
     const { buttonClasses, backGround, textClasses, backGroundTow ,themeSussesOTp,themeUniver} = useThemeClasses();
     const themeCtx = useTheme()
+    const {dataUser} = useUser()
+    // useEffect(() => {
+    //     if (dataUser) {
+    //         localStorage.setItem("account-basic-info" , JSON.stringify({username : dataUser.user , id :dataUser.userId}))
+    //     }
+    // }, [text])
     return (
         <div>
               <AlertDialog className={``} open={isTrue}>
@@ -46,17 +54,15 @@ const Susses = ({ text,isTrue,paraPass1,paraPass2, titlePass}) => {
                             {/* Account Created Successfully' */}
                         </div>
                         <AlertDialogTitle className="text-2xl w-[300px] text-center "> { titlePass ?  titlePass : 'not found'}</AlertDialogTitle>
-                        <AlertDialogDescription  className="text-center" >
-                            <div className=' flex justify-center items-center flex-col gap-3 pb-10'>
+                        <div className=' flex justify-center items-center flex-col gap-3 pb-10'>
                                 <div className='w-[300px] text-base translate-y-5   '>
-                                    <p>{paraPass1 ? paraPass1 : 'not found'}</p>
-                                    <p>{paraPass2 ? paraPass2 : 'not found'  }</p>
+                                <AlertDialogDescription>{paraPass1 ? paraPass1 : 'not found'}</AlertDialogDescription>
+                                <AlertDialogDescription>{paraPass2 ? paraPass2 : 'not found'  }</AlertDialogDescription>
                                  
                                 </div>
 
                             </div>
-         
-                        </AlertDialogDescription>
+                        
                         <div>
 
                         </div>
@@ -68,9 +74,10 @@ const Susses = ({ text,isTrue,paraPass1,paraPass2, titlePass}) => {
                                     Go to Home
                                 </Link>
                             </div>
+                            {/* <ToastContainer /> */}
                         </AlertDialogAction>
                     </AlertDialogHeader>
-
+               
 
                 </AlertDialogContent>
             </AlertDialog>
