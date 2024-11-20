@@ -24,13 +24,10 @@ import Nav from "../../../common/Nav";
 import { useTheme } from "../../../../context/Theme";
 import { useThemeClasses } from "@/context/Theme/themeStyles"
 import { Regex } from "@/validations/Regex";
-import Privacy from "./childRouter/Privacy";
-import { doc, getDoc } from "firebase/firestore";
-import { database, db } from "@/components/firebase/firebase";
-import { child, get, onValue, ref, remove, set, update } from "firebase/database";
-import Terms from "./childRouter/Terms";
-import UserRename from "./childRouter/UserRename";
-import ChangePassWord from "./childRouter/ChangePass";
+import Privacy from "../../../common/file/Privacy";
+import Terms from "../../../common/file/Terms";
+import UserRename from "../../../common/file/UserRename";
+import ChangePassWord from "../../../common/file/ChangePass";
 import {deleteData} from '@/hooks/GetApi/GetApi'
 
 const HomeFile = () => {

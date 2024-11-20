@@ -1,5 +1,3 @@
-import { database } from '@/components/firebase/firebase';
-import { ref, get, update } from 'firebase/database';
 
 const  updateDataBase = async (Url,UrlUpdate,bookingId, updateData) => {
     try {

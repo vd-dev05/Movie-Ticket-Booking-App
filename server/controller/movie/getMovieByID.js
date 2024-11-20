@@ -68,6 +68,7 @@ export const getMovieById = async (value) => {
     
     try {
         // console.log(value.value);
+        console.log(value);
         
         const movie = await Movies.findById(value.value)
         // console.log(movie);

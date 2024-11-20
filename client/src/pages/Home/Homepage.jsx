@@ -15,9 +15,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { auth } from '@/components/firebase/firebase';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, addDoc } from 'firebase/firestore'
-import { db, database, app } from "@/components/firebase/firebase";
-import { getDatabase, ref, onValue, get, set, child, push, update } from 'firebase/database';
 import { useThemeClasses } from "../Theme/themeStyles";
 import MovieTop from "./MovieTop";
 import { Alert, Flex, Spin } from 'antd';

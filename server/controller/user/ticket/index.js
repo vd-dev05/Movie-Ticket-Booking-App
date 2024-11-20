@@ -18,8 +18,8 @@ const BookTicket = {
                     seat.userId = req.body.userId;
                 }
             });
+            
             book.seats.push({ seats: seats })
-
             const userTicket = await Users.findOne({
                 _id: req.body.userId})
 

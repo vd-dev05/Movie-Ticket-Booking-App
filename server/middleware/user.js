@@ -14,7 +14,7 @@ const UserMiddleware = {
                 
                 // if (isValidationEmail) throw new Error("Email already exists in the system")
                 if (isValidationPhone) throw new Error("Phone already exists in the system")
-                res.status(200).json()
+                res.status(200).json("hello")
                 return 
                 // return next()
         } catch (error) {
@@ -64,9 +64,10 @@ const UserMiddleware = {
                 email: data.email
                }
                 const token = jwt.sign(userData, process.env.SECRET_KEY, {expiresIn : 60});
-                res.status(200).json({
-                    token : token
-                })
+                req.refreshToken = token
+                // res.status(200).json({
+                //     token : token
+                // })
                 return next();
             }
         

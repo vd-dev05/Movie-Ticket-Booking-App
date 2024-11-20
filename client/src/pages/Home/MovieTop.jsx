@@ -9,8 +9,9 @@ import { useTheme } from "@/context/Theme/index";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import MovieController from "@/controller/movie/getMovie.controller";
-import { showInfoToast } from "@/lib/toastUtils";
+import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toastUtils";
+import MovieController from "@/services/movie/Movie.controller";
+import UserHistory from "@/services/users/history";
 
 const MovieTop = () => {
     const [data, setData] = useState([])
@@ -55,29 +56,18 @@ const MovieTop = () => {
         fetchMovies();
     }, [1])
     const handleClickLove = async (movie) => {
-        // console.log(movie.id);
-
-        // try {
-        //     const loveRef = ref(database, 'users/loveMovie/');
-        //     const snapshot = await get(loveRef);
-        //     let currentArray = snapshot.exists() ? snapshot.val() : [];
-        //     // console.log(snapshot.val()); 
-
-
-        //     if (currentArray.some(item => item.id === movie.id)) {
-        //         toast.warning("Movie already in the love list.");
-        //         return;
-        //     }
-
-        //     currentArray.push(movie);
-
-
-        //     await set(loveRef, currentArray);
-        //     toast.success("Add Successful!");
-        // } catch (error) {
-        //     console.error('Error adding to love list:', error);
-        //     toast.error("Failed to add to love list.");
-        // }
+        
+        try {
+           const response =  await UserHistory.loveMovie("like",movie)
+           if (response.status === 200) {
+            showSuccessToast(response.data.message)
+           }
+           if (response.status === 401) {
+            showErrorToast(response.data.error)
+           }
+        } catch (error) {
+            console.log(error);  
+        }
     };
 
     const handlePay = async (data) => {
@@ -134,7 +124,7 @@ const MovieTop = () => {
                                     </Link>
 
                                     <div
-                                        onClick={() => handleClickLove(data)}
+                                        onClick={() => handleClickLove(data._id)}
                                         className="cursor-pointer  hover:scale-110 motion-reduce:transform-none flex w-full rounded-lg  bg-gray-800 px-2 py-5 text-nowrap items-center justify-center gap-4">
                                         <span><HeartOutlined /></span>
                                         <p className='text-white'>Add list Love</p>
@@ -145,11 +135,11 @@ const MovieTop = () => {
                         </div>
                     ) : null}
                 </div>
-                <div>
+                <div >
                     <h1 className="text-2xl my-5  font-bold">Hoollywood Movie Top 10 series </h1>
-                    <div>
+                    <div className="">
                         <Swiper
-                            // spaceBetween={10}
+                            spaceBetween={50}
                             slidesPerView={2}
                             style={{ cursor: 'default', }}
                         >
@@ -158,19 +148,19 @@ const MovieTop = () => {
 
                                 return (
                                     <SwiperSlide key={idx}>
-                                        <div className=" translate-x-10 w-full px-12">
-                                            <Link to='/itemLove' state={{ data: item }} >
-                                                <div className="saturate-150 z-10 " >
+                                        <div className=" translate-x-10 w-full ">
+                                            <Link to={`/details/${item._id}`} state={{ data: item }} >
+                                                <div className="saturate-150 z-10 px-2" >
                                                     <img
                                                         src={item.poster}
                                                         alt={item.title}
                                                         // loading="lazy"
-                                                        className="rounded-e-2xl  drop-shadow-2xl  rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
+                                                        className="rounded-e-2xl  drop-shadow-2xl  rounded-t-lg  h-[400px]   object-cover  cursor-pointer "
                                                     />
                                                 </div>
                                             </Link>
                                             <div className={`mt-2 `}>
-                                                <h2 className={`font-bold -z-10 text-[140px] whitespace-normal ${themeCtx.theme == 'dark' || themeCtx.theme == 'travel' ? ' text-shadow-light text-dark-bg' : 'text-shadow-dark text-light-bg'} absolute -bottom-[53px] -translate-x-[65%]  drop-shadow-2xl`}>{idx + 1}</h2>
+                                                <h2 className={`font-bold  text-[140px] whitespace-normal ${themeCtx.theme == 'dark' || themeCtx.theme == 'travel' ? ' text-shadow-light text-dark-bg' : 'text-shadow-dark text-light-bg'} absolute -bottom-[53px] -translate-x-[60%]  drop-shadow-2xl`}>{idx + 1}</h2>
 
                                             </div>
                                         </div>
@@ -198,13 +188,13 @@ const MovieTop = () => {
                             return (
                                 <SwiperSlide key={idx}>
                                         <div className=" translate-x-10 w-full px-12">
-                                            <Link to='/itemLove' state={{ data: item }} >
+                                            <Link to={`/details/${item._id}`} state={{ data: item }} >
                                                 <div className="saturate-150 z-10 " >
                                                     <img
                                                         src={item.poster}
                                                         alt={item.title}
                                                         loading="lazy"
-                                                        className="rounded-e-2xl rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
+                                                        className="rounded-e-2xl -z-20 rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
                                                     />
                                                 </div>
                                             </Link>
@@ -219,7 +209,6 @@ const MovieTop = () => {
                     </Swiper>
                 </div>
             </div>
-            <ToastContainer></ToastContainer>
         </div>
     );
 }

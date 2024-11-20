@@ -1,16 +1,19 @@
 
-import axios from "axios";
-import { toast } from "react-toastify";
-import { Api } from "@/baseUrl";
-export const addUser = async (value) => {
-    try {
-
+    import axios from "axios";
+    // import { toast } from "react-toastify";
+    // import { Api } from "@/baseUrl";
+//    import process from "process";
+    export const    addUser = async (value) => {
+     
         
-        const r = await axios.post(`${Api}/api/v1/users/signup`, {
+        try {
+
+        const r = await axios.post(process.env.BASE_URL+'api/v1/users/signup', {
             // password: value.password,
             phone_number: value.phone,
             // name: value.name
-        })  
+        })
+        
         return r
     } catch (error) {
         // console.log(error);
@@ -27,30 +30,30 @@ export const addUser = async (value) => {
 }
 
 export const accessToken = async (value) => {
-    try {     
+    try {
         // truyen cho 1 token hearder 
         // console.log(value);
-        
-        const r = await axios.post(`${Api}/api/v1/users/create-token`,{
-            name : value.name,
-            phone_number : value.phone,
+
+        const r = await axios.post(`${Api}/api/v1/users/create-token`, {
+            name: value.name,
+            phone_number: value.phone,
             password: value.password
         })
-       return r
-        
+        return r
+
     } catch (error) {
-       return error
+        return error
     }
 }
 export const GetTokenSend = async (value) => {
-    try {  
+    try {
         const r = await axios.post(`${Api}/api/v1/users/token`, {
-          phone_number  : value
+            phone_number: value
         })
         return r
     } catch (error) {
         console.log(r);
-        
+
     }
 }
 export const GetToken = async () => {
@@ -63,31 +66,31 @@ export const GetToken = async () => {
         console.log(r);
         return r.data
     } catch (error) {
-       console.log(r);
-       
+        console.log(r);
+
     }
 }
 
-export const GetOtp = async (value,token) =>{
+export const GetOtp = async (value, token) => {
     try {
 
         const r = await axios.post(`${Api}/api/v1/users/send-code`, {
-            phone_number : value,
-            
-        },{
-            headers : {
+            phone_number: value,
+
+        }, {
+            headers: {
                 "Authorization": `Bearer ${token}`
             }
         })
         if (!r) throw new Error("Couldn't send code")
         // console.log(r);
-        
+
         // toast.success(r.data)
         return
-        
+
     } catch (error) {
         console.log(error);
-        
+
         // toast.error(error.response.data.error, {
         //     style: {
         //         textWrap: "nowrap"
@@ -95,35 +98,35 @@ export const GetOtp = async (value,token) =>{
         // })
     }
 }
-export const VerifyCodeOtp = async (value,token,otp) => {
+export const VerifyCodeOtp = async (value, token, otp) => {
     try {
         const r = await axios.post(`${Api}/api/v1/users/verify-code`, {
-            phone_number : value,
-            otp : otp,
+            phone_number: value,
+            otp: otp,
             // headers : {
             //     "Authorization": `Bearer ${token}`
             // }
-        }, { headers : { "Authorization": `Bearer ${token}`}})
+        }, { headers: { "Authorization": `Bearer ${token}` } })
         return r
     } catch (error) {
-    //   toast.error(error.response.data.error)
+        //   toast.error(error.response.data.error)
         return error.response
-        
+
     }
 
-  
+
 }
 export const GetResetOtp = async (value) => {
     try {
         const r = await axios.post(`${Api}/api/v1/users/reset-code`, {
-            phone_number : value
+            phone_number: value
         })
         if (!r) throw new Error("Couldn't send code")
-       return r
-        
+        return r
+
     } catch (error) {
         console.log(error);
-        
+
         // toast.error(error.response.data.error, {
         //     style: {
         //         textWrap: "nowrap"

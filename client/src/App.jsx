@@ -3,8 +3,9 @@
 
 import RouteMovie from "@/routes/appMovie.routes.jsx";
 import 'react-toastify/dist/ReactToastify.css';
-import boxicons from "boxicons";
+import.meta.env
 const App = () => {
+    
     return (
         <div className=''>
             <RouteMovie/>

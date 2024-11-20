@@ -27,6 +27,7 @@ const postManager = {
     },
     createTicketMovie: async (req, res) => {
         try {
+            
             const movieId = await Movies.findById(req.params.id)
             if (movieId) {
                 const generateSeats = (book) => {
@@ -56,26 +57,23 @@ const postManager = {
                 const seats = generateSeats('available');
                 if (seats) {
                     const data = {
-                        _id: movieId,
+                        movieId : movieId,
                         seats: seats,
                         userId : null
                     }
-                    const test = new Booking(data)
-                    await test.save();
-
+                    await Booking.create(data)
+                    // await test.save();
+                    res.status(201).json("Create Seats successfully")
                 }
 
 
             } else {
-                res.status(404).json({
-                    message: "Movie not found",
-                    status: false
-                })
+               throw new Error(`Create Ticket failed with `)
             }
 
         } catch (error) {
             res.status(500).json({
-                message: error.message,
+                error: error.message,
                 status: false
             })
         }

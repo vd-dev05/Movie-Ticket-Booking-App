@@ -34,10 +34,7 @@ const AuthValidations = {
     LoginUserValidation : async (req,res,next) => {
         try {
             const {phone,password} = req.body
-            console.log("fix");
-            
-            console.log(req.body);
-            
+        
             const Yupschema = Yup.object().shape({
                 phone: YupValid.phoneValidation,
                 password: YupValid.passwordValidation

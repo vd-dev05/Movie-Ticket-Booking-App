@@ -3,24 +3,36 @@ import { Users } from "../../../models/movie/index.js"
 const UserLoveMovie = {
     loveMovie: async (req, res) => {
         try {
-            const userId = new mongoose.Types.ObjectId(req.params.id);
-            const movieId = new mongoose.Types.ObjectId(req.body.movieId);
-            const user = await Users.findById(userId).populate()
+            // const userId = new mongoose.Types.ObjectId(req.params.id);
+            const movieId = req.body.movieId
+                
+         const user = await Users.findById( req.userId)
+                .select('movieLove')
+                .populate("movieLove")
+            // console.log(user);
+            // console.log(user.movieLove);
             if (!user) throw new Error(`Movie not found for user`)
-            if (req.body.action == 'like') {
-                if (!user.movieLove.includes(movieId)) {
-                    user.movieLove.push(movieId);
-                    await user.save();
-                    res.status(200).json({
-                        message: 'Movie added to your favorite list successfully!',
-                        success: true,
-                        data: user
-                    });
-                } else {
-                    throw new Error(`Movie already exists in your favorite list for user`)
-                }
+
+            if (req.body.action === 'love') {  
+                res.status(200).json(user)
+            }
+            const checkMovieLove = user.movieLove.findIndex(movie => movie._id.toString() === movieId.toString());            
+            if (checkMovieLove !== -1 && req.body.action == 'like') {       
+                console.log("fix");
+                         
+                throw new Error(`Movie is already in your favorite list`)
+            }
+           
+            if (req.body.action == 'like' && checkMovieLove === -1) {  
+                user.movieLove.push(movieId);
+                await user.save();
+                res.status(200).json({
+                    message: 'Movie added to your favorite list successfully!',
+                    success: true,
+                    data: user
+                });
             } else if (req.body.action == "unlike") {
-                const movieIndex = user.movieLove.findIndex(movie => movie.equals(movieId));
+                const movieIndex = user.movieLove.findIndex((item) => item._id.toString() == movieId.toString())
                 if (movieIndex !== -1) {
                     user.movieLove.splice(movieIndex, 1);
                     await user.save();
@@ -29,25 +41,30 @@ const UserLoveMovie = {
                         success: true,
                         data: user
                     });
-                } else {
-                    throw new Error(`Movie does not exist in your favorite list for user `)
-                }
-            } else {
+                } 
+            } else {        
                 throw new Error("Invalid action")
             }
-
-
-
-            //  const movieIndex = user.movieLove.findIndex(movie => movie.movieId === movieId);
-            //  console.log(movieIndex);
-
-
         } catch (error) {
-            res.status(404).send({
-                message: error.message,
-                success: false,
-                data: null
+            res.status(401).json({
+              error: error.message
             })
+        }
+    }, getLoveMovie: async (req, res) => {
+        try {
+            // console.log(req.userId);
+
+
+            const userId = new mongoose.Types.ObjectId(req.userId);
+            const user = await Users.findById(userId)
+                .select('movieLove')
+                .populate('movieLove')
+
+
+            res.status(200).json(user.movieLove)
+        } catch (error) {
+
+
         }
     }
 }

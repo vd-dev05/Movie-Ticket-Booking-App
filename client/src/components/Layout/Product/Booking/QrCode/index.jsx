@@ -5,7 +5,6 @@ import React, { memo, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import { json, Link, useLocation } from "react-router-dom";
 import { useUser } from "../../../../../hooks/GetApi/GetContext";
-import { database } from "@/components/firebase/firebase";
 import { ref } from "firebase/database";
 import { dataMovie } from "../../../../../hooks/GetApi/GetApi";
 import { User } from "lucide-react";

@@ -1,4 +1,4 @@
-import { Api } from "@/baseUrl"
+
 import axios from "axios"
 
 const MovieController = {

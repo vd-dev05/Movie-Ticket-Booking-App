@@ -1,13 +1,13 @@
 import { Input } from "@/components/ui/input";
-import { dataMovie, Movie, truncateText } from "../../../../hooks/GetApi/GetApi"
+import { dataMovie, Movie, truncateText } from "../../hooks/GetApi/GetApi"
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import Nav from "../../../common/Nav";
-import { useTheme } from "../../../../context/Theme";
+import { useTheme } from "../../context/Theme";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+import { useThemeClasses } from "../../context/Theme/themeStyles";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import useDebounce from '@/hooks/GetApi/SearchOP'
 import MovieController from "@/controller/movie/getMovie.controller";

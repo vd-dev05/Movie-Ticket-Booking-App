@@ -7,8 +7,7 @@ const MovieController = {
             console.log(req.body);
             
             const r = await getMovieByTitle({ title : title})
-            console.log(r);
-            
+
             res.status(200).json({
                 success : true,
                 data : r,

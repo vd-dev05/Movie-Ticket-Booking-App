@@ -51,6 +51,25 @@ const authMiddleware = {
     }
 
   },
+  authSessionToken : (req,res,next) => {
+    try {
+      const token = req.headers['authorization']; // Expect "Bearer <token>"
+      const split = token.split(' ')[1];
+     
+       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
+        if (err) throw new Error("Invalid or expired token")
+          req.userId = user.userId   
+    
+          next()        
+
+      });    
+
+      
+    } catch (error) {
+      return res.status(403).json("Please Enter a token")
+      
+    }
+  },
   authApiKey: (req, res, next) => {
 
   },

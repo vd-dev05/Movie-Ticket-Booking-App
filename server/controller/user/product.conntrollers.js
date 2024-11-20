@@ -11,12 +11,17 @@ const Products = {
     signinUser: async (req, res) => {
       
             const user = await Users.findOne({ phone: req.body.phone })
+            const asscess = await Sessions.findOne({user_id : user._id})
             // console.log(req.body);
             try {
                 res.status(200).json({
                     message: 'User signed in successfully!',
                     success: true,
-                    data: user
+                    data: user,
+                    // asscesstoken 
+                    asscessToken : asscess.jwt,
+                    // refreshToken
+                    refreshToken : req.refreshToken
                 })
             }
             catch (error) {
@@ -36,7 +41,7 @@ const Products = {
 
         try {
             const product = await Users.find({ _id: id });
-            console.log(product);
+            // console.log(product);
             return res.status(200).json({
                 data: product,
                 message: 'User movie fetched successfully!',

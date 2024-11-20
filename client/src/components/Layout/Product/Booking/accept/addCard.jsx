@@ -13,7 +13,7 @@ import {
 import { truncateText } from "../../../../../hooks/GetApi/GetApi";
 import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { validationPayCard } from '@/validations/useYupForm'
+import { validationPayCard } from '@/validations/Yup/useYupForm'
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import { useTheme } from '@/context/Theme';
@@ -136,7 +136,6 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                             }
                             }
                         </Formik>
-                        <ToastContainer />
                     </AlertDialogHeader>
 
 

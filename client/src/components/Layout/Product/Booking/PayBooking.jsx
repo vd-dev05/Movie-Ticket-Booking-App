@@ -10,7 +10,6 @@ import DoneBooking from './accept/doneBooking';
 import { useUser } from '../../../../hooks/GetApi/GetContext';
 import { toast, ToastContainer } from 'react-toastify';
 import { formatCardNumber } from '@/lib/fomatCard';
-import { database } from '@/components/firebase/firebase';
 import 'react-toastify/dist/ReactToastify.css';
 import { dataMovie } from '@/hooks/GetApi/GetApi';
 import { get, ref, update } from 'firebase/database';

@@ -67,7 +67,6 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         required: true,
-        unique: true,
     },
     address: {
         type: String,
@@ -111,7 +110,8 @@ const userSchema = new mongoose.Schema({
     }],
     history: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Ticket",
+        ref: "movies",
+        required: true
     }],
     card: {
         type: cardSchema,
@@ -124,6 +124,10 @@ const userSchema = new mongoose.Schema({
 
 // Booking Schema
 const bookSchema = new mongoose.Schema({
+    movieId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "movies"
+    },
     seats: [mongoose.Schema.Types.Mixed] // Mixed can be used for dynamic data types
 });
 

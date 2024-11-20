@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import Nav from "../../../common/Nav";
-import Cancelled from "./Cancelled";
-import Upcoming from "./UpComing";
+import Cancelled from "../../../common/ticket/Cancelled";
+import Upcoming from "../../../common/ticket/UpComing";
 import React, { useState } from "react";
-import Past from "./Past";
+import Past from "../../../common/ticket/Past";
 import { useTheme } from "../../../../context/Theme";
 import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 

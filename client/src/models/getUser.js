@@ -4,7 +4,7 @@ import axios from "axios";
 export const getUser = async () =>  {
     try {
         let id = localStorage.getItem('id')
-        const r = await axios.get("http://localhost:8080/api/v1/user", {
+        const r = await axios.get("http://local:8080/api/v1/user", {
             params: {id}
         });
         console.log(r.data);

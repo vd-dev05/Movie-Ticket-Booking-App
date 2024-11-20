@@ -9,105 +9,85 @@ import { useTheme } from '../../../../context/Theme';
 import { useThemeClasses } from '../../../../context/Theme/themeStyles';
 import { useItem } from '../../../../hooks/GetApi/ItemContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-// import { get, ref, remove, set, update } from 'firebase/database';
-// import { database } from '@/components/firebase/firebase';
 // import { toast, ToastContainer } from 'react-toastify';
 // import { useUser } from '../../../../hooks/GetApi/GetContext';
 import { PostData } from '../../../../hooks/GetApi/PostApiBook';
+import UserHistory from '@/services/users/history';
 const ItemLove = () => {
+    const location = useLocation();
+    const { data } = location.state || {};
+    UserHistory.lastMovie(data._id)
     const themeCtx = useTheme();
     const { color } = useTheme();
 
     // const {setDataUser} = useUser()
 
-    const location = useLocation();
-    const { data } = location.state || {};
+    console.log(data);
+    
     // setDataUser(pre => ({...pre,dataIdBook:data}))
     const check = data;
     // const { item } = useItem();
     const { buttonClasses, inputClasses, textClasses, backGround, themeUniver, buttonCLick } = useThemeClasses();
     
     const [IsTrue, setIsTrue] = useState(false);
-
-    useEffect(() => {
-
-
-      setDataUser(pre => ({...pre,dataIdBook:data}))
-        const LoveData = async () => {
-            const loveRef = ref(database, 'users/loveMovie');
-            const snapshot = await get(loveRef);
-            const currentArray = snapshot.exists() ? snapshot.val() : [];
-
-            // Kiểm tra xem ID có tồn tại trong danh sách yêu thích không
-            const isInLoveList = currentArray.some(item => item.id === check.id);
-            setIsTrue(isInLoveList);
-        }
-        LoveData();
-    }, [check.id,setDataUser]);
-
-    useEffect(  () => {
-        (
-            async () => {
-                try {
-                    const loveRef = ref(database, 'users/dataLastMovie');
-                    const snapshot = await get(loveRef);
-                    let currentArray = snapshot.exists() ? snapshot.val() : [];
-        
-                    if (currentArray.some(item => item.id === check.id)) {
-                        // toast.warning("Movie already in the love list.");
-                        return;
-                    }
-                    currentArray.push(check);
-                    await set(loveRef, currentArray); 
-                } catch (error) {
-                    console.error('Error adding to love list:', error);
-                    // toast.error("Failed to add to love list.");
-                }
-            }
-        )()
-       
-    }, [])
+    // const fetechData = () => {
+    //     try {
+    //         const response = UserHistory.lastMovie(data._id)
+    //         if (response.status === 200) {
+    //             return
+    //             // setDataUser(response.data)
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+            
+    //     }
+    // }
+    // useEffect(  () => {
+    //     if (data._id) {
+    //         fetechData()
+    //     }
+    // }, [])
     
 
     const handleRemoveLove = async () => {
-        const loveRef = ref(database, 'users/loveMovie');
-        const snapshot = await get(loveRef);
+        // const loveRef = ref(database, 'users/loveMovie');
+        // const snapshot = await get(loveRef);
 
-        if (snapshot.exists()) {
-            const data = snapshot.val();
+        // if (snapshot.exists()) {
+        //     const data = snapshot.val();
 
-            for (const key in data) {
-                if (data[key].id === check.id) {
-                    await remove(ref(database, `users/loveMovie/${key}`));
-                    toast.success("Remove List Successfully");
-                    setIsTrue(false); 
-                    return;
-                }
-            }
-        } else {
-            console.log("Danh sách 'loveMovie' trống.");
-        }
+        //     for (const key in data) {
+        //         if (data[key].id === check.id) {
+        //             await remove(ref(database, `users/loveMovie/${key}`));
+        //             toast.success("Remove List Successfully");
+        //             setIsTrue(false); 
+        //             return;
+        //         }
+        //     }
+        // } else {
+        //     console.log("Danh sách 'loveMovie' trống.");
+        // }
     };
 
     const handleAddLove = async () => {
-        try {
-            const loveRef = ref(database, 'users/loveMovie');
-            const snapshot = await get(loveRef);
-            let currentArray = snapshot.exists() ? snapshot.val() : [];
+        // try {
+        //     const loveRef = ref(database, 'users/loveMovie');
+        //     const snapshot = await get(loveRef);
+        //     let currentArray = snapshot.exists() ? snapshot.val() : [];
 
-            if (currentArray.some(item => item.id === check.id)) {
-                toast.warning("Movie already in the love list.");
-                return;
-            }
+        //     if (currentArray.some(item => item.id === check.id)) {
+        //         toast.warning("Movie already in the love list.");
+        //         return;
+        //     }
 
-            currentArray.push(check);
-            await set(loveRef, currentArray);
-            toast.success("Add Successful!");
-            setIsTrue(true); 
-        } catch (error) {
-            console.error('Error adding to love list:', error);
-            toast.error("Failed to add to love list.");
-        }
+        //     currentArray.push(check);
+        //     await set(loveRef, currentArray);
+        //     toast.success("Add Successful!");
+        //     setIsTrue(true); 
+        // } catch (error) {
+        //     console.error('Error adding to love list:', error);
+        //     toast.error("Failed to add to love list.");
+        // }
     };
 
     const handlePayData = async  (data) => {    
@@ -116,18 +96,18 @@ const ItemLove = () => {
         // console.log(data.id);
         localStorage.setItem('pay',data.id)
 
-        const userRefData = ref(database, '/users/dataTicket/' + 'book');
-        const dataBook = await get(userRefData) 
+        // const userRefData = ref(database, '/users/dataTicket/' + 'book');
+        // const dataBook = await get(userRefData) 
 
-        let arrBook = dataBook.exists() ? dataBook.val() :[];
+        // let arrBook = dataBook.exists() ? dataBook.val() :[];
 
-        if (arrBook.some(item => item.id === data.id) ) {
-            console.log("fasle");
-        }else {
-            const postData = PostData(data); 
-            arrBook.push(postData)
-            await set(userRefData,arrBook)
-        }
+        // if (arrBook.some(item => item.id === data.id) ) {
+        //     console.log("fasle");
+        // }else {
+        //     const postData = PostData(data); 
+        //     arrBook.push(postData)
+        //     await set(userRefData,arrBook)
+        // }
 
 
         // console.log(dataBook.exists());
@@ -149,7 +129,7 @@ const ItemLove = () => {
                     <h1 className='text-center font-logo'>Movie Details</h1>
                 </div>
 
-                <div className='flex mt-10'>
+                {/* <div className='flex mt-10'>
                     <div className='w-full'>
                         <img src={data.poster} loading='lazy' alt="poster" className='rounded-2xl h-[300px] w-full object-cover' />
                     </div>
@@ -205,10 +185,8 @@ const ItemLove = () => {
                     <Link className='text-white hover:text-white' to="/boking" state={data.id} onClick={() => handlePayData(data)}>
                         <Button className="w-full text-xl">Select Seat</Button>
                     </Link>
-                </div>
+                </div> */}
             </div>
-
-            <ToastContainer />
         </div>
     );
 };

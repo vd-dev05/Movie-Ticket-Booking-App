@@ -1,6 +1,5 @@
-// import { database } from '@/components/firebase/firebase';
 import axios from 'axios';
-import { getDatabase, ref, child, get, remove } from "firebase/database";
+
 
 export const fetchMovies = async () => {
     try {

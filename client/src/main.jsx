@@ -24,6 +24,8 @@ import './index.css'
 // import Theme from './components/Layout/Theme';
 
 import 'boxicons'
+
+
 import App from './App';
 // import Test from './components/Layout/Product/test';
 // import FireBase from './components/firebase/test';
@@ -45,53 +47,13 @@ import App from './App';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 // import Test from './components/Layout/Product/test';
 // import Test from './components/Layout/Product/test';
+// localStorage.setItem("access_token",)
 ReactDOM.createRoot(document.getElementById('root')).render(
 
-    <React.StrictMode>
-        {/* <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/"> */}
-        <Router>
+    <Router>
 
-            <App>
+        <App>
 
-            </App>
-        </Router>
-        {/* <Router>
-            <Routes>
-
-                <Route path="/test" element={<Test />} />
-            </Routes>
-        </Router> */}
-        {/* <Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/L" element={<Otp />} />
-                <Theme.Provider value={{ theme, setTheme }}>
-                    <Route path="/home" element={<HomePage />} />
-                </Theme.Provider>
-
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/reset" element={<Password />} />
-                <Route path="/lmovie" element={<LatestMovie />} />
-                <Route path="/item" element={<ItemMovie />} />
-                <Route path="/boking" element={<Select />} />
-                <Route path="/pay" element={<Pay />} />
-                <Route path="/profile" element={<HomeFile />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/itemlove" element={<ItemLove />} />
-                <Route path="/love" element={<LoveMovie />} />
-                <Route path="/ticket" element={<Myticket />} />
-                <Route path="/test" element={<Test />} />
-
-
-
-
-            </Routes>
-
-        </Router> */}
-
-        {/* </ClerkProvider> */}
-    </React.StrictMode>,
+        </App>
+    </Router>,
 )

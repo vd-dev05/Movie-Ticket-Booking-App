@@ -6,14 +6,12 @@ import bodyParser from "body-parser";
 import RootRouter from "./routes/index.js";
 import cors from "cors";
 const app = express();
+app.use(cors ());
 
 dotenv.config();
 const PORT_SERVER = 8080;
 
 app.use(express.json());
-app.use(cors({
-   origin: 'http://localhost:5173/',
-})); 
 app.use(bodyParser.json({limit: "50mb"}));
 
 
@@ -26,7 +24,7 @@ app.get("/", (req, res) => {
 app.use('/api', RootRouter )
 // app.use()
 
-app.listen(PORT_SERVER,() => {
+app.listen(PORT_SERVER,'192.168.1.224',() => {
   connectDB()
-  console.log(`Server running at http://localhost:${PORT_SERVER}`);
+  console.log(`Server running at http://192.168.1.224:${PORT_SERVER}`);
 });

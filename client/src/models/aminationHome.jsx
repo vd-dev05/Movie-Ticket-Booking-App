@@ -42,5 +42,6 @@ const TypingEffect = (nameUser) => {
 };
 
 
+
 export default TypingEffect;
 
