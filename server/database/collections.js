@@ -6,6 +6,7 @@
     BOOKINGS: 'booking',
     ADMIN : "admin",
     Manager : "manager",
-    SESSIONS : "sessions"
+    SESSIONS : "sessions",
+    CANCEL : "cancel",
 } 
 export default Collections

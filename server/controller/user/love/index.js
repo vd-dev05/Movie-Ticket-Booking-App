@@ -18,7 +18,7 @@ const UserLoveMovie = {
             }
             const checkMovieLove = user.movieLove.findIndex(movie => movie._id.toString() === movieId.toString());            
             if (checkMovieLove !== -1 && req.body.action == 'like') {       
-                console.log("fix");
+                // console.log("fix");
                          
                 throw new Error(`Movie is already in your favorite list`)
             }

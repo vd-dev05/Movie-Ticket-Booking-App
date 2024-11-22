@@ -11,8 +11,10 @@ import { formatCardNumber } from '@/lib/fomatCard';
 import BookingController from '@/services/users/booking';
 import queryString from 'query-string';
 import { FaQrcode } from "react-icons/fa6";
-import { showErrorToast, showSuccessToast } from '@/lib/toastUtils';
-
+import { showErrorToast, showLoadingToast, showSuccessToast } from '@/lib/toastUtils';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { toast } from 'react-toastify';
 const Pay = () => {
     const localtion = useLocation()
     const parsed = queryString.parse(location.search);
@@ -26,15 +28,13 @@ const Pay = () => {
 
     const { buttonClasses, backGround, textClasses, inputClasses, themeUniver, btnSubmit, buttonCLick } = useThemeClasses();
     const { color } = useTheme();
-    // const { item, setItem } = useItem();
-    // const { dataUser } = useUser();
-    const payData = JSON.parse(localStorage.getItem('pay'));
+
 
     const [selectedValue, setSelectedValue] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenPay, setIsOpenPay] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState(true);
     // const [numberCard, setNumberCard] = useState({
     //     master: '',
     //     payPal: ''
@@ -106,8 +106,8 @@ const Pay = () => {
     // console.log(data)
 
     const [payBookData, setpayBookData] = useState([]);
-    const [qrData,setQrData] = useState([])
-    const [dataTicket ,setDataTicket] = useState([])
+    const [qrData, setQrData] = useState([])
+    const [dataTicket, setDataTicket] = useState([])
     const [formValues, setFormValues] = useState({
         nameCard: '',
         numberCard: '',
@@ -125,91 +125,59 @@ const Pay = () => {
             }));
         }
     };
-
+    
     const handlePay = async () => {
+        setIsValid(false);
+        
+        const toastId = toast.loading("Please Loading ...");
         const token = localStorage.getItem('access_token')
-        if (!token) alert('Please Login');
-        if (token ) {
+        if (!token) {
+            alert('Please Login');
+            setIsValid(true);   
+            return
+        } 
+        if (token) {
             try {
-                const response =  await BookingController.seatsBookings(token,parsed,splitId)
-                
+                const response = await BookingController.seatsBookings(token, parsed, splitId)
+
                 if (response.success === true) {
-                    setIsOpenPay(true)  
+                    setIsOpenPay(true)
                     setQrData(response.imgUrl)
                     setDataTicket(response.dataQr)
-                    showSuccessToast(response.message)    
-                } 
+                    // showSuccessToast(response.message)
+                    toast.update(toastId, {
+                        render: 'Task completed successfully!',
+                        type: 'success',
+                        isLoading: false,
+                        autoClose: 5000,
+                      });
+                }
                 if (response.response.status === 401) {
-                    showErrorToast(response.response.data.error)
+                    setIsValid(true)
+                    // showErrorToast(response.response.data.error)
+                    toast.update(toastId, {
+                        render: `${response.response.data.error}`,
+                        type: 'error',
+                        isLoading: false,
+                        autoClose: 5000,
+                      });
                 }
             } catch (error) {
-        
-                
-               showErrorToast(error.data.error)
-                
+                setIsValid(true);
+                toast.update(toastId, {
+                    render: `${response.response.data.error}`,
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 5000,
+                  });
+
             }
+            setTimeout(() => {
+                toast.dismiss(toastId);
+              }, 5000);
 
         }
-  
-        
-        
-        // if (localStorage.getItem('access_token'))
-        // try {
-        //     const userRefData = ref(database, 'users/userCard/' + selectedValue);
-        //     await update(userRefData, item.userCard);
-        // } catch (error) {
-        //     console.error("Error initializing user data:", error);
-        // }
-        // const d1= data.findIndex((item) => item.number )
-        // // console.log(d1);
-
-        // if (d1 == '0' ) {
-        //     try {
-        //         const PayRef = ref(database, 'users/dataTicket/book');
-        //         const snapshot = await get(PayRef);
-        //         if (snapshot.exists()) {
-        //             const data = snapshot.val();
-        //             for (const key in data) {
-        //                 if (data[key].id == localStorage.getItem('pay')) {
-        //                     await update(ref(database, `users/dataTicket/book/${key}`), {
-        //                         paid: true,
-        //                     });
-        //                     setIsOpenPay(true)
-        //                     return;
-        //                 }
-        //             }
-        //             console.log("No matching booking found.");
-        //         } else {
-        //             console.log("No data found in 'book' path.");
-        //         }
-        //     } catch (error) {
-        //         console.error("Error updating data:", error);
-        //     }
-
-
-        // }
-
-        // const d = data.find(({ select }) => select === true);
-        // // console.log(d.select);
-        // // if (d.select  ) {
-        // //     setIsOpenPay(true)    
-        // // }
-        // if (d === undefined || d1 == '1') {
-        //     toast.info('You need to add a payment card', {
-        //         position: "top-right",
-        //         autoClose: 2000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "light",
-        //     });
-        // }
     };
-
-    console.log(qrData);
-    console.log(dataTicket);
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie px-5 ${themeUniver}`}>
             {!isLoading ? <div >Loading...</div>
@@ -236,8 +204,8 @@ const Pay = () => {
                                     <div className="flex flex-col justify-around pl-6">
                                         <div>
 
-                                        <h2 className="font-[700] text-xl">{truncateText(payBookData.title, 15)}</h2>
-                                        <p className="text-gray-300 text-xs">{payBookData.tomatoes && payBookData.tomatoes.production ? payBookData.tomatoes.production : 'hang phim ko ton tai'}</p>
+                                            <h2 className="font-[700] text-xl">{truncateText(payBookData.title, 15)}</h2>
+                                            <p className="text-gray-300 text-xs">{payBookData.tomatoes && payBookData.tomatoes.production ? payBookData.tomatoes.production : 'hang phim ko ton tai'}</p>
                                         </div>
                                         <div className='flex gap-2 '>
                                             <FaStar color='yellow' />
@@ -248,7 +216,7 @@ const Pay = () => {
                                 </div>
 
 
-                                <DoneBooking isOpenPay={isOpenPay} qrCode={qrData} dataTicket={dataTicket}  />
+                                <DoneBooking isOpenPay={isOpenPay} qrCode={qrData} dataTicket={dataTicket} />
                             </div>
                         )}
                         <div className='my-10'>
@@ -287,9 +255,9 @@ const Pay = () => {
                         </div>
                         <div className='h-[1px] w-full bg-gray-600'></div>
                         <div className='m-2 py-10 flex justify-between items-center'>
-                            <div  className=' flex gap-5 items-center'>
-                            <img src="/assets/img/momo_icon_square_pinkbg_RGB.png" alt="momo_icon_square_pinkbg_RGB" width={35} />
-                            <h2 className='font-logo'>Payment via qr code</h2>
+                            <div className=' flex gap-5 items-center'>
+                                <img src="/assets/img/momo_icon_square_pinkbg_RGB.png" alt="momo_icon_square_pinkbg_RGB" width={35} />
+                                <h2 className='font-logo'>Payment via qr code</h2>
                             </div>
                             <FaQrcode size={35} />
                         </div>
@@ -316,7 +284,8 @@ const Pay = () => {
                     <button
                         className={`${buttonCLick} min-w-full flex items-center justify-center rounded-lg py-4 text-white`}
                         onClick={handlePay}
-                    >Pay Now</button>
+                        disabled={!isValid}
+                    > {!isLoading ?  "Processing..." :"Pay Now"}</button>
                 </div>}
         </div>
     );

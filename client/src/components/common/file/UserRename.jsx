@@ -10,7 +10,7 @@ import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
-
+import { FaRegEdit } from "react-icons/fa";
 
 const notify = (theme) => toast.success('Rename done', {
     autoClose: 3000,
@@ -60,13 +60,17 @@ const UserRename = () => {
         <div>
             <h1 className="text-center font-bold text-xl">Edit Profile</h1>
             <div className="flex justify-center items-center mt-10">
-                <img
+               <div className=" relative">
+               <img
                     src="https://github.com/shadcn.png"
                     width={100}
                     alt="Profile"
-                    className="rounded-lg"
+                    className="rounded-lg "
                 />
+                 <FaRegEdit className="absolute text-red-500 bottom-0 right-0"/>
+               </div>    
             </div>
+          
             <form onSubmit={formik.handleSubmit}>
                 <div className={`relative border border-gray-300 rounded-lg my-5  p-2 ${formik.errors.name ? 'border-primary-textMovie' : ''}  `}>
                     <Input

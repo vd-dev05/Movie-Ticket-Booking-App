@@ -1,15 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@/context/Theme/index';
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import Home from '@/pages/Home/homebaner';
-const Login = lazy(() => import('@/pages/Login/bannerLogin'))
-// import Login from '@/pages/Login/bannerLogin';
+// const Login = lazy(() => import('@/pages/Login/bannerLogin'))
+import Login from '@/pages/Login/bannerLogin';
 import Otp from '@/pages/Login/login';
 import { TestMongo } from '@/components/User/testMongo';
 import SignUp from '@/pages/SignUp/signUp';
 // import HomePage from '@/pages/Home/Homepage';
-const HomeMovie = lazy(() => import('@/pages/Home/HomeMovie'))
-// import HomeMovie from '@/pages/Home/HomeMovie';
+// const HomeMovie = lazy(() => import('@/pages/Home/HomeMovie'))
+import HomeMovie from '@/pages/Home/HomeMovie';
 import Select from '@/pages/Booking/seats/index';
 import TestOtp from '@/components/User/test';
 import Password from '@/components/Layout/Dasboard/ResetPass';

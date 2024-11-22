@@ -13,22 +13,24 @@ import {
 import { Link } from "react-router-dom";
 import React, { useEffect, useCallback, memo, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { truncateText } from "../../../../../hooks/GetApi/GetApi";
+import { truncateText } from "../../../../hooks/GetApi/GetApi";
 import { Box, Typography } from "@mui/joy";
 import updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 import { toast } from "react-toastify";
 
-const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
+const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {    
     const test = useMemo(() => {
-
         if (data && data.title) {
             return truncateText(data.title, 15);
         }
         return '';
-    }, [data]);
+    }, [data]);    
     const [rating, setRating] = useState(0);
     const [selectedValue, setSelectedValue] = useState('');
-
+    
+    const handleChangeText = (event) => {
+        setRating(event.target.value)
+    }
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -42,10 +44,14 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
     ];
 
     const handleSubmit = async () => {
-        await updateBookingStatus (data,{paid:false})
+        console.log(selectedValue);
+        console.log(rating);
+        console.log(data);
+        
+        // await updateBookingStatus (data,{paid:false})
         setIsOpen(!isOpen)
         setDataLoad(!dataLoad)
-        toast('🦄 Wow so easy!', {
+        toast('😢 Cancel ticket successfull !', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -66,9 +72,9 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
 
 
                         <AlertDialogHeader >
-                            <AlertDialogTitle>Cancel Booking</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                <p className="text-gray-500 mb-5"> Please select the reason for cancellation</p>
+                            <AlertDialogTitle className="text-center">Cancel Booking</AlertDialogTitle>
+                            <AlertDialogDescription className="text-gray-500 mb-5 text-center">
+                            Please select the reason for cancellation
                             </AlertDialogDescription>
                             <div>
                                 {options.map((option, index) => (
@@ -86,6 +92,7 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
                                 ))}
                                 <div>
                                     <textarea 
+                                    onChange={handleChangeText}
                                     placeholder="Tell us reason"
                                     className="h-52 border-[1px] w-full outline-none p-5"></textarea>
                                 </div>

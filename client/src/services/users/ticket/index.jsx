@@ -21,9 +21,7 @@ const TicketController = {
                  'authorization': `Bearer ${localStorage.getItem('access_token')}`
              }
            })
-           console.log(response);
-           
-        //   return response
+           return response
         } catch (error) {
             return error
         }

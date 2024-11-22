@@ -15,7 +15,7 @@ import Nav from "@/layout/Nav/index";
 const HomeMovie = () => {
     const [nameUser, setNameUser] = useState('');
     const [check, setCheck] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [dataLove, setDataLove] = useState([]);
     const [dataHistory, setDataHistory] = useState([]);
 
@@ -45,21 +45,21 @@ const HomeMovie = () => {
                 setDataLove(responseLove.data);
                 setDataHistory(responseHistory.data.history);
                 
-                setIsLoading(false); 
+                setIsLoading(true); 
             } catch (error) {
                 console.error("Error fetching user data:", error);
-                setIsLoading(false);
+                setIsLoading(true);
             } finally {
-                setIsLoading(true)
+                setIsLoading(false)
             }
         };
         fetchData();
     }, []);
-    useEffect(() => {
-        if (dataHistory.length && dataLove.length) {
-            setIsLoading(false); 
-        }
-    }, [dataLove, dataHistory]);
+    // useEffect(() => {
+    //     if (dataHistory.length && dataLove.length) {
+    //         setIsLoading(false); 
+    //     }
+    // }, [dataLove, dataHistory]);
     if (isLoading) {
         return (
                 <div className="text-center">
@@ -148,7 +148,7 @@ const HomeMovie = () => {
                     <Link to="/lmovie" state={{ data: dataLove }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 mb-24">
-                    {dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space = {100} isize={250}  page={3}  texts={20}/> : "Not found"}
+                    {  dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space = {100} isize={200}  page={3}  texts={20}/> : "Not found"}
                 </div>
             </div>
 

@@ -32,7 +32,7 @@ export const SendOtp = (req,res) => {
     try {
         const {phone_number}  = req.body
         if (!phone_number) throw new Error('Invalid phone_number')
-        console.log(req.body);
+        // console.log(req.body);
         
         if (GolbalData.otp[phone_number]) { 
             return res.json("OTP already sent to this number")

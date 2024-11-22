@@ -26,27 +26,27 @@ const Past = () => {
 
     const handleSubmit = async () => {
        
-        try {
-            const refData = 'data/movies'
-            const refPost = 'data/movies/'
-            await updateDataBase(refData, refPost, starReveiew.id, {
-                rate: starReveiew.rating,
-                review: starReveiew.review
+        // try {
+        //     const refData = 'data/movies'
+        //     const refPost = 'data/movies/'
+        //     await updateDataBase(refData, refPost, starReveiew.id, {
+        //         rate: starReveiew.rating,
+        //         review: starReveiew.review
 
-            })
-            await updateBookingStatus(starReveiew.id, {
-                past: true
-            })
+        //     })
+        //     await updateBookingStatus(starReveiew.id, {
+        //         past: true
+        //     })
            
-            setDataLoad(!dataLoad)
-            setRatingandReview('')
-            // alert("done")
-            // toast.success('Review Successful! Thank you <3');
-        } catch (error) {
-            console.log(error);
-            toast.error('An error occurred. Please try again.');
+        //     setDataLoad(!dataLoad)
+        //     setRatingandReview('')
+        //     // alert("done")
+        //     // toast.success('Review Successful! Thank you <3');
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error('An error occurred. Please try again.');
 
-        }
+        // }
     }
     if (dataLoad) {
         toast.success('Review SuccessFull ! Thank you <3')
@@ -54,18 +54,18 @@ const Past = () => {
     const { inputClasses, backGround, textClasses, themePaid, themePaidDone, buttonClasses, btnSubmit } = useThemeClasses();
     useEffect(() => {
         const fetech = async () => {
-            try {
-                const data = await dataMovie('users/dataTicket/book');
-                // console.log(data);
-                const dataTic = data.filter((item => item.paid == true))
+            // try {
+            //     const data = await dataMovie('users/dataTicket/book');
+            //     // console.log(data);
+            //     const dataTic = data.filter((item => item.paid == true))
                
-                setMovieData(dataTic)
+            //     setMovieData(dataTic)
 
-            } catch (err) {
-                console.error(err);
-                toast.error('An error occurred. Please try again.');
+            // } catch (err) {
+            //     console.error(err);
+            //     toast.error('An error occurred. Please try again.');
 
-            }
+            // }
         }
        fetech()
       
@@ -91,12 +91,12 @@ const Past = () => {
     return (
         <div className="  font-movie  drop-shadow-lg pb-[50px] h-screen ">
                 {data.length === 0 &&
-                <div class={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
-                    <div class="animate-pulse flex space-x-4">
-                        <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
-                        <div class="flex-1 space-y-6 py-1">
-                            {/* <div class="h-2 bg-slate-700 rounded w-[200px]"></div> */}
-                            <div class="space-y-10">
+                <div className={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
+                    <div className="animate-pulse flex space-x-4">
+                        <div className="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
+                        <div className="flex-1 space-y-6 py-1">
+                            {/* <div className="h-2 bg-slate-700 rounded w-[200px]"></div> */}
+                            <div className="space-y-10">
                                 No Data Ticket . Please Book Ticket Movie
                             </div>
                         </div>
@@ -114,7 +114,7 @@ const Past = () => {
                                 <div className="pl-5 flex flex-col h-full justify-around">
                                     <h2 className="font-movie font-bold text-nowrap">{truncateText(itenm.title, 15)}</h2>
                                     <p className="text-gray-400 text-[11px]  text-nowrap">{itenm.theFirm}</p>
-                                    <p className="text-[11px] ">Language: {itenm.language}</p>
+                                    <p className="text-[11px] ">Language: {item.movieId.languages  ? (item.movieId.languages).join(' ,') : ''}</p>
                                 </div>
                             </div>
                         </div>

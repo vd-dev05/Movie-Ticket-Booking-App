@@ -73,13 +73,13 @@ const LoveMovie = () => {
 
                     )) : <div className={`flex-shrink-0 w- pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
                         <div className="animate-pulse flex space-x-4">
-                            <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
-                            <div class="flex-1 space-y-6 py-1"> 
+                            <div className="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
+                            <div className="flex-1 space-y-6 py-1"> 
                             No favorites here.
                                 {/* <div class="h-2 bg-slate-700 rounded w-[200px]"></div> */}
-                                <div class="space-y-10">
+                                <div className="space-y-10">
                                 Please add your favorite movies
-                                    <div class="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-3 gap-4">
                                         
                                         {/* <div class="h-2 bg-slate-700 rounded col-span-2"></div>
                                         <div class="h-2 bg-slate-700 rounded col-span-1"></div> */}

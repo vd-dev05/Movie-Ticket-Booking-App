@@ -18,7 +18,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { LoadingApp } from '@/layout/Loading';
 import { showSuccessToast } from '@/lib/toastUtils';
 const MovieDetails = () => {
-    const { textClasses, backGround, themeBackGround, btnSubmit,buttonCLick } = useThemeClasses()
+    const { textClasses, backGround, themeBackGround, btnSubmit, buttonCLick } = useThemeClasses()
     const { color } = useTheme()
     const location = useLocation()
     // console.log(textClasses);
@@ -34,22 +34,22 @@ const MovieDetails = () => {
             // if (reponse) {
             //     setIsLoading(true)
             // }
-             if (localStorage.getItem('access_token')) {
-               await UserHistory.lastMovie(location.pathname.split('/')[2] || data._id)               
-               const response = await UserHistory.getLoveMovie(location.pathname.split('/')[2] || data._id)
-               const arr = response.data.map((data) =>  data._id )
-             
-               
+            if (localStorage.getItem('access_token')) {
+                await UserHistory.lastMovie(location.pathname.split('/')[2] || data._id)
+                const response = await UserHistory.getLoveMovie(location.pathname.split('/')[2] || data._id)
+                const arr = response.data.map((data) => data._id)
+
+
                 // console.log(arr.indexOf(location.pathname.split('/')[2] ) );
-                
-                if (arr.indexOf(location.pathname.split('/')[2]) === -1) { 
+
+                if (arr.indexOf(location.pathname.split('/')[2]) === -1) {
                     setIsTrue(false)
                     setIsLoading(true)
                 } else {
                     setIsTrue(true)
                     setIsLoading(true)
                 }
-               
+
             } else {
                 alert("Please Login !")
             }
@@ -81,21 +81,21 @@ const MovieDetails = () => {
 
     const handleRemoveLove = async () => {
         if (localStorage.getItem('access_token')) {
-            const reponse = await UserHistory.loveMovie('unlike',location.pathname.split('/')[2] || data._id)
+            const reponse = await UserHistory.loveMovie('unlike', location.pathname.split('/')[2] || data._id)
             showSuccessToast(reponse.data.message)
             setIsTrue(!isValid)
         } else {
             alert("Please Login !")
         }
 
-        
+
     };
     if (!isLoading) {
         return <p>Loading ...</p>
     }
     return (
         <div>
-            {dataMovie && isValid  ? <div className={` iphone-12-pro-max:flex flex flex-col min-h-screen  font-movie px-5 ${themeBackGround} ${textClasses} `}>
+            {dataMovie && isValid ? <div className={` iphone-12-pro-max:flex flex flex-col min-h-screen  font-movie px-5 ${themeBackGround} ${textClasses} `}>
                 <div>
                     <div className="translate-y-9">
                         <Link to="/lmovie">
@@ -106,40 +106,46 @@ const MovieDetails = () => {
                     <h1 className='text-center font-logo'>Movie Details</h1>
                 </div>
 
-                <div className='flex mt-10 '>
-                    <div className=' w-full' >
-                        <img src={dataMovie.poster} alt="helo" className='rounded-2xl m-h-[400px] object-cover' />
+                <div className='flex flex-row md:flex-row mt-10'>
+                    <div className='w-full md:w-full '>
+                        <img
+                            src={dataMovie.poster}
+                            alt="helo"
+                            className='rounded-2xl w-full  h-[300px] sm:h-[400px] md:h-[600px] object-cover'
+                        />
                     </div>
 
-                    <div className='flex flex-col justify-between px-10 text-center '>
-
-                        <div className='flex flex-col items-center'>
+                    <div className='flex flex-col justify-between px-5 sm:px-10 text-center md:text-center'>
+                        {/* Genre Section */}
+                        <div className='flex flex-col items-center '>
                             <AiOutlineVideoCamera className='text-primary-textMovie' size={35} />
                             <span className='text-gray-400'>Type</span>
                             <p className='font-logo'>{dataMovie.genres[0]}</p>
                         </div>
 
-                        <div className='flex flex-col items-center'>
+                        {/* Duration Section */}
+                        <div className='flex flex-col items-center '>
                             <div><IoMdTime className='text-primary-textMovie' size={35} /></div>
                             <span className='text-gray-400'>Duration</span>
                             <p className='font-logo text-sm'>{convertMinutesToHhMm(dataMovie.runtime)}</p>
                         </div>
 
-                        <div className='flex flex-col items-center'>
+                        {/* Rating Section */}
+                        <div className='flex flex-col items-center '>
                             <div><CiStar className='text-primary-textMovie' size={35} /></div>
                             <span className='text-gray-400'>Rating</span>
                             <p className='font-logo'>{Number(dataMovie.imdb.rating).toFixed(1)}/10</p>
                         </div>
                     </div>
-
                 </div>
+
                 <div className='my-5 flex justify-between items-center'>
                     <div>
                         <h2 className='font-w900'>{dataMovie.title}</h2>
                         <p className='text-gray-400 mt-2'>{dataMovie.theFirm}</p>
                     </div>
                     <div>
-                    {IsTrue
+                        {IsTrue
                             ? <div
                                 onClick={handleRemoveLove}
                                 className={`flex w-[200px] p-4 items-center gap-2 ${buttonCLick} cursor-pointer`} >

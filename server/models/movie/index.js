@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 import Collections from "../../database/collections.js";
+// ticket booking canncell 
+const cancelSchema = new mongoose.Schema({
+    ticketId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "bookings"
+    },
+    cancelReason: String,
+    canceledAt: {
+        type: Date,
+        default: Date.now()
+    }
+})
+
 
 // Card Schema
 const cardSchema = new mongoose.Schema({
@@ -30,15 +43,13 @@ const ticketSchema = new mongoose.Schema({
     },
     seat: {
         type: [String], // Array of strings to store seat identifiers
-        required: true
     },
     price: {
         type: Number,
-        required: true
     },
     status: {
         type: String,
-        enum: ['Active', 'Canceled', 'Expired'],
+        enum: ['Active', 'Cancelled', 'Expired'],
         default: 'Active',
     },
     date : {
@@ -163,10 +174,11 @@ const movieSchema = new mongoose.Schema({
 const Users = mongoose.model(Collections.USERS, userSchema);
 const Movies = mongoose.model(Collections.MOVIES, movieSchema);
 const Booking = mongoose.model(Collections.BOOKINGS, bookSchema);
-
+const Cancel = mongoose.model(Collections.CANCEL, cancelSchema);
 // Export Models
 export {
     Movies,
     Users,
-    Booking
+    Booking,
+    Cancel
 };

@@ -29,8 +29,25 @@ const autoUrl = async (idKey) => {
         height : 500
     })
 }
+const deleteImage = async (publicId) =>  {
+  try {
+    cloudinary.config({ 
+        cloud_name: 'dlpxfxpdn', 
+        api_key: process.env.API_KEY_CLOUDINARY, 
+        api_secret: process.env.SECRET_KEY_CLOUDINARY 
+    });
+    const ressponse =  await cloudinary.uploader.destroy(publicId , (result) => {
+        return result
+    }) 
+    return ressponse
+   
+  } catch (error) {
+    console.log('Error delete Cloudinary:', err.message);
+  }
+}
 
 export {
     upLoadClound,
-    autoUrl
+    autoUrl,
+    deleteImage
 }

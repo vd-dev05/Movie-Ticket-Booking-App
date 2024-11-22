@@ -14,7 +14,7 @@ serverTest
 dist-ssr
 *.local
 # /src/components/Layout/Product/test/
-
+.vscode
 node.md
 netlify.toml
 .netlify

@@ -44,9 +44,13 @@ const QrCode = () => {
                 } else {
                    alert('Please select an account ')
                 }
+                console.log(splitId);
+                
                 const response = await TicketController.getTicket(splitId)
                 if (response) {
                     const ticket = response.data.ticket
+                 
+                    
                     const data =  ticket.filter(ticket => ticket._id === splitId);
                     if (data.length > 0) {
                      setDataMap(data[0] )   
@@ -80,7 +84,7 @@ const QrCode = () => {
             {  dataMap  ? (
                 
                 <div >
-                    <div className={`${themeUniver} iphone-12-pro-max:flex flex flex-col min-h-screen min-w-full  font-movie px-5 `}>
+                    <div className={`${themeUniver} iphone-12-pro-max:flex flex flex-col h-[100vh] min-w-full  font-movie px-5 `}>
                         <div>
                             <div className="translate-y-9">
                                 <Link 
@@ -93,7 +97,7 @@ const QrCode = () => {
                                 <h1 className='text-center font-logo'>View Ticket</h1>
                             </div>
                         </div>
-                        <div className={`${themeCtx.theme == 'dark' || 'travel' ? 'bg-[#242024]' : 'bg-[#f0f0f0]'} w-full  h-full flex flex-col items-center z-0 justify-center mt-10 pt-10 rounded-lg gap-y-10  `}>
+                        <div className={`${themeCtx.theme == 'dark' || 'travel' ? 'bg-[#242024]' : 'bg-[#f0f0f0]'} w-full h-full   flex flex-col items-center z-0 justify-center mt-10 pt-10 rounded-lg gap-y-10  `}>
     
                             <div className="drop-shadow-2xl w-full text-center">
                                 <h2 className="text-center font-bold">Scan This Qr</h2>
