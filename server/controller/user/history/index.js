@@ -22,7 +22,6 @@ const UserHistory = {
     },
     addHistory: async (req, res) => {
         try {      
-            // console.log(req.params);
             const { movieId } = req.body
             
             

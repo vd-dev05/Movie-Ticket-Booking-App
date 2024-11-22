@@ -68,7 +68,7 @@ export const getMovieById = async (value) => {
     
     try {
         // console.log(value.value);
-        console.log(value);
+        // console.log(value);
         
         const movie = await Movies.findById(value.value)
         // console.log(movie);
@@ -125,7 +125,7 @@ export const getProductionMovie = async (value) => {
                 {$match: {'imdb.rating': {$gte: 8}, genres: {$ne: value.genres}}},
                 {$project: {poster: 1, title: 1, imdb: 1, genres: 1}},
                 {$sort: {'imdb.rating': -1}},
-                {$limit: 10 - movie.length} // Lấy đủ số phim còn thiếu
+                {$limit: 10 - movie.length} 
             ]);
             movie.push(...additionalMovies); // Thêm vào danh sách phim hiện có
         }
@@ -148,6 +148,30 @@ export const getHoolyWoodMovie = async (value) => {
         
         
         return movie;  
+    } catch (error) {
+        throw new Error(error.message);  
+    }
+}
+
+export const getMovieSettings = async (year ,rating , genres) => {
+    try {
+        // console.log(year ,rating , genres);
+        
+        // console.log(value);
+        
+        // const movie = await Movies
+        // .aggregate([
+        //     {$match : {  'imdb.rating': { $gte:  value.rating } , genres : {$in  : [value.genres]} }},
+        //     {$project : {poster :1, title :1, imdb : 1, genres : 1 }},
+        //     {$sort : { years : {}}}
+        //     // {$limit : value.limit}
+        // ])
+        
+        // if (!movie) {
+        //     throw new Error("Error: Couldn't find Movie");
+        // }
+        
+        // return movie;  
     } catch (error) {
         throw new Error(error.message);  
     }

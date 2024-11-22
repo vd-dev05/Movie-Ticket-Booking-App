@@ -15,10 +15,16 @@ export const showSuccessToast = (message) => {
  * Hàm hiển thị thông báo toast lỗi.
  * @param {string} message - Thông báo lỗi cần hiển thị.
  */
-export const showErrorToast = (message) => {
+export const showErrorToast = (message) => { 
   toast.error(message, {
-      autoClose: 3000, // Thời gian tự động đóng toast sau 3 giây
-    style :{textWrap : "nowrap"}
+
+      autoClose: message.length > 100 ? 10000 : 3000, // Thời gian tự động đóng toast sau 3 giây
+    style :{ 
+      width : message.length > 50 ? "500px" :'' ,
+      textWrap : "nowrap",
+       transform : message.length > 50 ? `translate(-${message.length * 2}px)` :'',
+    }
+    
   });
 };
 

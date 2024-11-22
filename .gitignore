@@ -32,6 +32,6 @@ serverTest
 # Local Netlify folder
 .netlify
 *.env
-
+img
 
 

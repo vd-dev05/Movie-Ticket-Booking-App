@@ -110,7 +110,7 @@ const Search = () => {
                 {/* <div> */}
                     {!isLoading && data.length > 0 ? data.map((item) => (
                         <div key={item.id}>
-                             <Link to={'/itemLove'} state={{data:item}}>
+                             <Link to={`/details/${item._id}`} state={{data:item}}>
                              <div key={item.id} className={`flex-shrink-0 w-[calc(100% / 3)] pr-2 mt-10 flex  rounded-3xl p-5 ${buttonClasses}`}>
                                
                                <div className="">

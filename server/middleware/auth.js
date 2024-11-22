@@ -56,15 +56,22 @@ const authMiddleware = {
       const token = req.headers['authorization']; // Expect "Bearer <token>"
       const split = token.split(' ')[1];
      
-       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
+      const id =  jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")
-          req.userId = user.userId   
+          // req.userId = user.userId   
+        //  console.log(user);
+         
+          return user.userId
+                
+
+      });   
+  
+      if (id) {
+        req.userId  = id        
+        next() 
+      }
+  
     
-          next()        
-
-      });    
-
-      
     } catch (error) {
       return res.status(403).json("Please Enter a token")
       

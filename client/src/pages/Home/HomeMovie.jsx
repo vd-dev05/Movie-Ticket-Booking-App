@@ -44,7 +44,7 @@ const HomeMovie = () => {
                 const responseLove = await UserHistory.getLoveMovie();
                 setDataLove(responseLove.data);
                 setDataHistory(responseHistory.data.history);
-
+                
                 setIsLoading(false); 
             } catch (error) {
                 console.error("Error fetching user data:", error);

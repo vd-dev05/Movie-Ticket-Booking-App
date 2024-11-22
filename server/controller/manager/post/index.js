@@ -39,7 +39,7 @@ const postManager = {
                         for (let j = 1; j <= 7; j++) {
                             const seatId = `${row}${j}`;
                             if (seatId !== 'A6' && seatId !== 'A7' && seatId !== 'G6' && seatId !== 'G7') {
-                                seats.push({ id: seatId, status: book,userId : null});
+                                seats.push({ seatsId: seatId, status: book,userId : null,code :null});
                             }
                             
                         }

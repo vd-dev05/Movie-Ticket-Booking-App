@@ -27,7 +27,7 @@ const MovieTop = () => {
         (async () => {
                 try {
                     const r = await MovieController.getTopMovie();
-                    // console.log(r.data);
+                    console.log(r.data);
                     
                     if (r) {
                         const test = Math.ceil(r.data.length / Math.ceil(Math.random() * r.data.length)) 

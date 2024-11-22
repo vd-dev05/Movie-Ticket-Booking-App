@@ -3,18 +3,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { MdChair } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useLocation } from 'react-router-dom';
-import { useThemeClasses } from "../../../../context/Theme/themeStyles";
-import { useTheme } from "../../../../context/Theme";
-import { useItem } from "../../../../hooks/GetApi/ItemContext";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
+import { useTheme } from "@/context/Theme/index";
+// import { useItem } from "../../../../hooks/GetApi/ItemContext";
 import { io } from "socket.io-client";
 import * as dateFns from 'date-fns'
 import { format, startOfDay, startOfWeek, endOfDay, startOfMonth, lastDayOfMonth, eachDayOfInterval, lastDayOfWeek, eachMinuteOfInterval, setMinutes } from 'date-fns';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import generateRandomString from "@/lib/randomCodeMovie"
-import { toast, ToastContainer } from "react-toastify";
-import  updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
+import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toastUtils";
+import { useUser } from "@/context/User";
+import { generateSeats } from "@/lib/createSeats";
+import SeatList from "./seatsList";
 
 // import { useItem } from "../GetApi/ItemContext";
 // const boooking = 5
@@ -26,96 +27,81 @@ import  updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 //     return '90';
 // };
 
-// const sizeClass = getSizeClass();
-
-
-
-const obValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-const generateSeats = (count, startIndex) =>
-
-    // console.log(count);
-
-    Array.from({ length: count }, (_, i) => ({
-        id: `${obValues[i]}${startIndex}`,
-        booked: Math.random() < 0.5,
-        selected: false,
-        // ob:obValues[i],
-        // price: 99
-    }));
-
 // Component SeatList
-const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
-    const theme = useTheme()
+// const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
+//     const theme = useTheme()
 
-    const [seats, setSeats] = useState(generateSeats(count, startIndex));
-    // console.log(seats);
-
-
-
-    // Hàm xử lý sự kiện khi nhấp vào ghế
-    const handleSeatClick = (id) => {
-        // console.log(id);
-        setTotalTicket(id)
-
-        // const t =  seats.filter(seat => seat.id == id)
-        // console.log(seats.filter(seat => seat.id == id.id ?  ));
+//     const [seats, setSeats] = useState(generateSeats(count, startIndex));
+//     // console.log(seats);
 
 
-        const updatedSeats = seats.map((seat) =>
 
-            seat.id === id && !seat.booked
-                ? ({ ...seat, selected: !seat.selected, price: !seat.selected ? 99 : 0 })
-                : seat
-        );
+//     // Hàm xử lý sự kiện khi nhấp vào ghế
+//     const handleSeatClick = (id) => {
+//         // console.log(id);
+//         setTotalTicket(id)
 
-        // console.log(updatedSeats);
+//         // const t =  seats.filter(seat => seat.id == id)
+//         // console.log(seats.filter(seat => seat.id == id.id ?  ));
 
-        setSeats(updatedSeats);
-        //    
 
-    };
+//         const updatedSeats = seats.map((seat) =>
 
-    useEffect(() => {
-        onSeatsUpdate(seats);
-        // console.log(TotalTicket);
-    }, [seats]);
+//             seat.id === id && !seat.booked
+//                 ? ({ ...seat, selected: !seat.selected, price: !seat.selected ? 99 : 0 })
+//                 : seat
+//         );
 
-    return (
-        <div className="flex flex-col">
-            {seats.map((seat) => (
-                <div key={seat.id}>
-                    {/* {seat.id} */}
-                    <MdChair
-                        key={seat.id}
-                        id={seat.id}
-                        size={'100%'}
-                        // size={sizeClass}
-                        className={`cursor-pointer ${seat.booked
-                            ? theme.theme == 'travel' ? ' text-[#b8116a]' : 'text-chairMovie-chairBooked' : seat.selected
-                                ? theme.theme == 'travel' ? ' text-[#08fbd2]' : 'text-primary-textMovie'
-                                : theme.theme == 'travel' ? ' text-[#c4c4c2]' : 'text-chairMovie-chairAvailable'}    `}
-                        onClick={() => handleSeatClick(seat.id)}
-                    />
+//         // console.log(updatedSeats);
 
-                </div>
-            ))}
-        </div>
-    );
-};
+//         setSeats(updatedSeats);
+//         //    
+
+//     };
+
+//     useEffect(() => {
+//         onSeatsUpdate(seats);
+//         // console.log(TotalTicket);
+//     }, [seats]);
+
+//     return (
+//         <div className="flex flex-col">
+//             {seats.map((seat) => (
+//                 <div key={seat.id}>
+//                     {/* {seat.id} */}
+//                     <MdChair
+//                         key={seat.id}
+//                         id={seat.id}
+//                         size={'100%'}
+//                         // size={sizeClass}
+//                         className={`cursor-pointer ${seat.booked
+//                             ? theme.theme == 'travel' ? ' text-[#b8116a]' : 'text-chairMovie-chairBooked' : seat.selected
+//                                 ? theme.theme == 'travel' ? ' text-[#08fbd2]' : 'text-primary-textMovie'
+//                                 : theme.theme == 'travel' ? ' text-[#c4c4c2]' : 'text-chairMovie-chairAvailable'}    `}
+//                         onClick={() => handleSeatClick(seat.id)}
+//                     />
+
+//                 </div>
+//             ))}
+//         </div>
+//     );
+// };
 
 // console.log(si);
 
 const Select = () => {
     const nav = useNavigate()
-    // const { dataUser, setDataUser } = useUser()
+    const { dataUser, setDataUser } = useUser()
     // const { item } = useItem()
     // console.log(dataUser);
-
     const [total, setTotal] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0)
     const [TotalTicket, setTotalTicket] = useState([])
 
     const location = useLocation()
+    const splitLocation = location.pathname.split('/booking')[0]
+
+
     const dataBook = location.state || {}
     // console.log(dataBook);
 
@@ -186,6 +172,8 @@ const Select = () => {
         dataD: null,
         dataH: null
     })
+    const [queryDate, setqueryDate] = useState()
+    const [queryTime, setqueryTime] = useState()
     // const [book, setBook] = useState({
     //     date: false,
     //     hours: false
@@ -233,8 +221,10 @@ const Select = () => {
                 ? { ...hour, clickD: true }
                 : { ...hour, clickD: false }
         )
-        setDay(updatedHours)
 
+
+        setDay(updatedHours)
+        // console.log(updatedHours);
 
 
 
@@ -248,44 +238,65 @@ const Select = () => {
         setHours(updatedHours)
 
         const dH = hours.filter((item) => item.clickH == true)
-        setDataTicket(pre => ({ ...pre, dataH: dH }))
+
     }
 
 
-    // useEffect(() => {
-    //     const dD = day.filter((item) => item.clickD == true)
-    //     const dH = hours.filter((item) => item.clickH == true).map(hour => ({ keyHours: hour.keyHours, id: hour.id }))
+    useEffect(() => {
+        const dD = day.filter((item) => item.clickD == true)
+        const dH = hours.filter((item) => item.clickH == true).map(hour => ({ keyHours: hour.keyHours, id: hour.id }))
 
-    //     //  setDataUser(pre => ({...pre,dataTicket:dD}))
+        //  setDataUser(pre => ({...pre,dataTicket:dD}))
 
-    //     setDataUser(pre => ({
-    //         ...pre,
-    //         dataTicket: {
-    //             dataMovieBook: Ticket,
-    //             dataTimeBook: dH,
-    //             dataDayBook: dD,
-    //             total: TotalPrice,
-    //         },
+        setDataUser(pre => ({
+            ...pre,
+            dataTicket: {
+                dataMovieBook: Ticket,
+                dataTimeBook: dH,
+                dataDayBook: dD,
+                total: TotalPrice,
+            },
 
-    //         // total: TotalPrice,
-    //         // dataTicket:Ticket,
-    //         // dataDayBook:dD,
-    //         // dataTimeBook:dH,
-    //     }))
-    //     if (!dD && !dH && !Ticket && !TotalPrice) {
-    //         setDataUser(pre => ({ ...pre, select: true }))
-    //     }
-    // }, [TotalPrice, Ticket, day, hours])
+            // total: TotalPrice,
+            // dataTicket:Ticket,
+            // dataDayBook:dD,
+            // dataTimeBook:dH,
+        }))
+        setDataTicket({
+            dataD: dD,
+            dataH: dH,
+        })
+
+        if (!dD && !dH && !Ticket && !TotalPrice) {
+            setDataUser(pre => ({ ...pre, select: true }))
+        }
+        if (dD && dH) {
+            const dateCache = dD[0]
+            if (dateCache) {
+                const cacheDate = `${dateCache.dayOfWeek}-${dateCache.dayOfMonth}-${dateCache.date}`
+                setqueryDate(cacheDate)
+            }
+            const timeCache = dH[0]
+            if (timeCache) {
+                const cacheTime = timeCache.keyHours
+                setqueryTime(cacheTime)    
+            }
+
+        }
+
+
+        // setqueryDate()
+    }, [TotalPrice, Ticket, day, hours])
 
     const handlePay = async () => {
         const updateData = {
-            codeQr:`Mov ${generateRandomString(12)}`,
+            codeQr: `Mov ${generateRandomString(12)}`,
             dateBook: dataUser.dataTicket.dataDayBook,
             total: dataUser.dataTicket.total,
             seatBook: dataUser.dataTicket.dataMovieBook,
             timeBook: dataUser.dataTicket.dataTimeBook,
         }
-        await updateBookingStatus(localStorage.getItem('pay'), updateData)
+        // await updateBookingStatus(localStorage.getItem('pay'), updateData)
         // try {
         //     const PayRef = ref(database, 'users/dataTicket/book');
         //     const snapshot = await get(PayRef);
@@ -296,7 +307,7 @@ const Select = () => {
         //             // console.log(key);
         //             // console.log(data[key].id );
         //             // console.log(localStorage.getItem('pay'));
-                    
+
         //             if (data[key].id == localStorage.getItem('pay')) {
         //                 // console.log(dataUser.dataTimeBook);
 
@@ -321,21 +332,25 @@ const Select = () => {
         // }
     };
     const handleConfirm = () => {
-        // console.log(dataUser);
+        // console.log(data);
         // console.log(dataUser.dataTicket);
+        // console.log(dataUser);
+        // console.log(dataTicket);
 
-        if (dataUser.dataTicket === null || dataUser.dataTicket === undefined) {
-            // console.log('true');
-            toast.warning('Please book your tickets')
-        }
-        toast.success('Book SuccessFull', {
-            autoClose:2500
-        }
 
-        )
-        setTimeout(() => {
-            nav('/pay')
-        }, 2400);
+        // if (Ticket && TotalPrice ) {
+        //     showSuccessToast("Book SuccessFull")
+        //     setTimeout(() => {
+        //         nav('/pay')
+        //     }, 2400);
+        // } else {
+        //     showInfoToast('Please book your tickets') 
+        // }
+        // if (dataUser.dataTicket === null || dataUser.dataTicket === undefined) {
+        //     showInfoToast('Please book your tickets')
+        // }
+
+
 
     }
     return (
@@ -345,7 +360,7 @@ const Select = () => {
 
             <div className="px-5">
                 <div className="translate-y-9">
-                    <Link to="/itemlove">
+                    <Link to={`${splitLocation}`}>
                         <box-icon name='chevron-left' size={"40px"} color={color}>  </box-icon>
                     </Link>
 
@@ -480,12 +495,18 @@ const Select = () => {
                     </div>
 
                     <div className={buttonCLick}
-                        onClick={handlePay}
+                    // onClick={handlePay}
                     >
-                        <Link
-                           
+                        {/* <Button
                             onClick={handleConfirm}
-                            className="text-white hover:text-white" TotalPrice={TotalPrice} Ticket={Ticket} dataTicket={dataTicket} dataBook={dataBook}  >
+                            className=" h-16  text-xl w-[200px]"
+                        >Confirm Seat</Button> */}
+                        <Link
+                            to={`${location.pathname}/pay?seats=${Ticket}&day=${queryDate}&hour=${queryTime}&totalprice=${TotalPrice}&isactive=false`}
+                            onClick={handleConfirm}
+                            className="text-white hover:text-white" 
+                            // TotalPrice={TotalPrice} Ticket={Ticket} dataTicket={dataTicket} dataBook={dataBook}
+                              >
                             <Button
                                 className=" h-16  text-xl w-[200px]"
                             >Confirm Seat</Button>
@@ -495,7 +516,6 @@ const Select = () => {
                 </div>
 
             </div>
-            <ToastContainer></ToastContainer>
         </div>
 
     );

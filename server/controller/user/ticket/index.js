@@ -1,68 +1,105 @@
 import mongoose from "mongoose";
 import { Users, Booking } from "../../../models/movie/index.js";
 import UserMiddleware from "../../../middleware/user.js";
+import { generateQRCode } from "../../../utils/generateQR.js";
+import { v4 as uuidv4 } from 'uuid';
+import { upLoadClound } from "./upload/genqr.js";
+import {format} from 'date-fns'
+import { parseDateWithTime } from "../../../utils/configDate.js";
+
+
 const BookTicket = {
     bookticket: async (req, res) => {
         try {
-            const book = await Booking.findById(req.params.id)
+            const keyCode = uuidv4().split('-')[4];
+            const id = req.userId;
+            const { movieId, price, seat, status ,day,hour } = req.body;            
+            const isoDate = format(parseDateWithTime(day,hour), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            // Tìm booking dựa trên movieId
+            const book = await Booking.findOne({ movieId: movieId }, { seats: 1, movieId: 1 }).lean();
             if (!book) {
-                throw new Error("Error: Couldn't find Booking");
+                throw new Error(`The movie theater hasn't opened for ticket sales yet`)
             }
-            const seats = book.seats
-            const updateSeats = req.body.seat
-
-            // Update seats status and user id in booking
-            seats.forEach(seat => {
-                if (updateSeats.includes(seat.id)) {
-                    seat.status = req.body.status;
-                    seat.userId = req.body.userId;
+            
+            const userId = new mongoose.Types.ObjectId(id);
+            const updateSeats = seat;
+            const seats = book.seats;
+           
+            
+            const updatedSeats = seats.map(seat => {
+                if (updateSeats.includes(seat.seatsId)) {
+                    return { ...seat, status: status, userId: userId, code : keyCode  };
                 }
+                return seat;
+            });           
+
+            const userTicketPromise = Users.findOne({ _id: id }).select('name ticket comment role');    
+            const userTicket = await userTicketPromise;
+
+            if (!userTicket) {
+               throw new Error('User not found')
+            }
+
+            const existingTicket = userTicket.ticket.find(ticket => ticket.movieId.toString() === movieId);
+            if (existingTicket) {
+              throw new Error('Ticket already booked for this movie')
+            }            
+            const qrData = `Mov-${movieId}-${id}}`;
+            const code = await generateQRCode(qrData)
+            const upLoadPromise = upLoadClound(code, keyCode)
+          
+            
+            const dataComment = {
+            
+                movieId: movieId,
+                status: "InActive"
+            };
+
+            const data = {
+                movieId: movieId,
+                book: {
+                    movieQr: await upLoadPromise, 
+                    price: price,
+                    seat: seat,
+                    status: "Expired",
+                    keyCode : `Mov-${keyCode}`,
+                    date  : isoDate,
+                    keyCode : keyCode
+                },
+                _id  :  new mongoose.Types.ObjectId()
+            };
+            
+            userTicket.ticket.push(data);  
+      
+             
+            userTicket.comment.push(dataComment);
+
+            const [updatedUserTicket] = await Promise.all([
+                upLoadPromise,
+                Booking.updateOne(
+                    { movieId: movieId },
+                    { $set: { seats: updatedSeats } }
+                ),
+                userTicket.save(),
+              
+            ]);                   
+            return res.status(200).json({
+                message: 'Ticket booked successfully!',
+                success: true,
+                imgUrl  : updatedUserTicket ,
+                dataQr : data._id
+                
             });
-            
-            book.seats.push({ seats: seats })
-            const userTicket = await Users.findOne({
-                _id: req.body.userId})
-
-                     const data = {
-                    _id: false,
-                    movieId: req.params.id,
-                    book: {
-                        price: 100,
-                        seat: req.body.seat,
-                        status: "Active",
-                    } }
-                    const dataComment = {
-                        movieId : req.params.id,
-                        status : "InActive",
-
-                    }
-                // console.log(new mongoose.Schema.Types.ObjectId(req.params.id));
-            
-                for (const ticket of userTicket.ticket) {
-                    if (ticket.movieId.toString() === req.params.id) {
-                        return res.status(404).json({ 
-                            message: "Ticket does not exist", 
-                            success: false 
-                        });
-                    }
-                }
-                userTicket.ticket.push(data)
-                userTicket.comment.push(dataComment)
-                const t = await userTicket.save();
-                if (t) {
-                    res.status(200).json({
-                        message: 'Ticket booked successfully!',
-                        success: true,
-                        data: userTicket
-                    });
-                }
-
+    
         } catch (error) {
-            res.status(404).send({ error: error.message })
+            res.status(401).json({
+                error: error.message || "An error occurred while booking the ticket.",
+                success: false
+            });
         }
-
-
+           
     },
+    
     removeAllTicket: async (req, res) => {
         try {
             const ticket = await Users.findByIdAndUpdate(req.params.id, { $set: { ticket: [] } })
@@ -114,11 +151,33 @@ const BookTicket = {
             res.status(404).send({ error: error.message })
         }
     },
-    createCodeQr : (req, res) => {
+    getTicketId : async (req, res) => {
         try {
-          
+        const ticketId = new mongoose.Types.ObjectId(req.params.id)
+
+        
+        const response = await Users.findOne({'ticket._id' : ticketId })
+        .select('ticket')
+
+        // console.log(response);
+        
+          res.status(200).json(response)
         } catch (error) {
-            res.status(500).send({ error: error.message })
+            res.status(401).send({ error: error.message })
+        }
+    },
+    getAllTickets : async (req, res) => {
+
+        
+        try {
+            const ticket = await Users.findById(req.userId)
+            .select('ticket' )
+            .populate('ticket.movieId' ,'title')
+            // console.log(ticket);
+            
+            res.status(200).json(ticket)
+        } catch (error) {
+            res.status(401).send({ error: error.message })
         }
     }
 }

@@ -1,11 +1,10 @@
-// import { Iron } from "@mui/icons-material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { dataMovie, Movie,truncateText } from "../../../../hooks/GetApi/GetApi";
 import { useTheme } from "../../../../context/Theme";
-import { useItem } from "../../../../hooks/GetApi/ItemContext";
-import { useThemeClasses } from "../../../../context/Theme/themeStyles";
+// import { useItem } from "../../../../hooks/GetApi/ItemContext";
+import { useItem } from "@/hooks/GetApi/ItemContext";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
 const LatestMovie = () => {
     const themeCtx = useTheme()
     const {textClasses,themeUniver} = useThemeClasses()

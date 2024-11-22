@@ -10,7 +10,7 @@ import SignUp from '@/pages/SignUp/signUp';
 // import HomePage from '@/pages/Home/Homepage';
 const HomeMovie = lazy(() => import('@/pages/Home/HomeMovie'))
 // import HomeMovie from '@/pages/Home/HomeMovie';
-import Select from '@/components/Layout/Product/Booking/SelectSeats';
+import Select from '@/pages/Booking/seats/index';
 import TestOtp from '@/components/User/test';
 import Password from '@/components/Layout/Dasboard/ResetPass';
 import { UserProvider } from '@/context/User/index';
@@ -26,7 +26,6 @@ import Total from '@/pages/manager/layout/total';
 import TicketBooking from '@/pages/manager/layout/ticket';
 import LastMovies from '@/pages/Home/lastMovie/movieCard';
 import MovieDetails from '@/pages/Home/details';
-import MovieGener from '@/pages/Home/movieDetails';
 import Privacy from '@/components/common/file/Privacy';
 import Terms from '@/components/common/file/Terms';
 import UserRename from '@/components/common/file/UserRename';
@@ -36,7 +35,9 @@ import SettingProfile from '@/components/common/file/Setting';
 import TicketVoucher from '@/components/common/file/Voucher';
 import Myticket from '@/pages/MyTicket';
 import LoveMovie from '@/pages/Love';
-
+import Genners from '@/components/common/category';
+import Pay from '@/pages/Booking/payment';
+import QrCode from '@/components/common/booking/detailsQrcode'
 const RouteMovie = () => {
     return (
         <div>
@@ -54,10 +55,12 @@ const RouteMovie = () => {
                         <Route path='/search/:id' element={<ItemLove />} />
                         <Route path='/itemLove' element={<ItemLove />} />
                         <Route path="/lmovie" element={<LastMovies />} />
-                        <Route path='/details/:id' element={<MovieDetails />} />
-                        <Route path='/geners/:id' element={<MovieGener/>} />
                         <Route path="/love" element={<LoveMovie />} />
+                        <Route path='/details/:id' element={<MovieDetails />} />
                         <Route path='/details/:id/booking' element={<Select />} />
+                        <Route path='/details/:id/booking/pay' element={<Pay />} />
+                        <Route path='/geners/:id' element={<Genners/>}/>
+                        <Route path='/qrcode/:id' element={<QrCode/>}/>
                     </Routes>
                     <Routes>
                         <Route path="/profile" element={<HomeFile />} >

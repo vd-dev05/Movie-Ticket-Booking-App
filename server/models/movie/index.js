@@ -40,16 +40,20 @@ const ticketSchema = new mongoose.Schema({
         type: String,
         enum: ['Active', 'Canceled', 'Expired'],
         default: 'Active',
-    }
+    },
+    date : {
+        type : Date,
+    },
+    codeQR : String
 });
 
 // Auto-generate movieQr if not provided
-ticketSchema.pre('save', function (next) {
-    if (!this.movieQr) {
-        this.movieQr = `MOV-${new mongoose.Types.ObjectId()}`;
-    }
-    next();
-});
+// ticketSchema.pre('save', function (next) {
+//     if (!this.movieQr) {
+//         this.movieQr = `MOV-${new mongoose.Types.ObjectId()}`;
+//     }
+//     next();
+// });
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -92,7 +96,7 @@ const userSchema = new mongoose.Schema({
         },
         book: {
             type: ticketSchema, // Embedding ticket schema here
-            ref: "Ticket", // Optionally, set this for better referencing
+            ref: "booking", // Optionally, set this for better referencing
         },
     }],
     comment: [{
@@ -128,7 +132,7 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies"
     },
-    seats: [mongoose.Schema.Types.Mixed] // Mixed can be used for dynamic data types
+    seats: [mongoose.Schema.Types.Mixed] 
 });
 
 // Movie Schema

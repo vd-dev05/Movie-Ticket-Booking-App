@@ -161,7 +161,7 @@ const MovieDetails = () => {
                     {/* <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dolorum eos error consectetur repellendus! Aspernatur numquam non reiciendis sit nesciunt consequatur, perferendis a ratione dolor, earum quia nobis aliquid. Blanditiis.</p> */}
                 </div>
                 <div className=''>
-                    <Link className='text-white hover:text-white' to={`${location}/booking`} state={dataMovie} onClick={() => handleClick(data)}>
+                    <Link className='text-white hover:text-white' to={`booking`} state={dataMovie} onClick={() => handleClick(data)}>
                         <Button className={`${btnSubmit} hover:bg-chairMovie-chairSelected  h-16 mt-10 text-xl w-full `}>Select Seat</Button>
                     </Link>
 

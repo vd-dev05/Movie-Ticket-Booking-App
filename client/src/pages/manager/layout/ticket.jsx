@@ -103,7 +103,7 @@ const TicketBooking = () => {
                                 </Link>
                             </div>
                             <span className="flex p-2">
-                                <MdDeleteForever size="10px" className=" bg-red-600 text-white w-7 h-7 rounded-sm" />
+                                <MdDeleteForever size="10px" className=" bg-red-600 text-white w-7 h-7 rounded-sm text-nowrap" />
                                 Delete seats Movie
                             </span>
 

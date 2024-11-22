@@ -14,7 +14,10 @@ const UserRouter = Router();
 // UserRouter.get('/signin',Products.getUserMovie);
 UserRouter.post('/signup',UserMiddleware.createUser);
 UserRouter.post('/signin',UserMiddleware.loginUser,Products.signinUser)
-UserRouter.post('/ticket/:id', BookTicket.bookticket)
+
+UserRouter.post('/ticket', authMiddleware.authSessionToken, BookTicket.bookticket)
+UserRouter.get('/ticket/all', authMiddleware.authSessionToken , BookTicket.getAllTickets)
+UserRouter.get('/ticket/:id', authMiddleware.authSessionToken , BookTicket.getTicketId)
 UserRouter.delete('/deleteTicket/:id',BookTicket.removeAllTicket)
 UserRouter.delete('/deleteOneTicket/:id',BookTicket.removeOneTicket)
 

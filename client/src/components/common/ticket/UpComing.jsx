@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import { dataMovie } from "../../../hooks/GetApi/GetApi";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import CancelTicket from "../../Layout/Product/Myticket/accept/Bookingnot";
@@ -7,6 +6,7 @@ import { useThemeClasses } from "../../../context/Theme/themeStyles";
 import { useTheme } from "../../../context/Theme";
 import { truncateText } from "../../../hooks/GetApi/GetApi";
 import { toast } from "react-toastify";
+import TicketController from "@/services/users/ticket";
 
 const Upcoming = () => {
     const [data, setMovieData] = useState([]);
@@ -16,22 +16,19 @@ const Upcoming = () => {
     const { inputClasses, backGround, textClasses, themePaid, buttonClasses, btnSubmit } = useThemeClasses();
     const themeCtx = useTheme();
     useEffect(() => {
-        (async () => {
+        const fetchData = async () => {
             try {
-                const data = await dataMovie('users/dataTicket/book');
-                const dataTic = data.filter((item => item.paid == true))
-
-                setMovieData(dataTic)
-
-            } catch (err) {
-                console.error(err);
-
-            } finally {
-
+                const response = await TicketController.getAllTicket();
+                if (response) {
+                    // setData(response.data)
+                    // setDataLoad(true)
+                }
+            } catch (error) {
+                console.error(error);
             }
         }
-        )()
-    }, [dataLoad]);
+        fetchData();
+    }, []);
 
     const processedData = useMemo(() => {
         return data.map(item => ({
@@ -41,11 +38,11 @@ const Upcoming = () => {
     }, [data]);
 
     const clickme = (id) => {
-        setIsOpen(!isOpen)
-        setMovieData1(id.id);
+        // setIsOpen(!isOpen)
+        // setMovieData1(id.id);
        
-        toast.success('Cancel SuccessFull !')
-        console.log(dataLoad);
+        // toast.success('Cancel SuccessFull !')
+        // console.log(dataLoad);
         
     };
     // if (data.length === 0) {
@@ -68,12 +65,12 @@ const Upcoming = () => {
     return (
         <div className="translate-y-7 font-movie drop-shadow-lg h-screen pb-[50px]">
             {data.length === 0 &&
-                <div class={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
-                    <div class="animate-pulse flex space-x-4">
-                        <div class="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
-                        <div class="flex-1 space-y-6 py-1">
-                            {/* <div class="h-2 bg-slate-700 rounded w-[200px]"></div> */}
-                            <div class="space-y-10">
+                <div className={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
+                    <div className="animate-pulse flex space-x-4">
+                        <div className="rounded-xl bg-slate-700 h-[100px] w-[100px]"></div>
+                        <div className="flex-1 space-y-6 py-1">
+                            {/* <div className="h-2 bg-slate-700 rounded w-[200px]"></div> */}
+                            <div className="space-y-10">
                                 No Data Ticket . Please Book Ticket Movie
                             </div>
                         </div>

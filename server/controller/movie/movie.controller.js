@@ -1,4 +1,4 @@
-import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie} from './getMovieByID.js';
+import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie, getMovieSettings} from './getMovieByID.js';
 const MovieController = {
    
     searchMovie :  async (req,res) => { 
@@ -21,8 +21,6 @@ const MovieController = {
     getByID : async (req,res) => { 
         try {
             const {id} = req.params
-            // console.log(id);
-            
             const r = await getMovieById({value : id})
             return  res.status(200).json({
                 success : true,
@@ -86,7 +84,25 @@ const MovieController = {
         } catch (error) {
              res.status(404).json({ error : error.message })
         }
-    }
+    },
+    getMovieGenres : async (req ,res) => {
+        try {
+            const {year ,rating , genres} = req.body
+            // console.log(year ,rating , genres);
+            // console.log(req.body);
+            
+            
+            
+            const r = await getMovieSettings(year ,rating , genres)
+            res.status(200).json({
+                success : true,
+                data : r,
+                message:'Movie Genres fetched successfully!',
+            })
+        } catch (error) {
+             res.status(404).json({ error : error.message })
+        }
+    },
 }
 
 

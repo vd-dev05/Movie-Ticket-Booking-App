@@ -49,7 +49,48 @@ const MovieController = {
         } catch (error) {
             return error
         }
-    }
+    },
+    getGenersMovie : async (value) => {
+   
+      
+         try {           
+            if (value.rating || value.year) {
+                const r  = await axios.get(`${baseURL}/api/v1/movies/genres/all`, {
+                    year : value.year || 2024,
+                    rating : value.rating || 9,
+                    genres : value.genres,
+                    test : "fix"
+                    
+                },{
+
+
+
+                })
+                console.log(r);
+                
+                return r.data
+            }
+       
+            
+        } catch (error) {
+            return error
+        }
+    },
+    // getGenersMovie : async (value) => {
+    //     try {
+    //     //    console.log(value);
+           
+    //         if (value) {
+                
+    //             const r  = await axios.get(`${baseURL}/api/v1/movies/genres`,{
+    //                 genres : value,
+    //             })
+    //             return r.data
+    //         }
+    //     } catch (error) {
+    //         return error
+    //     }
+    // }
 
 }
 export default MovieController
