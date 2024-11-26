@@ -7,6 +7,6 @@
     ADMIN : "admin",
     Manager : "manager",
     SESSIONS : "sessions",
-    CANCEL : "cancel",
+    CANCEL : "cancels",
 } 
 export default Collections

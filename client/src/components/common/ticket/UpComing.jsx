@@ -117,8 +117,8 @@ const Upcoming = (props) => {
                                 View Ticket
                             </Link>
                         </div>
-                    </div>
-                    <CancelTicket data={data1} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad} />
+                  </div>
+                    <CancelTicket data={data1} id={item._id} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad} />
                 </div>
 
             ))

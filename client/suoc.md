@@ -69,3 +69,7 @@
 
 
 QRCode.toDataURL(ticketId)
+
+skip login 
+
+resis

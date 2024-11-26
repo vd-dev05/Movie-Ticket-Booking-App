@@ -52,6 +52,8 @@ const LastMovies = ({dataLast}) => {
   if (isLoading) {
     return <div>Loading...</div>
   }
+//   console.log(lastData);
+  
 
     return ( 
       <div>
@@ -65,9 +67,9 @@ const LastMovies = ({dataLast}) => {
           <h1 className={` text-center font-logo ${textClasses}'}`}>Latest Movies</h1>
           <div className="grid grid-cols-2 gap-5 mt-10 ">
               {lastData.length > 0  ? lastData.map((item) => (
-                  <div key={item.id} >
-                      <Link   to={`/details/${item._id}`} state={{lastData:item}} className={`${textClasses} hover:${textClasses}`} >
-                          <div className=" saturate-100  " onClick={() =>handleClick(item)}>
+                  <div key={item._id} >
+                      <Link   to={`/details/${item._id}`}  state={{data:item._id}} className={`${textClasses} hover:${textClasses}`} >
+                          <div className=" saturate-100  " >
                               <img src={item.poster} alt={item.title} loading="lazy" className="rounded-2xl  h-[210px] w-full object-cover"></img>
                           </div>
                           <div className="mt-2">

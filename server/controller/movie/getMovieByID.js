@@ -64,21 +64,11 @@ export const getMovieByTitle = async (value) => {
 };
 
 export const getMovieById = async (value) => {
-    // console.log(value.title);
-    
     try {
-        // console.log(value.value);
-        // console.log(value);
-        
         const movie = await Movies.findById(value.value)
-        // console.log(movie);
-        
         if (!movie) {
             throw new Error("Error: Couldn't find Movie");
         }
-        // console.log(movie.hash);
-        
-        
         return movie;  
     } catch (error) {
         throw new Error(error.message);  

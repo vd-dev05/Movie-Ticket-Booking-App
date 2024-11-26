@@ -21,6 +21,7 @@ const UserHistory = {
         }
     },
     lastMovie : async (value) => {      
+    
         try {            
             await axios.put(`${import.meta.env.VITE_REACT_API_URL}/api/v1/users/last-movie/add`,{
                movieId  : value,
@@ -36,6 +37,7 @@ const UserHistory = {
     },
     getLastMovie : async (value) => {
             try {
+                console.log(decoded);
                 
                   const reponse = await axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/v1/users/last-movie/all`, {
                     headers : {
@@ -58,6 +60,7 @@ const UserHistory = {
                     'authorization': `Bearer ${decoded}`
                 }
             })
+            console.log( reponse);
             
             return reponse
         } catch (error) {

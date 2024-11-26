@@ -2,11 +2,24 @@ import mongoose from "mongoose";
 import Collections from "../../database/collections.js";
 // ticket booking canncell 
 const cancelSchema = new mongoose.Schema({
-    ticketId : {
+    userId : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "bookings"
+        ref: "users"
+    },
+    movieId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "movies"
     },
     cancelReason: String,
+    checkBox : {
+        type : String,
+        enum : [
+            "I have a better deal",
+            "Some other work, can't come",
+            "I want to book another movie",
+            "Location is too far from my location",
+        ]
+    },
     canceledAt: {
         type: Date,
         default: Date.now()

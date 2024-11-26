@@ -86,6 +86,42 @@ const UserController = {
         } catch (error) {
             return error?.response
         }
+    },
+    postRenameUser : async (value) => {
+        try {
+            const reponse = await axios.put(`${baseURL}/api/v1/users/update-name`, {
+                name  : value.name
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+            return reponse
+        } catch (error) {
+            return error?.response
+        }
+    },
+    upLoadAvatar : async (value) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', value);
+
+            const response = await axios.post(`${baseURL}/api/v1/users/upload-avatar`, formData , {
+                
+                headers : {
+                    "Content-Type"  : 'multipart/form-data',
+
+                }
+            } )
+            console.log(response);
+            //  if (response) {
+            //     console.log(response);
+                
+            //  }
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
 }
 

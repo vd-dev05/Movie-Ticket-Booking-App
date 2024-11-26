@@ -51,30 +51,30 @@ const authMiddleware = {
     }
 
   },
-  authSessionToken : (req,res,next) => {
+  authSessionToken: (req, res, next) => {
     try {
       const token = req.headers['authorization']; // Expect "Bearer <token>"
-      const split = token.split(' ')[1];
-     
-      const id =  jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
+      const split = token.split(' ')[1]
+      // console.log(req.headers);
+      
+      jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")
-          // req.userId = user.userId   
+        // req.userId = user.userId   
         //  console.log(user);
-         
-          return user.userId
-                
 
-      });   
-  
-      if (id) {
-        req.userId  = id        
-        next() 
-      }
-  
-    
+        // console.log(req.body);
+        // console.log(user);
+        
+        req.userId = user.userId
+        next()
+
+
+      });
+
+
     } catch (error) {
       return res.status(403).json("Please Enter a token")
-      
+
     }
   },
   authApiKey: (req, res, next) => {
@@ -113,10 +113,10 @@ const authMiddleware = {
     try {
       // console.log(req.body);
       // console.log(req.headers[`authorization`]);
-      
+
       const token = req.headers[`authorization`]
       const tokenParts = token.split(" ");
-      const actualToken = tokenParts[1]; 
+      const actualToken = tokenParts[1];
       if (!actualToken) throw new Error("Invalid token");
       if (!token) {
         throw new Error("Invalid token");
@@ -127,7 +127,7 @@ const authMiddleware = {
           return res.status(403).json({ error: 'Invalid or expired token' });
         }
         // console.log(user + "done");
-        
+
         // req.user = user;  // Attach user info to the request object
         next();
       });

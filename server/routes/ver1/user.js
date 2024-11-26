@@ -8,18 +8,20 @@ import AuthValidations from "../../validations/auth.js";
 import {createAsscessTokenGlobal, ResetCodeOtp, SendOtp, TokenSend, verifyOtp } from "../../controller/user/auth/userOtp.js";
 import authMiddleware from "../../middleware/auth.js";
 import UserHistory from "../../controller/user/history/index.js";
+import { upload } from "../../utils/fileUpLoad.js";
 // import middlewares from "../../middlewares/index.js";
 
 const UserRouter = Router();
 // UserRouter.get('/signin',Products.getUserMovie);
 UserRouter.post('/signup',UserMiddleware.createUser);
 UserRouter.post('/signin',UserMiddleware.loginUser,Products.signinUser)
+UserRouter.post('/upload-avatar', upload.single('file') , Products.postRenameAvatar)
 
 UserRouter.post('/ticket', authMiddleware.authSessionToken, BookTicket.bookticket)
 UserRouter.get('/ticket/all', authMiddleware.authSessionToken , BookTicket.getAllTickets)
 UserRouter.get('/ticket/:id', authMiddleware.authSessionToken , BookTicket.getTicketId)
 UserRouter.delete('/deleteTicket/:id',BookTicket.removeAllTicket)
-UserRouter.delete('/deleteOneTicket/:id',BookTicket.removeOneTicket)
+UserRouter.delete('/deleteOneTicket/:id',authMiddleware.authSessionToken ,BookTicket.removeOneTicket)
 
 UserRouter.get('/:id' ,Products.getUserOneMovie)
 UserRouter.get('/love-movie/all',authMiddleware.authSessionToken,UserLoveMovie.getLoveMovie )

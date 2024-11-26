@@ -26,5 +26,5 @@ app.use('/api', RootRouter )
 
 app.listen(PORT_SERVER,'192.168.1.224',() => {
   connectDB()
-  console.log(`Server running at http://192.168.1.224:${PORT_SERVER}`);
+  console.log(`Server running at http://192.168.16.1:${PORT_SERVER}`);
 });

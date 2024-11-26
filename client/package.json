@@ -7,7 +7,7 @@
     "start": "vite --host=192.168.1.224",
     "dev_home": "vite --host=192.168.1.224",
     "dev_mindx": "vite --host=10.10.10.210",
-    "dev": "vite ",
+    "dev": "vite --host=192.168.10.207",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --port 8080"

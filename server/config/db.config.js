@@ -21,6 +21,9 @@ export const DB_CONFIG = {
         },
         manager :  {
             contextPath : '/manager',
+        },
+        cancels : {
+            contextPath : '/cancels',
         }
     },
     url_mongodb : `mongodb+srv://${process.env.USERNAME_MONGO_DB}:${process.env.PASSWORD_MONGO_DB}@web.2rxwo.mongodb.net/${process.env.URL_KEY}?retryWrites=true&w=majority&appName=web`

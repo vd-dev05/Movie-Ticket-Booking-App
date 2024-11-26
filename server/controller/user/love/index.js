@@ -4,12 +4,13 @@ const UserLoveMovie = {
     loveMovie: async (req, res) => {
         try {
             // const userId = new mongoose.Types.ObjectId(req.params.id);
+            console.log( req.userId);
             const movieId = req.body.movieId
                 
          const user = await Users.findById( req.userId)
                 .select('movieLove')
                 .populate("movieLove")
-            // console.log(user);
+          
             // console.log(user.movieLove);
             if (!user) throw new Error(`Movie not found for user`)
 
@@ -59,7 +60,8 @@ const UserLoveMovie = {
             const user = await Users.findById(userId)
                 .select('movieLove')
                 .populate('movieLove')
-
+            // console.log(user);
+            
 
             res.status(200).json(user.movieLove)
         } catch (error) {

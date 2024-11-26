@@ -49,9 +49,11 @@ const QrCode = () => {
                 const response = await TicketController.getTicket(splitId)
                 if (response) {
                     const ticket = response.data.ticket
-                 
+                    
                     
                     const data =  ticket.filter(ticket => ticket._id === splitId);
+                    console.log(data);
+                    
                     if (data.length > 0) {
                      setDataMap(data[0] )   
                      setIsLoading(true)
@@ -84,7 +86,7 @@ const QrCode = () => {
             {  dataMap  ? (
                 
                 <div >
-                    <div className={`${themeUniver} iphone-12-pro-max:flex flex flex-col h-[100vh] min-w-full  font-movie px-5 `}>
+                    <div className={`${themeUniver} iphone-12-pro-max:flex flex flex-col h-full min-w-full  font-movie px-5 `}>
                         <div>
                             <div className="translate-y-9">
                                 <Link 
@@ -105,7 +107,7 @@ const QrCode = () => {
                             </div>
     
                             <div className={` ${themeCtx.theme == 'dark'  ? 'bg-[#242024]' : 'bg-light-bg'} p-10 rounded-3xl drop-shadow-2xl  `}>
-                                <img src={ data ? data : dataMap.book.movieQr ? dataMap.book.movieQr : ''} className="min-w-[350px]" />
+                            <QRCode value={dataMap.book?.movieQr} size={250} />
                             </div>
                             <div className="flex w-full justify-between z-100">
                                 <div className={`rounded-r-3xl w-[60px] h-[50px] ${themeUniver} drop-shadow-none   `}></div>

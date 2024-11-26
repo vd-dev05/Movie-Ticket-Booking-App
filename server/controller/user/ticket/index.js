@@ -12,11 +12,16 @@ const BookTicket = {
     bookticket: async (req, res) => {
         try {
             const keyCode = uuidv4().split('-')[4];
+            
             const id = req.userId;
             const { movieId, price, seat, status, day, hour } = req.body;
             const isoDate = format(parseDateWithTime(day, hour), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            // Tìm booking dựa trên movieId
+            // console.log(isoDate);
+            console.log(status);
+            
             const book = await Booking.findOne({ movieId: movieId }, { seats: 1, movieId: 1 }).lean();
+      
+            
             if (!book) {
                 throw new Error(`The movie theater hasn't opened for ticket sales yet`)
             }
@@ -25,14 +30,16 @@ const BookTicket = {
             const updateSeats = seat;
             const seats = book.seats;
 
-
+            // console.log(seat);
+            
             const updatedSeats = seats.map(seat => {
                 if (updateSeats.includes(seat.seatsId)) {
                     return { ...seat, status: status, userId: userId, code: keyCode };
                 }
                 return seat;
             });
-
+            
+            
             const userTicketPromise = Users.findOne({ _id: id }).select('name ticket comment role');
             const userTicket = await userTicketPromise;
 
@@ -45,9 +52,13 @@ const BookTicket = {
                 throw new Error('Ticket already booked for this movie')
             }
             const qrData = `Mov-${movieId}-${id}}`;
-            const code = await generateQRCode(qrData)
-            const upLoadPromise = upLoadClound(code, keyCode)
-
+            // const code = await generateQRCode(qrData)
+            // console.log(code);
+            
+            // const upLoadPromise = upLoadClound(code, keyCode)
+            // const upLoadPromise = "gello"
+        
+            
 
             const dataComment = {
 
@@ -58,11 +69,11 @@ const BookTicket = {
             const data = {
                 movieId: movieId,
                 book: {
-                    movieQr: await upLoadPromise,
+                    movieQr: keyCode,
                     price: price,
                     seat: seat,
                     status: "Expired",
-                    keyCode: `Mov-${keyCode}`,
+                    keyCode: qrData,
                     date: isoDate,
                     keyCode: keyCode
                 },
@@ -75,7 +86,7 @@ const BookTicket = {
             userTicket.comment.push(dataComment);
 
             const [updatedUserTicket] = await Promise.all([
-                upLoadPromise,
+                // upLoadPromise,
                 Booking.updateOne(
                     { movieId: movieId },
                     { $set: { seats: updatedSeats } }
@@ -83,6 +94,8 @@ const BookTicket = {
                 userTicket.save(),
 
             ]);
+            // console.log(updatedUserTicket);
+            
             return res.status(200).json({
                 message: 'Ticket booked successfully!',
                 success: true,
@@ -120,49 +133,7 @@ const BookTicket = {
         }
     },
     removeOneTicket: async (req, res) => {
-        try {
-
-            const user = await Users.findById(req.params.id)
-            // console.log(user.ticket);            
-            user.ticket.forEach(ticket => {
-                if (ticket._id.toString() === req.body.ticketId) {
-                    const test = user.ticket.filter((item) => item._id.toString() === req.body.ticketId)
-                    const splitText = test[0].book.movieQr
-                    if (test[0].book && test && splitText) {
-                        const urlImage = splitText.split('/').pop().split('.')[0]
-
-                        if (urlImage) {
-                            (async () => {
-                                await deleteImage(urlImage)
-                            })()
-                        }
-                        const data = {
-                            movieId: test[0].movieId,
-                            book: {
-                                status: "Cancelled",
-                                _id: test[0].book._id
-                            },
-                            _id: test[0]._id
-                        }
-                        // console.log(data);
-
-                        user.ticket.splice(user.ticket.indexOf(ticket), 1);
-                        user.ticket.push(data)
-                    }
-
-                    // console.log(user.ticket);
-
-                }
-                // console.log(user.ticket);
-
-
-            })
-            await user.save();
-        } catch (error) {
-            console.log(error);
-
-            res.status(404).send({ error: error.message })
-        }
+     
     },
     getTicketId: async (req, res) => {
         try {

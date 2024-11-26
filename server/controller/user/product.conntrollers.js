@@ -5,6 +5,7 @@ import { Users } from '../../models/movie/index.js';
 import { hashPass, verifyPass } from '../../utils/hashPassword.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import UserUpdateMovie from './updateProfile/index.js';
 
 // import { getUserByPhone } from './getUserMongo.js';
 const Products = {
@@ -144,7 +145,22 @@ const Products = {
             //     data: null
             // })
         }
-    }
+    },
+    postRenameAvatar : async (req , res , next) => {
+        try {
+            console.log(req.file);
+            
+            const file = req.file
+            if (!file ) {
+                throw new Error('UploadAvatar requires')
+            }
+            const response =  await UserUpdateMovie.upLoadAvatar(file)
+            console.log(response);
+            
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    },
 
 }
 export default Products;

@@ -139,7 +139,7 @@ const HomeMovie = () => {
                     <Link to="/lmovie"  state={{ data: dataHistory }}  className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 ">
-                    {dataHistory.length ? <LoveMovie data={dataHistory}  page={2} sizew={400} sizeh={460} space = {190} isize={350} texts={40}/> : 'Not found'}
+                    {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory}  page={2} sizew={400} sizeh={460} space = {190} isize={350} texts={40}/> : 'Not found'}
                 </div>
 
                 {/* Love Movies Section */}
@@ -148,7 +148,7 @@ const HomeMovie = () => {
                     <Link to="/lmovie" state={{ data: dataLove }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 mb-24">
-                    {  dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space = {100} isize={200}  page={3}  texts={20}/> : "Not found"}
+                    { dataLove && dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space = {100} isize={200}  page={3}  texts={20}/> : "Not found"}
                 </div>
             </div>
 

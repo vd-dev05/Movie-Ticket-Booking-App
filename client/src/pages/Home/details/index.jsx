@@ -22,7 +22,10 @@ const MovieDetails = () => {
     const { color } = useTheme()
     const location = useLocation()
     // console.log(textClasses);
+  
+    
     const { data } = location.state || {};
+    
     const [dataMovie, setDataMovie] = useState(data)
     const [isValid, setIsValid] = useState(false)
     const [IsTrue, setIsTrue] = useState(false);
@@ -34,31 +37,52 @@ const MovieDetails = () => {
             // if (reponse) {
             //     setIsLoading(true)
             // }
-            if (localStorage.getItem('access_token')) {
-                await UserHistory.lastMovie(location.pathname.split('/')[2] || data._id)
-                const response = await UserHistory.getLoveMovie(location.pathname.split('/')[2] || data._id)
-                const arr = response.data.map((data) => data._id)
-
-
-                // console.log(arr.indexOf(location.pathname.split('/')[2] ) );
-
-                if (arr.indexOf(location.pathname.split('/')[2]) === -1) {
-                    setIsTrue(false)
-                    setIsLoading(true)
+            try {
+                if (localStorage.getItem('access_token')) {
+                    await UserHistory.lastMovie(location.pathname.split('/')[2] || data._id)
+                    // console.log( data._id);
+                    // console.log(location.pathname.split('/')[2]);
+                    
+                    
+                    const response = await UserHistory.getLoveMovie(location.pathname.split('/')[2] || data._id)
+                    // console.log(response);
+                    
+                    if (response && response.data ) {
+                        const arr = response.data.map((data) => data._id)
+                        // console.log(arr);
+                        
+                        const a = arr.indexOf(location.pathname.split('/')[2]) === -1
+                        // console.log(a);
+                        if (a === true) {
+                            setIsTrue(false)
+                            setIsLoading(true)
+                        } else {
+                            setIsTrue(true)
+                            setIsLoading(true)
+                        }
+                        
+                      
+        
+                    } else {
+                        setIsTrue(true)
+                        setIsLoading(true)
+                    }
                 } else {
-                    setIsTrue(true)
-                    setIsLoading(true)
+                    alert("Please Login !")
                 }
-
-            } else {
-                alert("Please Login !")
+    
+                if (location) {
+                    const reponse = await UserController.getMovieId(location.pathname.split('/')[2] || data._id)
+                    // console.log(reponse);
+                    
+                    setDataMovie(reponse.data)
+                    setIsValid(true)
+                }
+            } catch (error) {
+                console.log(error);
+                
             }
-
-            if (location) {
-                const reponse = await UserController.getMovieId(location.pathname.split('/')[2] || data._id)
-                setDataMovie(reponse.data)
-                setIsValid(true)
-            }
+        
 
 
         }

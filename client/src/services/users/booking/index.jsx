@@ -14,13 +14,14 @@ const BookingController = {
      },
      seatsBookings : async (token,value,movieId) => {
          try {
-      
+            
              const response = await axios.post(`${baseURl}/api/v1/users/ticket`, {
                day : value.day,
                hour : value.hour,
                seat : value.seats,
                price  : value.totalprice ,
-               movieId  : movieId
+               movieId  : movieId,
+               status : "Booked"
              },{
                 headers : {
                     'Authorization': `Bearer ${token}`

@@ -26,9 +26,7 @@ const MovieTop = () => {
 
         (async () => {
                 try {
-                    const r = await MovieController.getTopMovie();
-                    console.log(r.data);
-                    
+                    const r = await MovieController.getTopMovie();                   
                     if (r) {
                         const test = Math.ceil(r.data.length / Math.ceil(Math.random() * r.data.length)) 
                         setData(r.data[test])
@@ -143,7 +141,7 @@ const MovieTop = () => {
                             slidesPerView={2}
                             style={{ cursor: 'default', }}
                         >
-                            {topMovie.length > 0 ? topMovie.map((item,idx) => {
+                            {topMovie && topMovie.length > 0 ? topMovie.map((item,idx) => {
                                 // console.log(item);
 
                                 return (
@@ -182,7 +180,7 @@ const MovieTop = () => {
                         slidesPerView={2}
                         style={{ cursor: 'default', }}
                     >
-                        {company.length > 0 ? company.map((item,idx) => {
+                        {company && company.length > 0 ? company.map((item,idx) => {
                             // console.log(item);
 
                             return (

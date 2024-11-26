@@ -17,8 +17,9 @@ import { truncateText } from "../../../../hooks/GetApi/GetApi";
 import { Box, Typography } from "@mui/joy";
 import updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 import { toast } from "react-toastify";
+import CancelServices from "@/services/users/cancel";
 
-const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {    
+const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,id}) => {    
     const test = useMemo(() => {
         if (data && data.title) {
             return truncateText(data.title, 15);
@@ -44,10 +45,17 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
     ];
 
     const handleSubmit = async () => {
-        console.log(selectedValue);
-        console.log(rating);
-        console.log(data);
+        // console.log(selectedValue);
+        // console.log(rating);
+        // console.log(data);
         
+        // console.log(id);
+        // const data  =  {
+        //     reason: selectedValue,
+        //     rating: rating,
+        //     movieId: id
+        // }
+        const response = await CancelServices.create( selectedValue,rating,id)
         // await updateBookingStatus (data,{paid:false})
         setIsOpen(!isOpen)
         setDataLoad(!dataLoad)
@@ -99,12 +107,13 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad}) => {
                             </div>
                         </AlertDialogHeader>
 
-                        <AlertDialogFooter className=" flex gap-2 p-2">
+                        <AlertDialogFooter className=" flex gap-2 p-2 peer ">
 
-                            <AlertDialogAction
+                            <AlertDialogAction  className="  bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  ">Cancel</AlertDialogAction>
+                            <button
                                 onClick={handleSubmit}
-                                className="w-full bg-primary-textMovie text-white mt-2 text-xl "
-                            >Submit</AlertDialogAction>
+                                className=" focus:animate-jelly bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  "
+                            >Submit</button>
                         </AlertDialogFooter>
 
                     </AlertDialogContent>
