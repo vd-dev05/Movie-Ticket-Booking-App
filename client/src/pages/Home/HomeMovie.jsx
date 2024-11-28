@@ -11,6 +11,11 @@ import UserHistory from "@/services/users/history";
 import MovieTop from "./MovieTop";
 import LoveMovie from "./loveMovie";
 import Nav from "@/layout/Nav/index";
+import { selectIsLoading, selectSuccessfull, selectUserLove, selectHistory, selectIsLoadingData } from "@/features/auth/authSelectors";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavURL } from "@/hooks/nav/NavUrl";
+import { showErrorToast } from "@/lib/toastUtils";
+import { getLoveUser, getHistoryUser } from "@/features/auth/authThunks";
 
 const HomeMovie = () => {
     const [nameUser, setNameUser] = useState('');
@@ -22,10 +27,13 @@ const HomeMovie = () => {
     const themeCtx = useTheme();
     const { inputClasses, themeBackGround } = useThemeClasses();
     const { dataUser } = useUser();
-    const accountInfo = JSON.parse(localStorage.getItem("account-info"));
-    const { name } = accountInfo || {};
+    const accountInfo = localStorage.getItem("account-info")
+    // const accountInfo = JSON.parse(localStorage.getItem("account-info"));
 
-    // Handle theme selection
+    const successfull = useSelector(selectSuccessfull)
+
+    const loading = useSelector(selectIsLoadingData)
+
     const onSelectTheme = (event) => {
         themeCtx.setTheme(event.target.value);
     };
@@ -34,37 +42,39 @@ const HomeMovie = () => {
         setCheck(!check);
     };
 
-    // Fetch user data on mount
- 
+    
+    const dispatch = useDispatch();
+    const loveMovieUser = useSelector(selectUserLove)
+    const historyMovieUser = useSelector(selectHistory)
+
+  
+    useEffect(() => {
+        // console.log(loading);
+        
+        if (loveMovieUser === null || undefined && historyMovieUser === null || undefined) {
+            dispatch(getHistoryUser());
+            dispatch(getLoveUser());
+            setIsLoading(false);
+        }
+    }, [dispatch, loveMovieUser, historyMovieUser]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const responseHistory = await UserHistory.getLastMovie();  
-                const responseLove = await UserHistory.getLoveMovie();
-                setDataLove(responseLove.data);
-                setDataHistory(responseHistory.data.history);
-                
-                setIsLoading(true); 
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                setIsLoading(true);
-            } finally {
-                setIsLoading(false)
-            }
-        };
-        fetchData();
-    }, []);
-    // useEffect(() => {
-    //     if (dataHistory.length && dataLove.length) {
-    //         setIsLoading(false); 
-    //     }
-    // }, [dataLove, dataHistory]);
-    if (isLoading) {
+        if (loveMovieUser && historyMovieUser  ) {
+            setDataLove(loveMovieUser);
+            setDataHistory(historyMovieUser);
+            setIsLoading(false); 
+        } else {
+            setIsLoading(true); 
+        }
+    }, [loveMovieUser, historyMovieUser,loading]);
+
+    console.log(loveMovieUser, historyMovieUser,loading);
+    
+    if (isLoading ) {
         return (
-                <div className="text-center">
-                    <p>Loading your favorite movies...</p>
-                </div>
+            <div className="text-center">
+                <p>Loading your favorite movies...</p>
+            </div>
         );
     }
 
@@ -74,7 +84,7 @@ const HomeMovie = () => {
                 {/* Welcome User Section */}
                 <div className="flex justify-between">
                     <div>
-                        <div className="h-5">{TypingEffect(name || 'User')}</div>
+                        <div className="h-5">{TypingEffect(nameUser || 'User')}</div>
                         <p>Book your favourite movie</p>
                     </div>
                     <div>
@@ -131,24 +141,24 @@ const HomeMovie = () => {
 
                 {/* Movie Top and Latest Movies */}
                 <div className="pb-5">
-                    <MovieTop />
+                    <MovieTop  isLoading={isLoading}  setIsLoading={ setIsLoading}/>
                 </div>
 
                 <div className="flex justify-between mt-10 px-5 text-2xl">
                     <h2 className="font-bold">Latest Movies</h2>
-                    <Link to="/lmovie"  state={{ data: dataHistory }}  className="text-chairMovie-chairSelected text-2xl">See all</Link>
+                    <Link to="/history" state={{ data: dataHistory }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 ">
-                    {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory}  page={2} sizew={400} sizeh={460} space = {190} isize={350} texts={40}/> : 'Not found'}
+                    {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory} page={2} sizew={400} sizeh={460} space={190} isize={350} texts={40} /> : 'Not found'}
                 </div>
 
                 {/* Love Movies Section */}
                 <div className="flex justify-between mt-10 px-5">
                     <h2 className="font-bold text-2xl">Favurite Movie</h2>
-                    <Link to="/lmovie" state={{ data: dataLove }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
+                    <Link to="/love" state={{ data: dataLove }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 mb-24">
-                    { dataLove && dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space = {100} isize={200}  page={3}  texts={20}/> : "Not found"}
+                    {dataLove && dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space={100} isize={200} page={3} texts={20} /> : "Not found"}
                 </div>
             </div>
 

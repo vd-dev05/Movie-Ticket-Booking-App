@@ -27,7 +27,7 @@ export const getAllMovie = async (query) => {
 } 
 
 export const getMovieByTitle = async (value) => {
-    console.log(value);
+    // console.log(value);
     
     try {
         const movie = await Movies.aggregate([ 
@@ -91,7 +91,7 @@ export const getTopMovie = async (value) => {
             throw new Error("Error: Couldn't find Movie");
         }
         // console.log(movie.hash);
-        console.log(movie.length);
+        // console.log(movie.length);
         
         
         return movie;  

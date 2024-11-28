@@ -4,7 +4,7 @@ const UserLoveMovie = {
     loveMovie: async (req, res) => {
         try {
             // const userId = new mongoose.Types.ObjectId(req.params.id);
-            console.log( req.userId);
+            // console.log( req.userId);
             const movieId = req.body.movieId
                 
          const user = await Users.findById( req.userId)

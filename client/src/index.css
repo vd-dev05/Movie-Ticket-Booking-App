@@ -23,6 +23,7 @@
     @apply absolute left-[1px] top-[1px] h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-2xl bg-gradient-to-b from-[#311e64] to-[#2E1371];
   }
 }
+
 :root {
   
   /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
@@ -133,3 +134,4 @@ input[type="radio"]{
   z-index: -1;
   border-radius: inherit;
 }
+

@@ -12,11 +12,14 @@ const Products = {
     signinUser: async (req, res) => {
       
             const user = await Users.findOne({ phone: req.body.phone })
+            .select("name phone role  movieLove history")
+            .populate("movieLove" )
+            .populate("history" )
             const asscess = await Sessions.findOne({user_id : user._id})
             // console.log(req.body);
             try {
                 res.status(200).json({
-                    message: 'User signed in successfully!',
+                    message: 'Signed in successfully!',
                     success: true,
                     data: user,
                     // asscesstoken 

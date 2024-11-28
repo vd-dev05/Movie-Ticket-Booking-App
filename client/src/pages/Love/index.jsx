@@ -7,34 +7,48 @@ import { useTheme } from "@/context/Theme/index";
 import { useThemeClasses } from "@/context/Theme/themeStyles";
 import {v4} from 'uuid'
 import UserHistory from "@/services/users/history";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserLove } from "@/features/auth/authSelectors";
+import { getLoveUser } from "@/features/auth/authThunks";
 const LoveMovie = () => {
     const themeCtx = useTheme()
     const { textClasses, themeUniver, buttonClasses } = useThemeClasses()
     const [data, setData] = useState([])
     const [isLoading ,setLoading] = useState(false)
-   
+    const loveMovie = useSelector(selectUserLove)
+    const   dispatch = useDispatch()
     useEffect(() => {
         (async () => {
             setLoading(false)
-            try {
-                const response = await UserHistory.getLoveMovie()
-                if (response) {
-                    setData(response.data)
-                    setLoading(true)
+            if (loveMovie !== null) {
+                setData(loveMovie)
+               console.log(loveMovie);
+               
+                
+                // setLoading(true)
+            } else {
+                dispatch(getLoveUser());
+                try {
+                    const response = await UserHistory.getLoveMovie()
+                    if (response) {
+                        setData(response)
+                        setLoading(true)
+                    }
+    
+                } catch (err) {
+                   setLoading(false)
+                   if (localStorage.setItem('access_token')) {
+                     alert('Bạn chưa đăng nhập')
+                     localStorage.removeItem('access_token')
+                     localStorage.removeItem('account-info')
+                     window.location.href = '/login'
+      
+                   }
+                } finally {
+                  setLoading(false)
                 }
-
-            } catch (err) {
-               setLoading(false)
-               if (localStorage.setItem('access_token')) {
-                 alert('Bạn chưa đăng nhập')
-                 localStorage.removeItem('access_token')
-                 localStorage.removeItem('account-info')
-                 window.location.href = '/login'
-  
-               }
-            } finally {
-              setLoading(false)
             }
+          
         }
         )()
     }, [])

@@ -10,7 +10,7 @@ app.use(cors ());
 
 dotenv.config();
 const PORT_SERVER = 8080;
-
+const URL_KEY = "192.168.1.224"
 app.use(express.json());
 app.use(bodyParser.json({limit: "50mb"}));
 
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 app.use('/api', RootRouter )
 // app.use()
 
-app.listen(PORT_SERVER,'192.168.1.224',() => {
+app.listen(PORT_SERVER,URL_KEY,() => {
   connectDB()
-  console.log(`Server running at http://192.168.16.1:${PORT_SERVER}`);
+  console.log(`Server running at http://${URL_KEY}:${PORT_SERVER}`);
 });

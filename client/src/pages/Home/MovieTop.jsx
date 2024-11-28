@@ -12,15 +12,21 @@ import { toast, ToastContainer } from "react-toastify";
 import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toastUtils";
 import MovieController from "@/services/movie/Movie.controller";
 import UserHistory from "@/services/users/history";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserLove } from "@/features/auth/authSelectors";
+import { getHistoryUser, getLoveUser } from "@/features/auth/authThunks";
 
-const MovieTop = () => {
+const MovieTop = ({isLoading , setIsLoading}) => {
+    console.log(isLoading);
+    
     const [data, setData] = useState([])
     const [topMovie, setTopMovie] = useState([])
     const [company, setCompany] = useState([])
     const { themeUniver } = useThemeClasses()
     const themeCtx = useTheme()
     // console.log(themeCtx.theme);
-
+    const  dispatch = useDispatch()
+    const loveMovieUser = useSelector(selectUserLove)
 
     useEffect(() => {
 
@@ -53,11 +59,20 @@ const MovieTop = () => {
 
         fetchMovies();
     }, [1])
+    // useEffect(() => {
+    //     if (loveMovieUser === null ) {
+    //     //   set
+    //     }
+    // }, [dispatch, loveMovieUser]);
+
     const handleClickLove = async (movie) => {
-        
+        setIsLoading(true)
         try {
+            dispatch(getLoveUser());
+            dispatch(getHistoryUser())
            const response =  await UserHistory.loveMovie("like",movie)
            if (response.status === 200) {
+            
             showSuccessToast(response.data.message)
            }
            if (response.status === 401) {
@@ -66,6 +81,7 @@ const MovieTop = () => {
         } catch (error) {
             console.log(error);  
         }
+        setIsLoading(false)
     };
 
     const handlePay = async (data) => {

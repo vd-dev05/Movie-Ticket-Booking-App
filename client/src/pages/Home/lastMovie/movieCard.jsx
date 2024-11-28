@@ -18,16 +18,18 @@ const LastMovies = ({dataLast}) => {
   const fetchData = async () => {
     try {
         const response =  await UserHistory.getLastMovie()
+        console.log(response);
+        
         if (response) {
-            setLastData(response.data.history)
+            setLastData(response.history)
             setisLoading(false)
         }
         
     } catch (error) {
         setisLoading(true)
-        if (localStorage.getItem('access_token')) {
-            window.location = '/login'
-        }
+        // if (!localStorage.getItem('access_token')) {
+        //     window.location = '/login'
+        // }
         
     }
   }

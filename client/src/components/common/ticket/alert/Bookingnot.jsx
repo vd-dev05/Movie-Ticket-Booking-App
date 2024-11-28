@@ -19,7 +19,8 @@ import updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 import { toast } from "react-toastify";
 import CancelServices from "@/services/users/cancel";
 
-const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,id}) => {    
+const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,ticketId, movieId ,seat}) => {    
+    
     const test = useMemo(() => {
         if (data && data.title) {
             return truncateText(data.title, 15);
@@ -55,21 +56,23 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,id}) =
         //     rating: rating,
         //     movieId: id
         // }
-        const response = await CancelServices.create( selectedValue,rating,id)
+        const response = await CancelServices.create( selectedValue,rating,ticketId, movieId,seat)
+        console.log(response);
+        
         // await updateBookingStatus (data,{paid:false})
-        setIsOpen(!isOpen)
-        setDataLoad(!dataLoad)
-        toast('😢 Cancel ticket successfull !', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            // transition: Bounce,
-            });
+        // setIsOpen(!isOpen)
+        // setDataLoad(!dataLoad)
+        // toast(' Cancel ticket successfull !', {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "light",
+        //     // transition: Bounce,
+        //     });
     }
     return (
         <div >

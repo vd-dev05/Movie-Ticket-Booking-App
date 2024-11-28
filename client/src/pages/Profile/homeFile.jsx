@@ -21,8 +21,7 @@ import TicketVoucher from "@/components/common/file/Voucher";
 import UpLoadFile from "@/components/common/file/upload/file";
 
 const HomeFile = () => {
-    // const UserData = useContext(useUser);
-    // console.log(UserData);
+
     const location = useLocation();
     const isPrivacyRoute = location.pathname === '/profile/privacy';
     const isTermsRoute = location.pathname === '/profile/terms';
@@ -48,43 +47,8 @@ const HomeFile = () => {
     // }
 
     useEffect(() => {
-        // get(child(ref(database), `users/auth`)).then((snapshot) => {
-        //     if (snapshot.exists()) {
-        //         const data = snapshot.val();
-        //             console.log(data);
-
-        //             setReset(pre => ({
-        //                 ...pre,
-        //                 user: data.name,
-        //                 phone: data.phone
-        //             }))
-        //     } else {
-        //       console.log("No data available");
-        //     }
-        //   }).catch((error) => {
-        //     console.error(error);
-        //   });
-
-        // onValue(ref(database, 'users/' + 'auth'), (snapshot) => {
-        //     const data = snapshot.val();
-        //     // const data =  {
-        //     //     name:'alex' ,
-        //     //     phone:'012'
-        //     // }
-        //     console.log(data);
-        //     if (data) {
-        //         setReset(pre => ({
-        //             ...pre,
-        //             user: data.name  ,
-        //             phone: data.phone 
-        //         }))
-        //         setTrue(!True)
-        //         setDataLoad(true)
-        //     }
-
-
-        // });
-    }, [dataLoad])
+       
+    }, [])
     const handleLogout = async () => {
         const currentUser = {
             displayName: "user",
@@ -153,7 +117,7 @@ const HomeFile = () => {
                     </div>
 
                     <div className="px-5    ">
-                        <Link className={textClasses} to="/profile/rename">
+                        <Link className={`${textClasses} hover:${textClasses}`}  to="/profile/rename">
 
                             <div className="flex justify-between items-center py-5"
                             // onClick={() => setDialogOpen(!isDialogOpen)}
@@ -169,7 +133,7 @@ const HomeFile = () => {
 
                         <hr />
 
-                        <Link className={textClasses} to="/profile/voucher">
+                        <Link className={`${textClasses} hover:${textClasses}`} to="/profile/voucher">
                             <div className="flex justify-between items-center py-5">
                                 <div className="flex">
                                     <LuTicket size={30} />
@@ -180,7 +144,7 @@ const HomeFile = () => {
                             <hr />
                         </Link>
 
-                        <Link className={textClasses} to="/profile/change-password">
+                        <Link className={`${textClasses} hover:${textClasses}`} to="/profile/change-password">
                             <div className="flex justify-between items-center py-5">
                                 <div className="flex">
                                     <TbBrandSamsungpass size={30} />
@@ -191,7 +155,7 @@ const HomeFile = () => {
                             <hr />
                         </Link>
 
-                        <Link className={textClasses} to="/profile/privacy">
+                        <Link className={`${textClasses} hover:${textClasses}`} to="/profile/privacy">
                             <div className="flex  justify-between items-center py-5">
                                 <div className="flex">
 

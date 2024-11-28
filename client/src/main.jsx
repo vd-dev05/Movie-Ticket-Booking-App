@@ -45,15 +45,17 @@ import App from './App';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/index';
 // import Test from './components/Layout/Product/test';
 // import Test from './components/Layout/Product/test';
 // localStorage.setItem("access_token",)
 ReactDOM.createRoot(document.getElementById('root')).render(
-
+    <Provider store={store}>
     <Router>
-
         <App>
-
         </App>
-    </Router>,
+    </Router>
+    </Provider>
+    ,
 )

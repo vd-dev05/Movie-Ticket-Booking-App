@@ -17,7 +17,7 @@ const BookTicket = {
             const { movieId, price, seat, status, day, hour } = req.body;
             const isoDate = format(parseDateWithTime(day, hour), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             // console.log(isoDate);
-            console.log(status);
+            // console.log(status);
             
             const book = await Booking.findOne({ movieId: movieId }, { seats: 1, movieId: 1 }).lean();
       
@@ -47,7 +47,7 @@ const BookTicket = {
                 throw new Error('User not found')
             }
 
-            const existingTicket = userTicket.ticket.find(ticket => ticket.movieId.toString() === movieId);
+            const existingTicket = userTicket.ticket.find(ticket => ticket.movieId.toString() === movieId && ticket.book.status === "Active");
             if (existingTicket) {
                 throw new Error('Ticket already booked for this movie')
             }
@@ -156,9 +156,9 @@ const BookTicket = {
         try {
             const ticket = await Users.findById(req.userId)
                 // .select('ticket')
-                .select('ticket.movieId ticket.book.status ticket.book._id ticket.book.movieQr ticket._id')
+                .select('ticket.movieId ticket.book.status ticket.book._id ticket.book.movieQr ticket._id ticket.book.seat')
                 .populate('ticket.movieId', 'title tomatoes languages poster ')
-            console.log(ticket);
+            // console.log(ticket);
 
             res.status(200).json(ticket)
         } catch (error) {

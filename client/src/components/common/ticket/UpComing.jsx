@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 import TicketController from "@/services/users/ticket";
 
 const Upcoming = (props) => {
-
+    // console.log(props.data);
+    
     if (!props.data) {
         return null;
     }
@@ -51,6 +52,8 @@ const Upcoming = (props) => {
             </div>
         </div></div>
     }
+    // console.log(processedData);
+    
     return (
         <div className="translate-y-7 font-movie drop-shadow-lg h-screen pb-[50px]">
             {   data.length === 0 &&
@@ -118,7 +121,7 @@ const Upcoming = (props) => {
                             </Link>
                         </div>
                   </div>
-                    <CancelTicket data={data1} id={item._id} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad} />
+                    <CancelTicket seat={item.book.seat} data={data1} movieId={item.movieId._id}  ticketId={item._id} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad}  />
                 </div>
 
             ))

@@ -22,16 +22,16 @@ const Myticket = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await TicketController.getAllTicket();
+                const response = await TicketController.getAllTicket();            
                 if (response) {
                     const data = response.data.ticket      
-                                
+                    
                     if (tabClick === 'Update') {
                         const upComing = data.filter(ticket => ticket.book.status === 'Expired');
                         setData(upComing)
                         
                          setDataLoad(true)
-                         console.log(upComing);
+                        //  console.log(upComing);
                          
                     } 
                     if (tabClick === 'Past') {

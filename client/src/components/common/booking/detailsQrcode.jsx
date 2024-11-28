@@ -44,7 +44,7 @@ const QrCode = () => {
                 } else {
                    alert('Please select an account ')
                 }
-                console.log(splitId);
+                // console.log(splitId);
                 
                 const response = await TicketController.getTicket(splitId)
                 if (response) {
@@ -52,7 +52,7 @@ const QrCode = () => {
                     
                     
                     const data =  ticket.filter(ticket => ticket._id === splitId);
-                    console.log(data);
+                    // console.log(data);
                     
                     if (data.length > 0) {
                      setDataMap(data[0] )   
@@ -68,7 +68,7 @@ const QrCode = () => {
         }
         fetchData();
     }, []);
-    console.log(dataMap);
+    // console.log(dataMap);
     
     if (!isLoading) {
         return (

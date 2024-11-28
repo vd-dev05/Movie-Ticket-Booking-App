@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import Collections from "../../database/collections.js";
 // ticket booking canncell 
 const cancelSchema = new mongoose.Schema({
-    userId : {
+    ticketId : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users"
+        // ref: ""
     },
     movieId : {
         type: mongoose.Schema.Types.ObjectId,
@@ -134,7 +134,8 @@ const userSchema = new mongoose.Schema({
             enum: ['Active', 'InActive'],
             default: 'InActive',
         },
-        date: Date
+        date: Date,
+      
     }],
     history: [{
         type: mongoose.Schema.Types.ObjectId,

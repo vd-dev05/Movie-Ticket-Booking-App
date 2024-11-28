@@ -1,15 +1,16 @@
+import { getNumber } from "@/lib/splitCode"
 import axios from "axios"
 const baseURL = import.meta.env.VITE_REACT_API_URL
 
-const UserController = {
-    loginUser : async (value) => {
+const UserServices = {
+    loginUser : async (credential) => {
         try {
-            const response = await axios.post(`${baseURL}/api/v1/users/signin`, value)
+            const response = await axios.post(`${baseURL}/api/v1/users/signin`, credential)
             localStorage.setItem('access_token', response.data.asscessToken)          
             localStorage.setItem('account-info', JSON.stringify({name : response.data.data.name}))
             return response.data
         } catch (error) {
-            return error?.response
+            throw new Error (error?.response?.data?.error)
         }
     },
     getMovieId  : async (value) => {
@@ -89,13 +90,17 @@ const UserController = {
     },
     postRenameUser : async (value) => {
         try {
+            const phone = getNumber(value.phone)
+            
             const reponse = await axios.put(`${baseURL}/api/v1/users/update-name`, {
-                name  : value.name
+                name  : value.name,
+                address: value.address,
+                phone : phone.number,
             }, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 }
-            })
+            })            
             return reponse
         } catch (error) {
             return error?.response
@@ -125,4 +130,4 @@ const UserController = {
     }
 }
 
-export default UserController
+export default UserServices

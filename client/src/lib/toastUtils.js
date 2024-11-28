@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
  * Hàm hiển thị thông báo toast thành công.
  * @param {string} message - Thông báo cần hiển thị.
  */
-export const showSuccessToast = (message) => {
+export const showSuccessToast = (message , time) => {
   toast.success(message, {
-    autoClose: 3000,  // Thời gian tự động đóng toast sau 3 giây
+    autoClose: time || 3000,  // Thời gian tự động đóng toast sau 3 giây
     style :{textWrap : "nowrap"}
   });
 };

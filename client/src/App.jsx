@@ -3,12 +3,23 @@
 
 import RouteMovie from "@/routes/appMovie.routes.jsx";
 import 'react-toastify/dist/ReactToastify.css';
-import.meta.env
+import { ThemeProvider } from "./context/Theme";
+import { UserProvider } from "./context/User";
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import RootManager from "./routes/appManager.routes";
 const App = () => {
-    
+
     return (
         <div className=''>
-            <RouteMovie/>
+            <ThemeProvider>
+                <UserProvider>
+                    <RouteMovie />
+                </UserProvider>
+                <RootManager/>
+            </ThemeProvider>
+                 <ToastContainer />
         </div>
     );
 };

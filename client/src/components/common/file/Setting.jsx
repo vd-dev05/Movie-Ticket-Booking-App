@@ -4,17 +4,20 @@ import { useThemeClasses } from "@/context/Theme/themeStyles";
 import { TbWorld ,TbFileSearch } from "react-icons/tb";
 import { BiFontSize } from "react-icons/bi";
 import { FaTicket } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const stylesClassName = {
     textH2: 'text-xl font-bold',
     parentText: 'text-gray-500 ',
     flexNavbar : 'flex gap-5 items-center '
 }
 const SettingProfile = () => {
-    const { themeUniver } = useThemeClasses()
+    const { themeUniver,textClasses } = useThemeClasses()
     return (
         <div className={`p-5 ${themeUniver}`}>
             <div className="flex justify-between items-center my-5">
-                <IoMdArrowRoundBack />
+                <Link to={"/profile"} className={textClasses}>
+                <IoMdArrowRoundBack  />
+                </Link>
                 <h1 className="font-bold text-xl">Setting Profile</h1>
                 <FaSearch />
             </div>

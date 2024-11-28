@@ -5,9 +5,18 @@ const UserUpdateMovie = {
 
     updateUser : async (req ,res) => { 
         try {
-            const userId = new mongoose.Types.ObjectId(req.params.id);
-            const user = await Users.findByIdAndUpdate(userId, req.body, {new: true});
-            res.status(200).json(user);
+            // const userId = new mongoose.Types.ObjectId(req.params.id);
+            const user = await Users.findByIdAndUpdate(req.userId, {
+                name : req.body.name ,
+                address:req.body.address,
+                phone : req.body.number,
+            }, {new: true});
+            
+            if (user) {
+                res.status(200).json("Edit Profile SuccessFull !");
+            }
+            
+          
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
@@ -23,9 +32,9 @@ const UserUpdateMovie = {
                 public_id : fileName,
                 folder : 'folder-avatar',
             })
-            console.log(response);
+            // console.log(response);
             
-            console.log(response.secure_url);
+            // console.log(response.secure_url);
             
             if (!response) {
                 throw new Error(`Failed to upload`)

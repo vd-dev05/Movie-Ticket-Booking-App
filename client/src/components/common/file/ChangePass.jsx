@@ -12,6 +12,7 @@ import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
+import { getNumber } from "@/lib/splitCode";
 
 const ChangePassWord = () => {
     const themeCtx = useTheme();
@@ -29,24 +30,28 @@ const ChangePassWord = () => {
             confirmPassword: "",
         },
         validationSchema: userSchemaChangePassword,
+        validateOnChange: true,
+        validateOnBlur: true,
         onSubmit: (values) => {
-            setIsPass(true)
-            // window.alert("Form submitted");
-            // console.log(values);
+        
+            
+            // setIsPass(true)
+            // // window.alert("Form submitted");
+            // // console.log(values);
 
-            const userRef = ref(database, 'users/auth');
-            update(userRef, {
-                password: values.confirmPassword,
-                // newPassword: values.newPassword,
-                // confirmPassword: values.confirmPassword
-            }).then(() => {
-                notify(themeCtx.theme);
-                setTimeout(() => {
-                    nav('/profile')
-                }, 3000);
-            }).catch((error) => {
-                notifyW(themeCtx.theme, "An error occurred: " + error.message);
-            });
+            // const userRef = ref(database, 'users/auth');
+            // update(userRef, {
+            //     password: values.confirmPassword,
+            //     // newPassword: values.newPassword,
+            //     // confirmPassword: values.confirmPassword
+            // }).then(() => {
+            //     notify(themeCtx.theme);
+            //     setTimeout(() => {
+            //         nav('/profile')
+            //     }, 3000);
+            // }).catch((error) => {
+            //     notifyW(themeCtx.theme, "An error occurred: " + error.message);
+            // });
           },
     })
 
@@ -81,7 +86,7 @@ const ChangePassWord = () => {
                     </Label>
                 </div>
                 <div className="text-left p-0 m-0">
-                    {formik.errors.name && (
+                    {formik.errors.password && (
                         <p className="text-red-600"> {formik.errors.password}
                         </p>
                     )}
@@ -147,23 +152,6 @@ const ChangePassWord = () => {
             titlePass={'Account password changed successfully'}
             paraPass1={'Your account password has been changed.'}
             paraPass2={'Watch your favorite movies'}
-            />
-            {/* <Susses
-              titlePass={'Account password changed successfully'}
-              paraPass1={'Your account password has been changed.'}
-              paraPass2={'Watch your favorite movies'}
-            ></Susses> */}
-            {/* {isPass ? > : ''} */}
-            <ToastContainer
-                position="top-right"
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
             />
         </div>
     );

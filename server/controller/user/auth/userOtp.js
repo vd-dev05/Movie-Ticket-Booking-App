@@ -44,7 +44,7 @@ export const SendOtp = (req,res) => {
         // push the phone number golbal data
         GolbalData.otp[phone_number] = otp
         
-        console.log(GolbalData);
+        // console.log(GolbalData);
         console.log(`----------------------------------------------------`);
         console.log(`Your otp authentication code is ${otp} valid for 3 minutes. Please do not share with others`);
         console.log(`----------------------------------------------------`);
