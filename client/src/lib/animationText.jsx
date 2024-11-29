@@ -1,8 +1,9 @@
 import { TypeAnimation } from 'react-type-animation';
 const TypingEffect = ({nameUser}) =>  {
+      console.log(nameUser);
       
-    const {name }= JSON.parse(localStorage.getItem('account-info'))
-    const arr = [`Welcome ${name ? name : nameUser } 👋`,3500,"Book Ticket My App",3500,"Add Voucher Movie to List "]
+   
+    const arr = [`Welcome ${ nameUser ? nameUser : '' } 👋`,3500,"Book Ticket My App",3500,"Add Voucher Movie to List "]
     return (
         <h1 className="font-logo">
             <TypeAnimation

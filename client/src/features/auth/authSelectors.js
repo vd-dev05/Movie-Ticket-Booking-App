@@ -6,3 +6,4 @@ export const selectUserLove = (state) => state.auth.loveData;
 export const selectHistory = (state) => state.auth.historyData
 export const selectSuccessfull =  (state) => state.auth.successfull
 export const selectIsLoadingData = (state) => state.auth.isLoadingData
+export const selectLogout = (state) => state.auth.isLogout

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useItem } from '@/hooks/GetApi/ItemContext';
 import { useThemeClasses } from '@/context/Theme/themeStyles';
 import { truncateText } from '@/hooks/GetApi/GetApi';
@@ -15,6 +15,8 @@ import { showErrorToast, showLoadingToast, showSuccessToast } from '@/lib/toastU
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
+import Payment from '@/services/users/payment';
+import { useUser } from '@/context/User';
 const Pay = () => {
     const localtion = useLocation()
     const parsed = queryString.parse(location.search);
@@ -23,7 +25,7 @@ const Pay = () => {
     const splitId = parsedId.url.split('/')[2]
     const splitBooking = parsedId.url.split('/pay')[0]
 
-
+    const nav = useNavigate()
 
 
     const { buttonClasses, backGround, textClasses, inputClasses, themeUniver, btnSubmit, buttonCLick } = useThemeClasses();
@@ -35,6 +37,8 @@ const Pay = () => {
     const [isOpenPay, setIsOpenPay] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isValid, setIsValid] = useState(true);
+
+    
     // const [numberCard, setNumberCard] = useState({
     //     master: '',
     //     payPal: ''
@@ -125,19 +129,41 @@ const Pay = () => {
             }));
         }
     };
-    
+    const handlePayMentMoMo = async (value) => {
+      
+        const access_token = localStorage.getItem('access_token');
+        if (!access_token) showErrorToast('Please Login')
+        
+        if (access_token) {
+            showLoadingToast("Loading ... ")
+            setIsValid(false);
+            // console.log(value);
+            // const title = value.title
+            const response  = await Payment.momo( value )
+         
+            
+            if (response) {
+                window.location.href = response.shortLink
+            }
+        }
+       
+        
+       
+    }
     const handlePay = async () => {
         setIsValid(false);
-        
         const toastId = toast.loading("Please Loading ...");
+      
         const token = localStorage.getItem('access_token')
         if (!token) {
             alert('Please Login');
             setIsValid(true);   
             return
         } 
+        
         if (token) {
             try {
+                
                 const response = await BookingController.seatsBookings(token, parsed, splitId)
 
                 if (response.success === true) {
@@ -180,8 +206,8 @@ const Pay = () => {
     };
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie px-5 ${themeUniver}`}>
+            
             {!isLoading ? <div >Loading...</div>
-
                 : <div>
                     <div>
                         <div className="translate-y-9">
@@ -204,7 +230,7 @@ const Pay = () => {
                                     <div className="flex flex-col justify-around pl-6">
                                         <div>
 
-                                            <h2 className="font-[700] text-xl">{truncateText(payBookData.title, 15)}</h2>
+                                            <h2 className="font-[700] text-xl">{payBookData.title ? truncateText(payBookData.title, 15) : null}</h2>
                                             <p className="text-gray-300 text-xs">{payBookData.tomatoes && payBookData.tomatoes.production ? payBookData.tomatoes.production : 'hang phim ko ton tai'}</p>
                                         </div>
                                         <div className='flex gap-2 '>
@@ -229,7 +255,7 @@ const Pay = () => {
                                                 <img src={itemm.url} width={itemm.size} alt="" />
                                             </div>
                                             <div className='flex flex-col'>
-                                                <h2 className='font-logo'>{itemm.name}</h2>
+                                                <h2  className='font-logo'>{itemm.name}</h2>
                                                 <span>{formatCardNumber(itemm.number)}</span>
                                             </div>
                                         </div>
@@ -249,12 +275,14 @@ const Pay = () => {
                                             className={`border-primary-textMovie border-[1px] min-w-full flex items-center justify-center rounded-lg py-4 text-primary-textMovie `}
                                         >+ Add New Card</button>
                                     )}
-                                    {/* <AddCard isOpen={isOpen} setIsOpen={setIsOpen} setItem={setItem} formValues={formValues} setData={setData} selectedValue={selectedValue} /> */}
+                                    <AddCard isOpen={isOpen} setIsOpen={setIsOpen} formValues={formValues} setData={setData} selectedValue={selectedValue} />
                                 </div>
                             ))}
                         </div>
                         <div className='h-[1px] w-full bg-gray-600'></div>
-                        <div className='m-2 py-10 flex justify-between items-center'>
+                        <div className='m-2 py-10 flex justify-between items-center cursor-pointer' 
+                        onClick={() => handlePayMentMoMo( payBookData ?? payBookData.title)}
+                        >
                             <div className=' flex gap-5 items-center'>
                                 <img src="/assets/img/momo_icon_square_pinkbg_RGB.png" alt="momo_icon_square_pinkbg_RGB" width={35} />
                                 <h2 className='font-logo'>Payment via qr code</h2>

@@ -7,7 +7,7 @@ const UserServices = {
         try {
             const response = await axios.post(`${baseURL}/api/v1/users/signin`, credential)
             localStorage.setItem('access_token', response.data.asscessToken)          
-            localStorage.setItem('account-info', JSON.stringify({name : response.data.data.name}))
+            localStorage.setItem('account_info', JSON.stringify({name : response.data.data.name}))
             return response.data
         } catch (error) {
             throw new Error (error?.response?.data?.error)

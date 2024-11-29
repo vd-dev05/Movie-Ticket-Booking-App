@@ -19,6 +19,10 @@ import { deleteData } from '@/hooks/GetApi/GetApi'
 import SettingProfile from "@/components/common/file/Setting";
 import TicketVoucher from "@/components/common/file/Voucher";
 import UpLoadFile from "@/components/common/file/upload/file";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLogout } from "@/features/auth/authSelectors";
+import { logoutUser } from "@/features/auth/authThunks";
+import { showInfoToast, showLoadingToast, showSuccessToast } from "@/lib/toastUtils";
 
 const HomeFile = () => {
 
@@ -33,23 +37,55 @@ const HomeFile = () => {
     // const ChildEditPass = location.pathname != '/';
     const themeCtx = useTheme()
     const { oppositeTheme, themeUniver, textClasses } = useThemeClasses()
+    const [user, setUser] = useState('guest');
+
+
     const [reset, setReset] = useState({
         user: '',
         phone: '',
         passWord: ''
     })
+    // console.log(reset.user);
+    
     const nav = useNavigate()
     const [True, setTrue] = useState(false)
     const [dataLoad, setDataLoad] = useState(false)
     const [isFile, setIsFile] = useState(false)
-    // if (!isDialogOpen) {
-
-    // }
-
+   
+    const isLogout = useSelector( selectLogout)
+    const dispatch = useDispatch()
+    
+    
     useEffect(() => {
+
+        const accessToken = localStorage.getItem('access_token');
+        const accountInfo = JSON.parse(localStorage.getItem('account_info'));
+        if (accessToken && accountInfo ) {
+            setUser('user')
+            setReset(pre => ({
+                ...pre,
+                user : accountInfo.name
+            }))
+           }
+        
+        
+
+       if (isLogout  === true || !accessToken ||  accountInfo === null || !accountInfo ) {
+            setUser('guest')
+            setTrue(true)
+            setTimeout(() => {
+                showInfoToast("Account has been logged out")
+            }, 5000);
+       }
        
-    }, [])
+
+    }, [isLogout ,user])
     const handleLogout = async () => {
+        dispatch(logoutUser())
+        // console.log(isLogout);
+        localStorage.removeItem('access_token')
+        localStorage.setItem("account-info" , JSON.stringify({name : "user"}))
+        showSuccessToast("Logout SuccessFull")
         const currentUser = {
             displayName: "user",
             photoURL: ''
@@ -87,13 +123,23 @@ const HomeFile = () => {
     }
     const handleLogin = () => {
 
-        nav('/l')
+        nav('/login')
+    }
+    const handleCheckLogin = () =>{
+        if (user === 'guest') {
+            showInfoToast("Please Login to check your")
+           setTimeout(() => {
+            nav('/login')
+           }, 2000);
+        }
     }
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col h-[200vw]    text-center font-movie   relative ${themeUniver}`}>
             {/* <button  onClick={CLickTest}>Click</button> */}
             {!isPrivacyRoute && !isTermsRoute && !isRenameUser && !isChangePass && !isSetting && !isTicketVoucher && (
-                <div>
+                <div 
+                onClick={handleCheckLogin}
+                >
                     <h1 className="text-center font-bold text-xl ">Profile</h1>
 
                     {/* <button onClick={notify}>CLick</button> */}

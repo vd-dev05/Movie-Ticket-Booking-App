@@ -58,7 +58,7 @@ const Nav = ({ data }) => {
                 />
             </Link>
 
-            <Link to="/ticket">
+            <Link to={localStorage.getItem('access_token') ? '/ticket' : '/login'}>
                 <NavButton
                     label="My Tickets"
                     icon={<LuTicket size={25} className='-translate-y-[2px]' />}

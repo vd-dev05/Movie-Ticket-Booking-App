@@ -9,6 +9,7 @@ import {createAsscessTokenGlobal, ResetCodeOtp, SendOtp, TokenSend, verifyOtp } 
 import authMiddleware from "../../middleware/auth.js";
 import UserHistory from "../../controller/user/history/index.js";
 import { upload } from "../../utils/fileUpLoad.js";
+import { createPayment } from "../../controller/user/payment/index.js";
 // import middlewares from "../../middlewares/index.js";
 
 const UserRouter = Router();
@@ -36,7 +37,7 @@ UserRouter.post('/reset-code',ResetCodeOtp)
 UserRouter.post('/verify-code', authMiddleware.authOtp,verifyOtp)
 UserRouter.post('/create-token',UserMiddleware.authTokenCreate,createAsscessTokenGlobal,Products.addUser)
 
-
+UserRouter.post('/payments',createPayment)
 
 
 export default UserRouter;

@@ -34,6 +34,15 @@ export const getLoveUser = createAsyncThunk('auth/user/love', async () => {
         throw new Error(error?.message || 'Failed to get love');
     }
 })
+
+export const logoutUser = createAsyncThunk('auth/logout', async () => {
+    localStorage.removeItem('asscess_token');
+    // try {
+    //     await axios.post(`${BaseUrl}/api/v1/users/logout`)
+    // } catch (error) {
+    //     throw new Error(error?.message || 'Logout failed')
+    // }
+})
         // try {
         //     const response = await axios.post(`${BaseUrl}/api/v1/users/signin`, credential)
         //     if (response.statusText === 'OK') {

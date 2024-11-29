@@ -11,7 +11,7 @@ import { ref, update } from "firebase/database";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getNumber } from "@/lib/splitCode";
 
 const ChangePassWord = () => {
@@ -146,6 +146,13 @@ const ChangePassWord = () => {
                     <span className="text-white ">Update</span>
                 </Button>
             </form>
+            <div className="mt-10 delay-150   w-fit flex justify-center items-center rounded-full hover:-translate-y-1 transition duration-700 ease-in-out  bg-primary-textMovie  focus:bg-chairMovie-chairSelected hover:bg-primary-textMovie p-5">
+                <Link
+                to={'/profile'}
+                >
+                    <span className="text-white ">Back To Profile</span>
+                </Link>
+            </div>
             <SendOtp 
             isOpen={isPass} 
             setIsOpen={setIsPass} 

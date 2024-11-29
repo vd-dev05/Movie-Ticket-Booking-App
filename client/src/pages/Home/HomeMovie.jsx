@@ -27,8 +27,8 @@ const HomeMovie = () => {
     const themeCtx = useTheme();
     const { inputClasses, themeBackGround } = useThemeClasses();
     const { dataUser } = useUser();
-    const accountInfo = localStorage.getItem("account-info")
-    // const accountInfo = JSON.parse(localStorage.getItem("account-info"));
+    const [user, setUser] = useState('guest')
+    // const
 
     const successfull = useSelector(selectSuccessfull)
 
@@ -42,49 +42,69 @@ const HomeMovie = () => {
         setCheck(!check);
     };
 
-    
+
     const dispatch = useDispatch();
     const loveMovieUser = useSelector(selectUserLove)
     const historyMovieUser = useSelector(selectHistory)
-
   
     useEffect(() => {
+        // setIsLoading(true);
+        const access_token = localStorage.getItem('access_token');
+        const account_info = localStorage.getItem('account_info');
+
+        if (access_token && account_info) {
+            const { name } = JSON.parse(account_info);
+            setUser('user');
+            setNameUser(name);
+            setIsLoading(false);
+        }
+        if (!account_info) {
+            setNameUser('user')
+            setIsLoading(false);
+            // console.log(nameUser);
+
+        }
+    }, [])
+
+    useEffect(() => {
         // console.log(loading);
-        
+
         if (loveMovieUser === null || undefined && historyMovieUser === null || undefined) {
             dispatch(getHistoryUser());
             dispatch(getLoveUser());
             setIsLoading(false);
         }
-    }, [dispatch, loveMovieUser, historyMovieUser]);
+    }, [dispatch, loveMovieUser, historyMovieUser,user]);
 
     useEffect(() => {
-        if (loveMovieUser && historyMovieUser  ) {
+        if (loveMovieUser && historyMovieUser) {
             setDataLove(loveMovieUser);
             setDataHistory(historyMovieUser);
-            setIsLoading(false); 
+            setIsLoading(false);
         } else {
-            setIsLoading(true); 
+            setIsLoading(true);
         }
-    }, [loveMovieUser, historyMovieUser,loading]);
+    }, [loveMovieUser, historyMovieUser, loading,user]);
 
-    console.log(loveMovieUser, historyMovieUser,loading);
-    
-    if (isLoading ) {
+
+
+
+    if (isLoading) {
         return (
             <div className="text-center">
                 <p>Loading your favorite movies...</p>
             </div>
         );
     }
-
+    console.log(user);
+    
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeBackGround}`}>
             <div className="px-5">
                 {/* Welcome User Section */}
                 <div className="flex justify-between">
                     <div>
-                        <div className="h-5">{TypingEffect(nameUser || 'User')}</div>
+                        <div className="h-5">{TypingEffect(nameUser)}</div>
                         <p>Book your favourite movie</p>
                     </div>
                     <div>
@@ -141,12 +161,15 @@ const HomeMovie = () => {
 
                 {/* Movie Top and Latest Movies */}
                 <div className="pb-5">
-                    <MovieTop  isLoading={isLoading}  setIsLoading={ setIsLoading}/>
+                    <MovieTop isLoading={isLoading} setIsLoading={setIsLoading} />
                 </div>
 
                 <div className="flex justify-between mt-10 px-5 text-2xl">
                     <h2 className="font-bold">Latest Movies</h2>
-                    <Link to="/history" state={{ data: dataHistory }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
+                    <Link
+                        to={`${user === 'guest' ? '/login' :'/history' } `}
+                        
+                        state={{ data: dataHistory }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 ">
                     {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory} page={2} sizew={400} sizeh={460} space={190} isize={350} texts={40} /> : 'Not found'}
@@ -155,7 +178,10 @@ const HomeMovie = () => {
                 {/* Love Movies Section */}
                 <div className="flex justify-between mt-10 px-5">
                     <h2 className="font-bold text-2xl">Favurite Movie</h2>
-                    <Link to="/love" state={{ data: dataLove }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
+                    <Link 
+                   to={`${user === 'guest' ? '/login' : '/history'}`}
+                     state={{ data: user === 'user' ?? dataLove }}
+                      className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 mb-24">
                     {dataLove && dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space={100} isize={200} page={3} texts={20} /> : "Not found"}

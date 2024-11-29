@@ -18,14 +18,16 @@ import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import { useTheme } from '@/context/Theme';
 
+
 const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setData ,selectedValue}) => {
     // console.log(isOpen);
     const themeCtx = useTheme()
     const { buttonClasses, backGround, textClasses,themeUniver } = useThemeClasses();
+
     const handleSubmit = async (values, actions) => {
         // console.log(values.numberCard);
         // console.log(actions);
-
+  
         try {
             // Thực hiện submit form và hiển thị thông báo thành công
             // await onSubmit(values);
@@ -33,7 +35,7 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                 i.name === selectedValue ? { ...i, number: values.numberCard , select:!i.select } : i
             ));
             toast.success('Card added successfully!');
-            setItem(prev => ({ ...prev, userCard: values }))
+            // setItem(prev => ({ ...prev, userCard: values }))
             setIsOpen(false)
         } catch (error) {
             console.log(error);
@@ -137,8 +139,8 @@ const AddCard = ({ text, onChange, formValues, isOpen, setItem, setIsOpen, setDa
                             }
                         </Formik>
                     </AlertDialogHeader>
-
-
+                        {/* < AlertDialogTrigger>Click</AlertDialogTrigger> */}
+                    {/* <  AlertDialogCancel>Click</ AlertDialogCancel> */}
                 </AlertDialogContent>
             </AlertDialog>
         </div>

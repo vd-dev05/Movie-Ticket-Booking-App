@@ -16,42 +16,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserLove } from "@/features/auth/authSelectors";
 import { getHistoryUser, getLoveUser } from "@/features/auth/authThunks";
 
-const MovieTop = ({isLoading , setIsLoading}) => {
+const MovieTop = ({ isLoading, setIsLoading }) => {
     console.log(isLoading);
-    
+
     const [data, setData] = useState([])
     const [topMovie, setTopMovie] = useState([])
     const [company, setCompany] = useState([])
     const { themeUniver } = useThemeClasses()
     const themeCtx = useTheme()
     // console.log(themeCtx.theme);
-    const  dispatch = useDispatch()
+    const dispatch = useDispatch()
     const loveMovieUser = useSelector(selectUserLove)
 
     useEffect(() => {
 
         (async () => {
-                try {
-                    const r = await MovieController.getTopMovie();                   
-                    if (r) {
-                        const test = Math.ceil(r.data.length / Math.ceil(Math.random() * r.data.length)) 
-                        setData(r.data[test])
-                        setTopMovie(r.data)
-                    }
-
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    // setisLoading(false);
+            try {
+                const r = await MovieController.getTopMovie();
+                if (r) {
+                    const test = Math.ceil(r.data.length / Math.ceil(Math.random() * r.data.length))
+                    setData(r.data[test])
+                    setTopMovie(r.data)
                 }
+
+            } catch (err) {
+                console.error(err);
+            } finally {
+                // setisLoading(false);
             }
+        }
         )()
-        
+
         const fetchMovies = async () => {
             try {
                 const r = await MovieController.getTopMovieCompany()
                 setCompany(r.data)
-                
+
             } catch (error) {
                 showInfoToast(error)
             }
@@ -67,39 +67,29 @@ const MovieTop = ({isLoading , setIsLoading}) => {
 
     const handleClickLove = async (movie) => {
         setIsLoading(true)
-        try {
-            dispatch(getLoveUser());
-            dispatch(getHistoryUser())
-           const response =  await UserHistory.loveMovie("like",movie)
-           if (response.status === 200) {
-            
-            showSuccessToast(response.data.message)
-           }
-           if (response.status === 401) {
-            showErrorToast(response.data.error)
-           }
-        } catch (error) {
-            console.log(error);  
+        if (!localStorage.getItem('access_token')) {
+            showErrorToast('Please enter Login')
+        } else {
+            try {
+                dispatch(getLoveUser());
+                dispatch(getHistoryUser())
+                const response = await UserHistory.loveMovie("like", movie)
+                if (response.status === 200) {
+
+                    showSuccessToast(response.data.message)
+                }
+                if (response.status === 401) {
+                    showErrorToast(response.data.error)
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
+
         setIsLoading(false)
     };
 
-    const handlePay = async (data) => {
-        // localStorage.setItem('pay',data.id)
-        // const userRefData = ref(database, '/users/dataTicket/' + 'book');
-        // const dataBook = await get(userRefData)
-
-        // let arrBook = dataBook.exists() ? dataBook.val() : [];
-
-        // if (arrBook.some(item => item.id === data.id)) {
-        //     console.log("fasle");
-        // } else {
-        //     const postData = PostData(data);
-        //     arrBook.push(postData)
-        //     await set(userRefData, arrBook)
-        // }
-
-    }
+   
     return (
         <div className={`iphone-12-pro-max:flex  flex flex-col w-full font-movie px-5    `}>
             <div className="mt-5">
@@ -128,9 +118,9 @@ const MovieTop = ({isLoading , setIsLoading}) => {
                                 <p className="flex items-center z-10">{data.type && (data.type).join(" 〄 ")}</p>
                                 <div className="flex gap-3  z-10 mt-2 ">
                                     <Link
-                                        state={data.id}
-                                        to='/boking'
-                                        className="text-white hover:text-white " onClick={() => handlePay(data)}>
+                                        state={data._id}
+                                        to={`/details/${data._id}/booking`}
+                                        className="text-white hover:text-white ">
                                         <div className="cursor-pointer hover:scale-110 motion-reduce:transform-none flex rounded-lg bg-btn-gradient  px-2 py-5 text-nowrap w-full items-center justify-center gap-4">
                                             <span><BarcodeOutlined /></span>
                                             <p>Book Tickets</p>
@@ -157,7 +147,7 @@ const MovieTop = ({isLoading , setIsLoading}) => {
                             slidesPerView={2}
                             style={{ cursor: 'default', }}
                         >
-                            {topMovie && topMovie.length > 0 ? topMovie.map((item,idx) => {
+                            {topMovie && topMovie.length > 0 ? topMovie.map((item, idx) => {
                                 // console.log(item);
 
                                 return (
@@ -188,36 +178,36 @@ const MovieTop = ({isLoading , setIsLoading}) => {
             </div>
             <div>
 
-                <h1 className="text-2xl my-5  font-bold"> 
-                Top 10 best psychological movies </h1>
+                <h1 className="text-2xl my-5  font-bold">
+                    Top 10 best psychological movies </h1>
                 <div>
                     <Swiper
                         // spaceBetween={10}
                         slidesPerView={2}
                         style={{ cursor: 'default', }}
                     >
-                        {company && company.length > 0 ? company.map((item,idx) => {
+                        {company && company.length > 0 ? company.map((item, idx) => {
                             // console.log(item);
 
                             return (
                                 <SwiperSlide key={idx}>
-                                        <div className=" translate-x-10 w-full px-12">
-                                            <Link to={`/details/${item._id}`} state={{ data: item }} >
-                                                <div className="saturate-150 z-10 " >
-                                                    <img
-                                                        src={item.poster}
-                                                        alt={item.title}
-                                                        // loading="lazy"
-                                                        className="rounded-e-2xl -z-20 rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
-                                                    />
-                                                </div>
-                                            </Link>
-                                            <div className={`mt-2 `}>
-                                                <h2 className={`font-bold -z-10 text-[140px] whitespace-normal ${themeCtx.theme == 'dark' || themeCtx.theme == 'travel' ? ' text-shadow-light text-dark-bg' : 'text-shadow-dark text-light-bg'} absolute -bottom-[53px] -translate-x-[70%]  drop-shadow-2xl`}>{idx + 1}</h2>
-
+                                    <div className=" translate-x-10 w-full px-12">
+                                        <Link to={`/details/${item._id}`} state={{ data: item }} >
+                                            <div className="saturate-150 z-10 " >
+                                                <img
+                                                    src={item.poster}
+                                                    alt={item.title}
+                                                    // loading="lazy"
+                                                    className="rounded-e-2xl -z-20 rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
+                                                />
                                             </div>
+                                        </Link>
+                                        <div className={`mt-2 `}>
+                                            <h2 className={`font-bold -z-10 text-[140px] whitespace-normal ${themeCtx.theme == 'dark' || themeCtx.theme == 'travel' ? ' text-shadow-light text-dark-bg' : 'text-shadow-dark text-light-bg'} absolute -bottom-[53px] -translate-x-[70%]  drop-shadow-2xl`}>{idx + 1}</h2>
+
                                         </div>
-                                    </SwiperSlide>
+                                    </div>
+                                </SwiperSlide>
                             )
                         }) : <p>Not found</p>}
                     </Swiper>

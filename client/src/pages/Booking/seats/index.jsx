@@ -355,7 +355,7 @@ const Select = () => {
     }
     return (
 
-        <div className={` font-movie ${themeUniver}   `}>
+        <div className={` font-movie ${themeUniver}  min-h-screen `}>
             {/* <button onClick={Click}>test</button> */}
 
             <div className="px-5">

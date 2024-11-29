@@ -16,10 +16,12 @@ import UserController from '@/services/users/User.controller';
 import { HeartOutlined } from '@ant-design/icons';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { LoadingApp } from '@/layout/Loading';
-import { showSuccessToast } from '@/lib/toastUtils';
+import { showInfoToast, showSuccessToast } from '@/lib/toastUtils';
 import ReactPlayer from 'react-player'
+import { FaPlay } from "react-icons/fa";
+import { truncateText } from '@/hooks/GetApi/GetApi';
 const MovieDetails = () => {
-    const { textClasses, backGround, themeBackGround, btnSubmit, buttonCLick } = useThemeClasses()
+    const { textClasses, backGround, themeBackGround, themeUniver, btnSubmit, buttonCLick } = useThemeClasses()
     const { color } = useTheme()
     const location = useLocation()
     // console.log(textClasses);
@@ -32,11 +34,11 @@ const MovieDetails = () => {
     const [isValid, setIsValid] = useState(false)
     const [IsTrue, setIsTrue] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [user,setUser] = useState('guest')
     const videoRef = useRef(null); // Sử dụng ref để điều khiển video
     const [isPlaying, setIsPlaying] = useState(false); // Trạng thái để kiểm tra video có đang phát không
     const [showBanner, setShowBanner] = useState(true); // Trạng thái để hiển thị banner
-
+    
     const handlePlayButtonClick = () => {
         if (videoRef.current.paused) {
             videoRef.current.play();
@@ -59,13 +61,12 @@ const MovieDetails = () => {
         }
     };
     useEffect(() => {
+        const access_token = localStorage.getItem('access_token');
+
         const fetchData = async () => {
-            // const reponse = await UserHistory.lastMovie(data._id)
-            // if (reponse) {
-            //     setIsLoading(true)
-            // }
             try {
-                if (localStorage.getItem('access_token')) {
+                if (access_token) {
+                    setUser('user')
                     await UserHistory.lastMovie(location.pathname.split('/')[2] || data._id)
                     // console.log( data._id);
                     // console.log(location.pathname.split('/')[2]);
@@ -86,10 +87,8 @@ const MovieDetails = () => {
                             setIsLoading(true)
                         }
                     }
-
-
                 } else {
-                    alert("Please Login !")
+                    setUser('guest')
                 }
 
                 if (location) {
@@ -100,6 +99,7 @@ const MovieDetails = () => {
 
                     setDataMovie(reponse.data)
                     setIsValid(true)
+                    setIsLoading(true)
                 }
             } catch (error) {
                 console.log(error);
@@ -112,16 +112,13 @@ const MovieDetails = () => {
         fetchData()
     }, [location])
 
-    const handleClickLove = () => {
-
-    }
     const handleAddLove = async () => {
         if (localStorage.getItem('access_token')) {
             const reponse = await UserHistory.loveMovie('like', location.pathname.split('/')[2] || data._id)
             showSuccessToast(reponse.data.message)
             setIsTrue(isValid)
         } else {
-            alert("Please Login !")
+            showInfoToast('Please Login')
         }
         // setIsTrue(!isValid)
     };
@@ -132,7 +129,7 @@ const MovieDetails = () => {
             showSuccessToast(reponse.data.message)
             setIsTrue(!isValid)
         } else {
-            alert("Please Login !")
+            showInfoToast('Please Login')
         }
 
 
@@ -143,110 +140,150 @@ const MovieDetails = () => {
 
 
     return (
+     
+        <div className='font-movie min-w-[100vw]'>
+            {
+                dataMovie && isValid ? (
+                    <div> <div className='relative w-full h-[500px]'>
+                    <div
+                        className={`w-full h-full ${isPlaying ? '-z-10' : ''} `}
+                        style={{
+                            position: 'absolute',
+                            top: '0',
+                            left: '0',
+                            backgroundImage: `url(${dataMovie.poster})`, // URL banner
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+    
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: '36px',
+                            fontWeight: 'bold',
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+                        }}
+                    >
+                        <button
+                            className='z-20 backdrop-blur-sm bg-primary-textMovie w-[100px] h-[100px] rounded-full  flex justify-center items-center p-2'
+                            onClick={handlePlayButtonClick}
+    
+                        >
+                            {isPlaying ? 'Pause Trailer' : <FaPlay />}
+                        </button>
+    
+                    </div>
+                    <video
+    
+                        className='object-cover  h-full z-20 '
+                        ref={videoRef}
+    
+                        onClick={handleVideoClick}
+    
+                    >
+                        <source src="https://res.cloudinary.com/dlpxfxpdn/video/upload/v1732811181/idydihhtp0yoebaaohna.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    <div className=' absolute top-10 left-5 items-center  z-50   '>
+                        <div className="backdrop-blur-sm  w-fit rounded-sm flex justify-center items-center p-2 ">
+                            <Link to={`${user === 'user' ? '/history' : '/home'}`} >
+                                <box-icon name='chevron-left' size={"40px"} color={'red'}> </box-icon>
+                            </Link>
+    
+                        </div>
+                    </div>
+                    <div className='absolute top-0   inset-0 opacity-90 w-full from-[#192026]    to-transparent h-full bg-gradient-to-t '></div>
+                    <div className='absolute bottom-0 w-full text-sm p-5'>
+    
+                        <h1 className='font-w900 text-4xl text-white'>{dataMovie.title}</h1>
+                        <div className='flex justify-between px-2 text-[#f9b24f] items-center'>
+                            <div className=''>
+                                <p className='text-xl'>Rating : {dataMovie.imdb ? dataMovie.imdb.rating : ''}/10</p>
+                                <p className='text-xs'> Votes: {dataMovie.imdb ? dataMovie.imdb.votes : ''}</p>
+                            </div>
+                            <p className='text-xl'>Price : $6.68</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={`iphone-12-pro-max:flex w-full flex flex-col min-h-screen pt-10   px-5  ${themeUniver} ${textClasses} `}>
+                    <div>
+                        <h2 className='font-w900 text-2xl'>Descriptions</h2>
+                        <p >{dataMovie.fullplot}</p>
+                    </div>
+                    <hr className='my-10' />
+                    <div>
+                        <h2 className='font-w900 text-2xl'>Details</h2>
+                        <div className='flex flex-row md:flex-row py-5 '>
+                            <img
+                                src={dataMovie.poster}
+                                alt="helo"
+                                className='rounded-2xl w-[250px]  h-[300px] sm:h-[400px] md:h-[600px] object-cover'
+                            />
+                            <div className='flex flex-col justify-between px-5 sm:px-10 text-center md:text-center'>
+                                {/* Title Section */}
+                                <div className='flex gap-5 items-center '>
+    
+                                    <span className='text-gray-400'>Title</span>
+                                    <p className='font-logo text-nowrap '>{dataMovie ? (truncateText(dataMovie.title,25)) : ''}</p>
+                                </div>
+    
+    
+                                {/* Genre Section */}
+                                <div className='flex gap-5 items-center '>
+    
+                                    <span className='text-gray-400'>Type</span>
+                                    <p className='font-logo'>{dataMovie.genres ? dataMovie.genres.join(',') : ''}</p>
+                                </div>
+    
+                                {/* Duration Section */}
+                                <div className='flex gap-5 items-center '>
+                                    {/* <div><IoMdTime className='text-primary-textMovie' size={35} /></div> */}
+                                    <span className='text-gray-400'>Duration</span>
+                                    <p className='font-logo text-sm'>{convertMinutesToHhMm(dataMovie.runtime)}</p>
+                                </div>
+    
+                                {/* Rating Section */}
+                                <div className='flex gap-5 items-center '>
+                                    {/* <div><CiStar className='text-primary-textMovie' size={35} /></div> */}
+                                    <span className='text-gray-400'>Rating</span>
+                                    <p className='font-logo'>{dataMovie.imdb ? Number(dataMovie.imdb.rating).toFixed(1) : ''}/10</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr className='my-10' />
+    
+                </div></div>
+                ): null
+            }
+           
+            <div className='fixed bottom-5  min-w-full flex  p-10 gap-5 '>
 
-        <div></div>
-        // <div className='w-full bg-black'>Hello </div>
-        // <div>
+                <div>
+                    {IsTrue
+                        ? <div
+                            onClick={handleRemoveLove}
+                            className={`flex p-4 items-center gap-2 ${buttonCLick} cursor-pointer`} >
+                            <span><FaHeart size={30} /></span>
+                            {/* <p>Remove List</p> */}
+                        </div>
+                        : <div
+                            onClick={handleAddLove}
+                            className={`flex p-4 items-center gap-5 ${buttonCLick} cursor-pointer`}>
+                            <span><FaRegHeart size={30}  /></span>
+                            {/* <p>Add List</p> */}
+                        </div>
+                    }
+                </div>
+                <div className='w-full'>
+                    <Link className='text-white  hover:text-white' to={`booking`} state={dataMovie} onClick={() => handleClick(data)}>
+                        <Button className={`${btnSubmit} hover:bg-chairMovie-chairSelected w-full  h-16  text-xl `}>Select Seat</Button>
+                    </Link>
+                </div>
 
-        //     <div className='relative w-full h-[500px] '>
-        //         {/* Banner (Ảnh nền) */}
+            </div>
+        </div>
 
-
-        //         {showBanner && (
-
-        //             <div
-
-        //                 style={{
-        //                     position: 'absolute',
-        //                     top: '0',
-        //                     left: '0',
-        //                     // width: '100%',
-        //                     // height: '100%',
-        //                     backgroundImage: `url(${dataMovie.poster})`, // URL banner
-        //                     backgroundSize: 'cover',
-        //                     backgroundPosition: 'center',
-
-        //                     display: 'flex',
-        //                     alignItems: 'center',
-        //                     justifyContent: 'center',
-        //                     color: 'white',
-        //                     fontSize: '36px',
-        //                     fontWeight: 'bold',
-        //                     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)', // Tạo bóng cho chữ
-        //                 }}
-        //             >
-
-        //                 {/* <h2>Video Trailer</h2> */}
-        //                 <button
-        //                     className='z-20'
-        //                     onClick={handlePlayButtonClick}
-        //                     style={{
-        //                         marginTop: '20px',
-        //                         padding: '10px 20px',
-        //                         fontSize: '18px',
-        //                         cursor: 'pointer',
-        //                         backgroundColor: 'red',
-        //                         color: 'white',
-        //                         border: 'none',
-        //                         borderRadius: '5px',
-        //                     }}
-        //                 >
-        //                     {isPlaying ? 'Pause Trailer' : 'Play Trailer'}
-        //                 </button>
-
-        //             </div>
-
-        //         )}
-
-        //         <div className=' absolute top-10 left-5 items-center w-full z-50   '>
-        //             <div className="backdrop-blur-sm  w-fit rounded-sm flex justify-center items-center p-2 ">
-        //                 <Link to="/history" >
-        //                     <box-icon name='chevron-left' size={"40px"} color={'red'}> </box-icon>
-        //                 </Link>
-
-        //             </div>
-
-        //             {/* <h1 className='text-center font-logo backdrop-blur-sm text-black w-fit translate-x-[] rounded-sm  p-2'>Movie Details</h1> */}
-        //         </div>
-        //         <video
-
-        //             className='object-cover w-[500px] h-full z-20 '
-        //             ref={videoRef}
-
-        //             onClick={handleVideoClick}
-        //             style={{ zIndex: 0 }} // Đảm bảo video nằm dưới banner khi không phát
-        //         >
-        //             <source src="https://res.cloudinary.com/dlpxfxpdn/video/upload/v1732811181/idydihhtp0yoebaaohna.mp4" type="video/mp4" />
-        //             Your browser does not support the video tag.
-        //         </video>
-        //         {/* <div className="absolute h-full w-full inset-0  bg-gradient-to-t  from-[#192026]  to-transparent opacity-65 "></div>
-        //         <div className="absolute bottom-0 h-full text-sm  text-white  shadow-md w-[75%]   ">
-        //             <div className="absolute -bottom-10 left-10 w-[586px] h-[161px] flex flex-col gap-5">
-        //                 <h1 className='font-w900 text-4xl'>{dataMovie.title}</h1>
-        //                 <div className='flex justify-between px-2'>
-        //                     <div>
-        //                     <p className='text-xl'>Rating : {dataMovie.imdb ? dataMovie.imdb.rating :''}/10</p>
-        //                     <p className='text-xs'> Votes: {dataMovie.imdb ? dataMovie.imdb.votes : ''}</p>
-        //                     </div>
-        //                     <p className='text-xl'>Price : $6.68</p>
-        //                 </div>
-
-        //             </div>
-        //         </div> */}
-        //     </div>
-
-        //     {/* <div>
-        //         <div className="relative ">
-              
-        //         </div>
-
-        //     </div>
-        //     <div>hello</div> */}
-
-
-
-
-        // </div>
     );
 }
 export default MovieDetails;
