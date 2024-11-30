@@ -38,6 +38,7 @@ UserRouter.post('/verify-code', authMiddleware.authOtp,verifyOtp)
 UserRouter.post('/create-token',UserMiddleware.authTokenCreate,createAsscessTokenGlobal,Products.addUser)
 
 UserRouter.post('/payments',createPayment)
+UserRouter.post('/sepay_webhook' )
 
 
 export default UserRouter;

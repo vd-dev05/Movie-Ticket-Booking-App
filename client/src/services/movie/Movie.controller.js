@@ -76,6 +76,19 @@ const MovieController = {
             return error
         }
     },
+    getBookingSeats : async (movieId) => {
+        try {
+            
+           if (movieId) {
+            const response = await axios.get(`${baseURL}/api/v1/movies/seats/${movieId}`)
+            
+            
+            return response.data
+           }
+        } catch (error) {
+            return error
+        }
+    }
     // getGenersMovie : async (value) => {
     //     try {
     //     //    console.log(value);

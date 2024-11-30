@@ -30,6 +30,7 @@ import Genners from '@/components/common/category';
 import Pay from '@/pages/Booking/payment';
 import QrCode from '@/components/common/booking/detailsQrcode'
 import NotFound from '@/pages/404';
+import VietQr from '@/layout/qrcode/payVietQr';
 const RouteMovie = () => {
     return (
         // <div>
@@ -49,6 +50,7 @@ const RouteMovie = () => {
                     <Route path='/details/:id' element={<MovieDetails />} />
                     <Route path='/details/:id/booking' element={<Select />} />
                     <Route path='/details/:id/booking/pay' element={<Pay />} />
+                    <Route path='/details/:id/booking/pay/vietqr' element={<VietQr/>} />
                     <Route path='/geners/:id' element={<Genners />} />  
                     <Route path='/qrcode/:id' element={<QrCode />} />
 

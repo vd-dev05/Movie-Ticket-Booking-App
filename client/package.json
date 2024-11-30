@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite --host=192.168.1.224",
     "dev_home": "vite --host=192.168.1.224",
-    "dev_mindx": "vite --host= 10.10.10.194",
+    "dev_mindx": "vite --host=10.10.10.203",
     "dev": "vite --host=192.168.10.207",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -49,6 +49,7 @@
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.418.0",
     "nanoid": "^5.0.7",
+    "numeral": "^2.0.6",
     "process": "^0.11.10",
     "query-string": "^9.1.1",
     "randn": "^1.0.0",

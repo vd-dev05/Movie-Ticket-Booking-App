@@ -17,6 +17,7 @@ import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import Payment from '@/services/users/payment';
 import { useUser } from '@/context/User';
+import numeral from 'numeral';
 const Pay = () => {
     const localtion = useLocation()
     const parsed = queryString.parse(location.search);
@@ -38,7 +39,7 @@ const Pay = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isValid, setIsValid] = useState(true);
 
-    
+
     // const [numberCard, setNumberCard] = useState({
     //     master: '',
     //     payPal: ''
@@ -130,40 +131,40 @@ const Pay = () => {
         }
     };
     const handlePayMentMoMo = async (value) => {
-      
+
         const access_token = localStorage.getItem('access_token');
         if (!access_token) showErrorToast('Please Login')
-        
+
         if (access_token) {
             showLoadingToast("Loading ... ")
             setIsValid(false);
             // console.log(value);
             // const title = value.title
-            const response  = await Payment.momo( value )
-         
-            
+            const response = await Payment.momo(value)
+
+
             if (response) {
                 window.location.href = response.shortLink
             }
         }
-       
-        
-       
+
+
+
     }
     const handlePay = async () => {
         setIsValid(false);
         const toastId = toast.loading("Please Loading ...");
-      
+
         const token = localStorage.getItem('access_token')
         if (!token) {
             alert('Please Login');
-            setIsValid(true);   
+            setIsValid(true);
             return
-        } 
-        
+        }
+
         if (token) {
             try {
-                
+
                 const response = await BookingController.seatsBookings(token, parsed, splitId)
 
                 if (response.success === true) {
@@ -176,7 +177,7 @@ const Pay = () => {
                         type: 'success',
                         isLoading: false,
                         autoClose: 5000,
-                      });
+                    });
                 }
                 if (response.response.status === 401) {
                     setIsValid(true)
@@ -186,7 +187,7 @@ const Pay = () => {
                         type: 'error',
                         isLoading: false,
                         autoClose: 5000,
-                      });
+                    });
                 }
             } catch (error) {
                 setIsValid(true);
@@ -195,18 +196,43 @@ const Pay = () => {
                     type: 'error',
                     isLoading: false,
                     autoClose: 5000,
-                  });
+                });
 
             }
             setTimeout(() => {
                 toast.dismiss(toastId);
-              }, 5000);
+            }, 5000);
 
         }
     };
+
+    const handlePayMentVietQR = (value) => {
+    
+        if (parsed.isactive === 'false') {
+            import ("randn" )
+            .then((moude) =>{
+                const randn = moude.default
+                const ordersCode = `${randn(4)}`
+                const vnd = parsed.totalprice * 25
+                // console.log(vnd);
+                const testNumeral = numeral(vnd).format('0,0.00đ')
+                console.log(testNumeral);
+                
+                
+                nav(`vietqr?title=${value.title}&seats=${parsed.seats}&orderId=${ordersCode}&total=${testNumeral}&isBooking=true`, )
+            })
+            .catch((err) => {
+                showErrorToast(err)
+            })
+        
+        }
+   
+        // console.log( parsed );
+        
+    }
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie px-5 ${themeUniver}`}>
-            
+
             {!isLoading ? <div >Loading...</div>
                 : <div>
                     <div>
@@ -255,7 +281,7 @@ const Pay = () => {
                                                 <img src={itemm.url} width={itemm.size} alt="" />
                                             </div>
                                             <div className='flex flex-col'>
-                                                <h2  className='font-logo'>{itemm.name}</h2>
+                                                <h2 className='font-logo'>{itemm.name}</h2>
                                                 <span>{formatCardNumber(itemm.number)}</span>
                                             </div>
                                         </div>
@@ -280,14 +306,28 @@ const Pay = () => {
                             ))}
                         </div>
                         <div className='h-[1px] w-full bg-gray-600'></div>
-                        <div className='m-2 py-10 flex justify-between items-center cursor-pointer' 
-                        onClick={() => handlePayMentMoMo( payBookData ?? payBookData.title)}
-                        >
-                            <div className=' flex gap-5 items-center'>
-                                <img src="/assets/img/momo_icon_square_pinkbg_RGB.png" alt="momo_icon_square_pinkbg_RGB" width={35} />
-                                <h2 className='font-logo'>Payment via qr code</h2>
+                        <div className='flex justify-between'>
+                            <div className='m-2 py-10 flex  justify-between items-center cursor-pointer gap-2 w-[50%] px-5'
+                                onClick={() => handlePayMentMoMo(payBookData ?? payBookData.title)}
+                            >
+                                <div className='flex flex-col '>
+                                    <img src="/assets/img/momo_icon_square_pinkbg_RGB.png" alt="momo_icon_square_pinkbg_RGB" width={35} />
+                                    <h2 className='font-logo'>Payment via qr code</h2>
+                                </div>
+                                <FaQrcode size={40} />
+
+
                             </div>
-                            <FaQrcode size={35} />
+                            <div className='w-[1px] h-[100px] my-10  bg-gray-600'></div>
+                            <div className='w-[50%] m-2 py-10 flex justify-between gap-10 items-center px-5'
+                            onClick={() => handlePayMentVietQR({title : payBookData.title, total: parsed.totalprice })}
+                            >
+                                <div className='flex flex-col items-center gap-4 '>
+                                    <img src="https://i.gyazo.com/566d62fd25cf0867e0033fb1b9b47927.png" width={100} alt="" />
+                                    <h2 className='font-logo '>Payment via QR</h2>
+                                </div>
+                                <FaQrcode size={40} />
+                            </div>
                         </div>
                         <div className='flex flex-col gap-10'>
                             <div>
@@ -313,7 +353,7 @@ const Pay = () => {
                         className={`${buttonCLick} min-w-full flex items-center justify-center rounded-lg py-4 text-white`}
                         onClick={handlePay}
                         disabled={!isValid}
-                    > {!isLoading ?  "Processing..." :"Pay Now"}</button>
+                    > {!isLoading ? "Processing..." : "Pay Now"}</button>
                 </div>}
         </div>
     );

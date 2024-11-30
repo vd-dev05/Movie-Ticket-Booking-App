@@ -1,5 +1,28 @@
 import mongoose from "mongoose";
 import Collections from "../../database/collections.js";
+// sepay 
+const transactionSchema = new mongoose.Schema({
+    gateway: String,
+    transaction_date: String,
+    account_number: String,
+    sub_account: String,
+    amount_in: Number,
+    amount_out: Number,
+    accumulated: Number,
+    code: String,
+    transaction_content: String,
+    reference_number: String,
+    body: String
+  });
+  
+  const orderSchema = new mongoose.Schema({
+    id: Number,
+    total: Number,
+    payment_status: String
+  });
+  
+
+
 // ticket booking canncell 
 const cancelSchema = new mongoose.Schema({
     ticketId : {
@@ -189,10 +212,18 @@ const Users = mongoose.model(Collections.USERS, userSchema);
 const Movies = mongoose.model(Collections.MOVIES, movieSchema);
 const Booking = mongoose.model(Collections.BOOKINGS, bookSchema);
 const Cancel = mongoose.model(Collections.CANCEL, cancelSchema);
+
+//  Model sepay 
+const Transaction = mongoose.model('Transaction', transactionSchema);
+const Order = mongoose.model('Order', orderSchema);
+
 // Export Models
+
 export {
     Movies,
     Users,
     Booking,
-    Cancel
+    Cancel,
+    Order,
+    Transaction
 };

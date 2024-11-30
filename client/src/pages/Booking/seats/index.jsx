@@ -111,34 +111,37 @@ const Select = () => {
 
     // const socket = io('http://192.168.1.224:3002')
 
-
+    const [isLoading , setIsLoading] = useState(false)
     const { backGround, textClasses, themeUniver, DatePickerButton, buttonCLick } = useThemeClasses()
     const { color } = useTheme()
-
-    // useEffect(() => {
-    //     setDataUser(pre => ({ ...pre, dataIdBook: dataBook }))
-    // }, [setDataUser])
 
     const handleSeatsUpdate = (updatedSeats) => {
         // console.log(updatedSeats);
 
         // const selectedSeats =  updatedSeats.filter(seat => seat.selected == true);
-        setData((prevSeats) => {
-            const mergedSeats = [...prevSeats];
-            updatedSeats.forEach((seat) => {
-                const index = mergedSeats.findIndex((s) => s.id === seat.id);
-
-
-                if (index >= 0) {
-                    mergedSeats[index] = seat;
-
-
-                } else {
-                    mergedSeats.push(seat);
-                }
+        if (updatedSeats) {
+            setData((prevSeats) => {
+                const mergedSeats = [...prevSeats];
+                updatedSeats.forEach((seat) => {
+                    const index = mergedSeats.findIndex((s) => s.id === seat.id);
+    
+    
+                    if (index >= 0) {
+                        mergedSeats[index] = seat;
+    
+    
+                    } else {
+                        mergedSeats.push(seat);
+                    }
+                });
+          
+                
+                return mergedSeats;
             });
-            return mergedSeats;
-        });
+       
+        }
+     
+        
 
     };
     const TotalPrice = useMemo(() => {
@@ -289,13 +292,13 @@ const Select = () => {
     }, [TotalPrice, Ticket, day, hours])
 
     const handlePay = async () => {
-        const updateData = {
-            codeQr: `Mov ${generateRandomString(12)}`,
-            dateBook: dataUser.dataTicket.dataDayBook,
-            total: dataUser.dataTicket.total,
-            seatBook: dataUser.dataTicket.dataMovieBook,
-            timeBook: dataUser.dataTicket.dataTimeBook,
-        }
+        // const updateData = {
+        //     codeQr: `Mov ${generateRandomString(12)}`,
+        //     dateBook: dataUser.dataTicket.dataDayBook,
+        //     total: dataUser.dataTicket.total,
+        //     seatBook: dataUser.dataTicket.dataMovieBook,
+        //     timeBook: dataUser.dataTicket.dataTimeBook,
+        // }
         // await updateBookingStatus(localStorage.getItem('pay'), updateData)
         // try {
         //     const PayRef = ref(database, 'users/dataTicket/book');
@@ -352,6 +355,18 @@ const Select = () => {
 
 
 
+    }
+    
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(true)
+        }, 2000);
+    }, [])
+
+    if (!isLoading) {
+        return (
+            <span className="">Loading...</span>
+        )
     }
     return (
 

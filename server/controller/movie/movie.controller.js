@@ -1,4 +1,4 @@
-import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie, getMovieSettings} from './getMovieByID.js';
+import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie, getMovieSettings, getSeats} from './getMovieByID.js';
 const MovieController = {
    
     searchMovie :  async (req,res) => { 
@@ -103,6 +103,18 @@ const MovieController = {
              res.status(404).json({ error : error.message })
         }
     },
+    getSeats  : async (req,res) => {
+        try {
+            const movieId = req.params.id
+            
+            const response = await getSeats(movieId)
+            res.status(200).json(response)
+        } catch (error) {
+            res.status(401).json({
+              error: error.message
+            })
+        }
+    }
 }
 
 

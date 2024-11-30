@@ -1,4 +1,5 @@
-import { Movies } from "../../models/movie/index.js";
+import mongoose from "mongoose";
+import { Booking, Movies } from "../../models/movie/index.js";
 
 export const getAllMovie = async (query) => {
 
@@ -165,4 +166,28 @@ export const getMovieSettings = async (year ,rating , genres) => {
     } catch (error) {
         throw new Error(error.message);  
     }
+}
+
+export const getSeats  = async (movieId) =>{
+   try {
+    const objectIdMovieId = new mongoose.Types.ObjectId(movieId);
+    const response  = await Booking.aggregate([
+        { $match: { movieId: objectIdMovieId } },
+        { $unwind: "$seats" },
+        { $match: { "seats.status": "Booked" } },
+        { $project: { "seats.seatsId": 1 }}
+      ]) ;
+    //   console.log(response);
+      
+    const obj = response.map((item) => item.seats.seatsId )
+
+    if (!response) {
+        throw new Error("Error: Couldn't find Movie");
+    }
+    return obj;
+    
+   } catch (error) {
+    throw new Error(error.message);
+   }
+    
 }

@@ -63,7 +63,7 @@ const QrCode = () => {
               
                  
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
         fetchData();

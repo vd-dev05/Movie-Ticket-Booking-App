@@ -1,11 +1,10 @@
 const obValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-const generateSeats = (count, startIndex) =>
+const generateSeats = (count, startIndex,response  ) =>
 
-    // console.log(count);
-
-    Array.from({ length: count }, (_, i) => ({
+    Array.from({ length: count }, (_, i) =>  ({
+        
         id: `${obValues[i]}${startIndex}`,
-        booked: Math.random() < 0.5,
+        booked: response.includes(`${obValues[i]}${startIndex}`) || false,
         selected: false,
         // ob:obValues[i],
         // price: 99

@@ -33,5 +33,4 @@ serverTest
 .netlify
 *.env
 img
-
-
+admin
