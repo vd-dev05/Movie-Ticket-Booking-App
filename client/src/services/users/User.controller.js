@@ -109,16 +109,16 @@ const UserServices = {
     upLoadAvatar : async (value) => {
         try {
             const formData = new FormData();
-            formData.append('file', value);
-
-            const response = await axios.post(`${baseURL}/api/v1/users/upload-avatar`, formData , {
-                
+            formData.append('avatar', value);
+            // console.log(value)
+            const response = await axios.post(`${baseURL}/api/v1/users/upload-avatar`,formData, {
                 headers : {
                     "Content-Type"  : 'multipart/form-data',
-
+                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 }
-            } )
-            console.log(response);
+            })
+            return response
+            // console.log(response);
             //  if (response) {
             //     console.log(response);
                 
@@ -126,6 +126,18 @@ const UserServices = {
         } catch (error) {
             console.log(error);
             
+        }
+    },
+    getUserProfile  :async () =>{
+        try {
+            const response = await axios.get(`${baseURL}/api/v1/users/profile`,{
+                headers : {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+            return response
+        } catch (error) {
+            return error?.response
         }
     }
 }

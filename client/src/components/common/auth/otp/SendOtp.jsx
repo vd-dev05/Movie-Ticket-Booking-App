@@ -14,7 +14,7 @@ import { Flex, Input } from "antd";
 import { InputOTP } from "@/components/ui/input-otp";  // Ensure you have this component
 import UserController from "@/services/users/User.controller";
 
-const SendOTp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) => {
+const SendOtp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) => {
     const { dataUser } = useUser();
     const { buttonClasses, textClasses, themeUniver } = useThemeClasses();
 
@@ -78,7 +78,7 @@ const SendOTp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) =
                 const userToken = await UserController.accessToken(dataUser);
                 
                 
-                localStorage.setItem('account-info', JSON.stringify({ name: userToken.data.name, id  : userToken.data.id }));
+                localStorage.setItem('account_info', JSON.stringify({ name: userToken.data.name, id  : userToken.data.id }));
                 setIsTrue(prev => ({ ...prev, openSussces: true }));
             } else {
                 showErrorToast("Invalid OTP code.");
@@ -139,4 +139,4 @@ const SendOTp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) =
     );
 };
 
-export default memo(SendOTp);
+export default SendOtp ;

@@ -84,7 +84,7 @@ const SignUp = () => {
         validateOnBlur: true,
     })
     // console.log(formik.values);
-    useNavURL(localStorage.getItem("account-info") ? "/home" : null, 2100);
+    useNavURL(localStorage.getItem("account_info") ? "/home" : null, 2100);
     const typePass = () => {
         setVuaState(prevState => !prevState);
     };

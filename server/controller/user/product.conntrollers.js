@@ -12,9 +12,10 @@ const Products = {
     signinUser: async (req, res) => {
       
             const user = await Users.findOne({ phone: req.body.phone })
-            .select("name phone role  movieLove history")
+            .select("name phone role  movieLove history ")
             .populate("movieLove" )
             .populate("history" )
+
             const asscess = await Sessions.findOne({user_id : user._id})
             // console.log(req.body);
             try {
@@ -151,19 +152,31 @@ const Products = {
     },
     postRenameAvatar : async (req , res , next) => {
         try {
-            console.log(req.file);
-            
+           
             const file = req.file
-            if (!file ) {
+            const userId = req.userId;
+            if (!file || !userId)  {
                 throw new Error('UploadAvatar requires')
             }
-            const response =  await UserUpdateMovie.upLoadAvatar(file)
-            console.log(response);
+            const response =  await UserUpdateMovie.upLoadAvatar(file,userId)
+            
+            console.log(response) 
+            res.status(200).json(response)
             
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     },
+    getUserProfile : async (req,res) => {
+        try {
+        const userId = req.userId;
+        const user = await Users.findById(userId)
+        .select('name phone number avatar')
+        res.status(200).json(user) 
+        } catch (error) {
+            res.status(401).json({ error: error.message });
+        }
+    }
 
 }
 export default Products;

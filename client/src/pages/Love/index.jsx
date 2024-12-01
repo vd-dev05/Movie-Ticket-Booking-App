@@ -40,7 +40,7 @@ const LoveMovie = () => {
                    if (localStorage.setItem('access_token')) {
                      alert('Bạn chưa đăng nhập')
                      localStorage.removeItem('access_token')
-                     localStorage.removeItem('account-info')
+                     localStorage.removeItem('account_info')
                      window.location.href = '/login'
       
                    }

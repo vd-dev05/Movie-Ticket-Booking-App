@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useThemeClasses } from "../../../../context/Theme/themeStyles";
 import { Link } from "react-router-dom";
-import SendOTp from "@/components/common/auth/otp/SendOtp";
+
 import { customFormatPhoneNumber } from '@/lib/phone'
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +21,7 @@ import {  GetTokenSend } from "@/controller/CreateUser.controller";
 import { useUser } from "@/context/User";
 import { showSuccessToast } from "@/lib/toastUtils";
 import UserController from "@/services/users/User.controller";
+import SendOtp from "./SendOtp";
 const OTPVery = ({ text, phone, setTrue, True }) => {
     const [isOpen, setOpen] = useState(false)
     const { buttonClasses, backGround, textClasses, backGroundTow } = useThemeClasses();
@@ -85,14 +86,14 @@ const OTPVery = ({ text, phone, setTrue, True }) => {
 
                                  
                             </div> */}
-                            <SendOTp
+                            <SendOtp
                                 phoneN={phone}
                                 setOpen={setOpen}
                                 isOpen={isOpen}
                                 titlePass={'Account Created Successfully'}
                                 paraPass1={'Your account created successfully.'}
                                 paraPass2={'Find your favorite movie'}
-                            ></SendOTp>
+                            ></SendOtp>
                         </div>
                     </AlertDialogHeader>
 

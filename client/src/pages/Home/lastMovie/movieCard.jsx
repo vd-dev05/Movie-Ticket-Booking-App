@@ -9,7 +9,7 @@ const LastMovies = ({dataLast}) => {
 
     
   const themeCtx = useTheme()
-  const {textClasses,themeUniver} = useThemeClasses()
+  const {textClasses,themeUniver, buttonClasses} = useThemeClasses()
 
   const [isLoading,setisLoading] = useState(true)
   const localtion = useLocation()
@@ -17,9 +17,7 @@ const LastMovies = ({dataLast}) => {
   const [lastData,setLastData] = useState(data || null)
   const fetchData = async () => {
     try {
-        const response =  await UserHistory.getLastMovie()
-        console.log(response);
-        
+        const response =  await UserHistory.getLastMovie()        
         if (response) {
             setLastData(response.history)
             setisLoading(false)

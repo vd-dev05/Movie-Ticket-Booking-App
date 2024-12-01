@@ -53,9 +53,9 @@ const authMiddleware = {
   },
   authSessionToken: (req, res, next) => {
     try {
-      const token = req.headers['authorization']; // Expect "Bearer <token>"
+      const token = req.headers['authorization']; 
       const split = token.split(' ')[1]
-      // console.log(req.headers);
+  
       
       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")

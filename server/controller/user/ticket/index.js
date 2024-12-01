@@ -3,7 +3,6 @@ import { Users, Booking } from "../../../models/movie/index.js";
 import UserMiddleware from "../../../middleware/user.js";
 import { generateQRCode } from "../../../utils/generateQR.js";
 import { v4 as uuidv4 } from 'uuid';
-import { deleteImage, upLoadClound } from "./upload/genqr.js";
 import { format } from 'date-fns'
 import { parseDateWithTime } from "../../../utils/configDate.js";
 

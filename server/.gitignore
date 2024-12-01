@@ -32,3 +32,4 @@ netlify.toml
 # Local Netlify folder
 .netlify
 slide.md
+uploads

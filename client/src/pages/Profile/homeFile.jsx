@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLogout } from "@/features/auth/authSelectors";
 import { logoutUser } from "@/features/auth/authThunks";
 import { showInfoToast, showLoadingToast, showSuccessToast } from "@/lib/toastUtils";
+import UserServices from "@/services/users/User.controller";
 
 const HomeFile = () => {
 
@@ -38,12 +39,12 @@ const HomeFile = () => {
     const themeCtx = useTheme()
     const { oppositeTheme, themeUniver, textClasses } = useThemeClasses()
     const [user, setUser] = useState('guest');
-
+    const [isLoading, setIsLoading] = useState(false)
 
     const [reset, setReset] = useState({
         user: '',
         phone: '',
-        passWord: ''
+        avatar : '',
     })
     // console.log(reset.user);
     
@@ -57,7 +58,7 @@ const HomeFile = () => {
     
     
     useEffect(() => {
-
+        setIsLoading(true)
         const accessToken = localStorage.getItem('access_token');
         const accountInfo = JSON.parse(localStorage.getItem('account_info'));
         if (accessToken && accountInfo ) {
@@ -66,26 +67,25 @@ const HomeFile = () => {
                 ...pre,
                 user : accountInfo.name
             }))
-           }
-        
-        
-
-       if (isLogout  === true || !accessToken ||  accountInfo === null || !accountInfo ) {
+            setTrue(false)
+            setIsLoading(false)
+           } else if (isLogout  === true || !accessToken ||  accountInfo === null || !accountInfo ) {
             setUser('guest')
             setTrue(true)
-            setTimeout(() => {
-                showInfoToast("Account has been logged out")
-            }, 5000);
-       }
-       
+            
+        
+           }
 
     }, [isLogout ,user])
     const handleLogout = async () => {
         dispatch(logoutUser())
         // console.log(isLogout);
         localStorage.removeItem('access_token')
-        localStorage.setItem("account-info" , JSON.stringify({name : "user"}))
+        localStorage.removeItem('account_info')
         showSuccessToast("Logout SuccessFull")
+       setReset(pre => ({
+        ...pre , user : 'user'
+       }))
         const currentUser = {
             displayName: "user",
             photoURL: ''
@@ -133,6 +133,25 @@ const HomeFile = () => {
            }, 2000);
         }
     }
+    useEffect(() => {
+    const fetchData = async () => {
+        const response = await UserServices.getUserProfile()
+        const accessToken = localStorage.getItem('access_token');
+        if (response && accessToken ) {
+            setReset({
+                user : response.data.name,
+                phone : response.data.phone,
+                avatar : response.data.avatar,
+            })
+        } else {
+            return
+        }
+     
+        
+    }
+    fetchData()
+    }, [setIsFile])
+    
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col h-[200vw]    text-center font-movie   relative ${themeUniver}`}>
             {/* <button  onClick={CLickTest}>Click</button> */}
@@ -148,7 +167,7 @@ const HomeFile = () => {
                         onClick={() =>  setIsFile(!isFile)}
                         >
                             <img
-                                src="https://github.com/shadcn.png"
+                                src={`${reset.avatar ? reset.avatar : 'https://github.com/shadcn.png'}`}
                                 width={100}
                                 alt="Profile"
                                 className="rounded-lg "
@@ -244,7 +263,7 @@ const HomeFile = () => {
 
                     <div className="px-5">
 
-                        {!!True
+                        {True
                             ?
                             <Button
                                 onClick={handleLogin}

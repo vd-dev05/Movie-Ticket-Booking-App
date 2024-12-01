@@ -18,7 +18,7 @@ import { showErrorToast } from "@/lib/toastUtils";
 import { getLoveUser, getHistoryUser } from "@/features/auth/authThunks";
 
 const HomeMovie = () => {
-    const [nameUser, setNameUser] = useState('');
+    const [nameUser, setNameUser] = useState(''); 
     const [check, setCheck] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [dataLove, setDataLove] = useState([]);
@@ -46,24 +46,27 @@ const HomeMovie = () => {
     const dispatch = useDispatch();
     const loveMovieUser = useSelector(selectUserLove)
     const historyMovieUser = useSelector(selectHistory)
-  
+
     useEffect(() => {
-        // setIsLoading(true);
+        setIsLoading(true);
         const access_token = localStorage.getItem('access_token');
         const account_info = localStorage.getItem('account_info');
 
         if (access_token && account_info) {
             const { name } = JSON.parse(account_info);
-            setUser('user');
-            setNameUser(name);
-            setIsLoading(false);
-        }
-        if (!account_info) {
-            setNameUser('user')
-            setIsLoading(false);
-            // console.log(nameUser);
+            if (name) {
+                setNameUser(name);
+                setUser('user');
+                setIsLoading(false);
+            }
 
+
+
+        } else {
+            setNameUser('user')
         }
+        setIsLoading(false);
+
     }, [])
 
     useEffect(() => {
@@ -74,7 +77,7 @@ const HomeMovie = () => {
             dispatch(getLoveUser());
             setIsLoading(false);
         }
-    }, [dispatch, loveMovieUser, historyMovieUser,user]);
+    }, [dispatch, loveMovieUser, historyMovieUser, user]);
 
     useEffect(() => {
         if (loveMovieUser && historyMovieUser) {
@@ -84,7 +87,7 @@ const HomeMovie = () => {
         } else {
             setIsLoading(true);
         }
-    }, [loveMovieUser, historyMovieUser, loading,user]);
+    }, [loveMovieUser, historyMovieUser, loading, user]);
 
 
 
@@ -96,15 +99,15 @@ const HomeMovie = () => {
             </div>
         );
     }
-    console.log(user);
-    
+
+
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeBackGround}`}>
             <div className="px-5">
                 {/* Welcome User Section */}
                 <div className="flex justify-between">
                     <div>
-                        <div className="h-5">{TypingEffect(nameUser)}</div>
+                     { nameUser ?  <TypingEffect nameUser={nameUser}/> : null }
                         <p>Book your favourite movie</p>
                     </div>
                     <div>
@@ -167,8 +170,8 @@ const HomeMovie = () => {
                 <div className="flex justify-between mt-10 px-5 text-2xl">
                     <h2 className="font-bold">Latest Movies</h2>
                     <Link
-                        to={`${user === 'guest' ? '/login' :'/history' } `}
-                        
+                        to={`${user === 'guest' ? '/login' : '/history'} `}
+
                         state={{ data: dataHistory }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 ">
@@ -178,10 +181,10 @@ const HomeMovie = () => {
                 {/* Love Movies Section */}
                 <div className="flex justify-between mt-10 px-5">
                     <h2 className="font-bold text-2xl">Favurite Movie</h2>
-                    <Link 
-                   to={`${user === 'guest' ? '/login' : '/history'}`}
-                     state={{ data: user === 'user' ?? dataLove }}
-                      className="text-chairMovie-chairSelected text-2xl">See all</Link>
+                    <Link
+                        to={`${user === 'guest' ? '/login' : '/love'}`}
+                        state={{ data: user === 'user' ?? dataLove }}
+                        className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 mb-24">
                     {dataLove && dataLove.length ? <LoveMovie data={dataLove} sizew={250} sizeh={360} space={100} isize={200} page={3} texts={20} /> : "Not found"}

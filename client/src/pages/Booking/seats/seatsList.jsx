@@ -46,9 +46,9 @@ const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
         );
         // console.log(updatedSeats.findIndex((item) => item.id === id));
         
-        if (updatedSeats.findIndex((item) => item.id === id) === 0) {
+        if (updatedSeats.findIndex((item) => item.id === id && item.booked === true) !== -1) {
             showErrorToast("This seat is already booked")
-            
+          
         } else {
             setSeats(updatedSeats);
         }

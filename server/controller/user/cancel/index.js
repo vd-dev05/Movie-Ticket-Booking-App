@@ -1,7 +1,7 @@
 
 import mongoose from "mongoose";
 import { Booking, Cancel, Users } from "../../../models/movie/index.js"
-import { deleteImage } from "../ticket/upload/genqr.js";
+
 
 const CancelController = {
     create: async (req, res) => {

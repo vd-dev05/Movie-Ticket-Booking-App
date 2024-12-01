@@ -16,7 +16,8 @@ const UserRouter = Router();
 // UserRouter.get('/signin',Products.getUserMovie);
 UserRouter.post('/signup',UserMiddleware.createUser);
 UserRouter.post('/signin',UserMiddleware.loginUser,Products.signinUser)
-UserRouter.post('/upload-avatar', upload.single('file') , Products.postRenameAvatar)
+UserRouter.get('/profile' , authMiddleware.authSessionToken,Products.getUserProfile)
+UserRouter.post('/upload-avatar',upload.single('avatar'), authMiddleware.authSessionToken , Products.postRenameAvatar)
 UserRouter.put('/update-name',authMiddleware.authSessionToken, UserUpdateMovie.updateUser)
 
 UserRouter.post('/ticket', authMiddleware.authSessionToken, BookTicket.bookticket)

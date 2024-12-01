@@ -9,44 +9,29 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { showSuccessToast } from "@/lib/toastUtils";
 import UserController from "@/services/users/User.controller";
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import { useState } from "react";
 
-const props = {
-    name: 'file',
-    action: '',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-    //   if (info.file.status === 'done') {
-    //     message.success(`${info.file.name} file uploaded successfully`);
-    //   } else if (info.file.status === 'error') {
-    //     message.error(`${info.file.name} file upload failed.`);
-    //   }
-    },
-  };
 const UpLoadFile = ({ isFile, setIsFile }) => {
     const [isLoading ,setIsLoading] = useState(false)
     const handleUpLoad  = async (file) => {
         try {
-            setIsLoading(true) 
-       
-            
-            const response = await UserController.upLoadAvatar(filem)
-            // console.log(formData);
+            const response = await UserController.upLoadAvatar(file)
+            if (response.status === 200) {
+                setIsLoading(true) 
+                showSuccessToast('Avatar uploaded successfully !')
+            } 
             
         } catch (error) {
-            message.error(`${error.message}`)
-        }finally {
-            setIsLoading(false)
+            console.log(error);
+            
         }
     }
+
+    
     return (
         <AlertDialog open={isFile} onOpenChange={setIsFile}   >
             <AlertDialogContent className="bg-white max-w-[96vw] right-3 h-[400px]  top-[25%]    rounded-lg border-none ">
@@ -68,10 +53,9 @@ const UpLoadFile = ({ isFile, setIsFile }) => {
                 >
                     <Button icon={<UploadOutlined />} loading={isLoading}>Click to Upload Avatar</Button>
                 </Upload>
-                    {/* <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
-                    </AlertDialogFooter> */}
+                    <AlertDialogFooter className="contents ">
+                        <AlertDialogCancel  className={`bg-primary-textMovie text-white `}>Cancel</AlertDialogCancel>
+                    </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
 

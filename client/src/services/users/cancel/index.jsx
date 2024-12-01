@@ -11,7 +11,7 @@ const CancelServices = {
             selectedValue,
             rating,
             movieId ,
-            nameUser : JSON.parse(localStorage.getItem('account-info')),
+            nameUser : JSON.parse(localStorage.getItem('account_info')),
             seats : seat
         },{
             headers : {
