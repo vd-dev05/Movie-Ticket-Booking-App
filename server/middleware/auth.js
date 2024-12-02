@@ -14,10 +14,14 @@ const authMiddleware = {
   },
   auhthorizationAdmin: async (req, res, next) => {
     try {
-      const textAdmin = await Users.findOne({ phone: req.body.phone })
 
+      const textAdmin = await Users.findOne({ phone: req.body.phone })
+      if (textAdmin === undefined || textAdmin === null || !textAdmin) {
+        throw new Error(' Role not found')
+      }
       if (textAdmin.role === 'Admin') {
-        next(); // Cho phép truy cập vào route
+
+        return next();
       } else if (!textAdmin.role) {
         throw new Error('Please Enter a role')
       }
@@ -35,6 +39,7 @@ const authMiddleware = {
   },
   auhthorizationCinemaManager: async (req, res, next) => {
     try {
+
       const textAdmin = await Users.findOne({ phone: req.body.phone })
 
       if (textAdmin === undefined || textAdmin === null || !textAdmin) {
@@ -43,7 +48,7 @@ const authMiddleware = {
       if (!textAdmin.role) {
         throw new Error('Please Enter a role')
       }
-      else if (textAdmin.role === 'Manager') {
+      else if (textAdmin.role === 'Manager' || textAdmin.role === 'Admin') {
         next();
       }
     } catch (error) {
@@ -53,10 +58,10 @@ const authMiddleware = {
   },
   authSessionToken: (req, res, next) => {
     try {
-      const token = req.headers['authorization']; 
+      const token = req.headers['authorization'];
       const split = token.split(' ')[1]
-  
-      
+
+
       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")
         // req.userId = user.userId   
@@ -64,7 +69,7 @@ const authMiddleware = {
 
         // console.log(req.body);
         // console.log(user);
-        
+
         req.userId = user.userId
         next()
 

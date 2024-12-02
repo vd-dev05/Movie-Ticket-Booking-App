@@ -185,25 +185,36 @@ const bookSchema = new mongoose.Schema({
 
 // Movie Schema
 const movieSchema = new mongoose.Schema({
-    price: Number,
     plot: String,
-    genres: [String],
+    genres: Array,
     runtime: Number,
     rated: String,
     cast: String,
     title: String,
     fullplot: String,
-    language: [String],
+    languages: Array,
     released: Date,
     directors: [String],
     writers: [String],
-    awards: String,
+    awards: {
+        wins: String,
+        nominations: String,
+        text : String
+    },
     lastupdated: Date,
     year: Number,
-    imdb: mongoose.Schema.Types.Mixed, // Mixed to allow flexible structure
+    imdb: {
+        rating : Number,
+        votes : Number,
+    }, // Mixed to allow flexible structure
     countries: [String],
     type: String,
     tomatoes: mongoose.Schema.Types.Mixed, // Mixed type for dynamic content
+    trailer : {
+        type: String,
+        required: true,
+    },
+    cast : Array,
     num_mflix_comments: Number,
 });
 

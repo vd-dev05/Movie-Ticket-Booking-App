@@ -5,11 +5,12 @@ import postManager from "../../controller/manager/post/index.js";
 import MovieMiddleware from "../../middleware/movie.js";
 import Ticket from "../../controller/manager/ticket/searchMovie.js";
 import ManagerMiddleware from "../../middleware/manager.js";
-
+import { upload } from "../../utils/fileUpLoad.js";
+import upLoadLogo from "../../controller/manager/auth/upload/index.js";
 
 
 const ManagerRouter = Router();
-
+ManagerRouter.post('/create',upload.single('logoSeller'),authMiddleware.auhthorizationCinemaManager,upLoadLogo.createSeller  , managerController.create )
 ManagerRouter.get('/', authMiddleware.auhthorizationCinemaManager , managerController.loginManager)
 ManagerRouter.post('/',authMiddleware.auhthorizationCinemaManager, MovieMiddleware.createMovie ,postManager.createMovie)
 ManagerRouter.post('/ticket/:id',ManagerMiddleware.checkSeats,postManager.createTicketMovie)

@@ -1,13 +1,23 @@
+import { Movies } from "../models/movie/index.js"
+
 const MovieMiddleware = {
     createMovie : async (req,res,next) => {
         try {
-            if(!req.body.title ||!req.body.genres ||!req.body.directors ||!req.body.writers ||!req.body.released ||!req.body.fullplot ||!req.body.price){
-                return res.status(400).json({message : "Fields are not left blank"})
-                // throw new Error(`Fields are not left blank`)
-            } 
-            return next ()
+            const checkMovie = await Movies.aggregate([
+                { $match: { title: req.body.value.title, plot: req.body.value.plot , years : req.body.value.years } }
+ 
+            ])
+        
+          
+            
+            
+            if (checkMovie.length > 0) {
+                throw new Error("Movie already exists in the system")
+            }
+            return next()
+       
         } catch (error) {
-           return  res.status(error).json({message : error.message})
+            res.status(401).json({error : error.message})
         }
        
     }
