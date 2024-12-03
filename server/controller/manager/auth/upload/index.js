@@ -15,7 +15,7 @@ const upLoadLogo = {
             
             const result = await cloudinary.uploader.upload(dataUrl, {
                 public_id: fileName +"logo" + Math.floor(10) * 2024,
-                resource_type: 'video',
+                resource_type: 'auto',
                 folder: 'folder-seller',
             });
 

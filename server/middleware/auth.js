@@ -1,6 +1,8 @@
 import { Users } from "../models/movie/index.js";
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import { ManagerSeller } from "../models/manager/account.js";
+import { verifyPass } from "../utils/hashPassword.js";
 dotenv.config()
 const authMiddleware = {
   authentication: (req, res, next) => {
@@ -37,18 +39,47 @@ const authMiddleware = {
     }
 
   },
+  auhthorizationSeller : async (req,res,next) => {
+    try {
+      const seller = await ManagerSeller.findOne({email : req.body.email})
+      // check password
+      const hassPassword = verifyPass(req.body.password,seller.password)
+      
+      if (seller === undefined || seller === null ||!seller) {
+        throw new Error('Role not found')
+      } else if (!hassPassword) {
+        throw new Error('Passwords do not match!')
+      }
+  
+      if (seller.role === 'Seller' ) {
+        req.data = seller
+        return next();
+      } else if (!seller.role) {
+        throw new Error('Please Enter a role')
+      }
+      else {
+        throw new Error('Error Forbiden')
+      }
+    } catch (error) {
+      res.status(403).json({
+        error : error.message
+      })
+    }
+ 
+  },
   auhthorizationCinemaManager: async (req, res, next) => {
     try {
 
       const textAdmin = await Users.findOne({ phone: req.body.phone })
-
+      
       if (textAdmin === undefined || textAdmin === null || !textAdmin) {
         throw new Error(' Role not found')
       }
       if (!textAdmin.role) {
         throw new Error('Please Enter a role')
       }
-      else if (textAdmin.role === 'Manager' || textAdmin.role === 'Admin') {
+      else if (textAdmin.role === 'Manager' || textAdmin.role === 'Admin' ||  textAdmin.role === 'Seller') {
+        req.data = textAdmin
         next();
       }
     } catch (error) {

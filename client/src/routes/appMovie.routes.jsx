@@ -31,6 +31,7 @@ import Pay from '@/pages/Booking/payment';
 import QrCode from '@/components/common/booking/detailsQrcode'
 import NotFound from '@/pages/404';
 import VietQr from '@/layout/qrcode/payVietQr';
+import SelectSeller from '@/pages/Booking/seller';
 const RouteMovie = () => {
     return (
         // <div>
@@ -48,6 +49,7 @@ const RouteMovie = () => {
                     <Route path='/itemLove' element={<ItemLove />} />
                     <Route path="/love" element={<LoveMovie />} />
                     <Route path='/details/:id' element={<MovieDetails />} />
+                    <Route path='details/:id/seller' element={<SelectSeller/>}/>
                     <Route path='/details/:id/booking' element={<Select />} />
                     <Route path='/details/:id/booking/pay' element={<Pay />} />
                     <Route path='/details/:id/booking/pay/vietqr' element={<VietQr/>} />

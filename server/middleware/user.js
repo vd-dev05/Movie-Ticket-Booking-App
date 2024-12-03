@@ -65,9 +65,6 @@ const UserMiddleware = {
                }
                 const token = jwt.sign(userData, process.env.SECRET_KEY, {expiresIn : 60});
                 req.refreshToken = token
-                // res.status(200).json({
-                //     token : token
-                // })
                 return next();
             }
         

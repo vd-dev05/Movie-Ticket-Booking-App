@@ -76,7 +76,7 @@ const MovieDetails = () => {
                     if (response.length === 0) {
                         setIsTrue(false)
                         setIsLoading(true)
-                    } else {
+                    } else if (response.length > 0) {
                         const check = response.findIndex((item) => item._id.toString() === location.pathname.split('/')[2])
 
                         if (check === -1) {
@@ -137,8 +137,10 @@ const MovieDetails = () => {
     if (!isLoading) {
         return <p>Loading ...</p>
     }
-
-
+    // console.log("hell");
+    
+    // console.log(dataMovie);
+    
     return (
      
         <div className='font-movie min-w-[100vw]'>
@@ -181,7 +183,7 @@ const MovieDetails = () => {
                         onClick={handleVideoClick}
     
                     >
-                        <source src="https://res.cloudinary.com/dlpxfxpdn/video/upload/v1732811181/idydihhtp0yoebaaohna.mp4" type="video/mp4" />
+                        <source src={`${dataMovie.trailer ? dataMovie.trailer  :"https://res.cloudinary.com/dlpxfxpdn/video/upload/v1732811181/idydihhtp0yoebaaohna.mp4"}`}type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <div className=' absolute top-10 left-5 items-center  z-50   '>
@@ -201,7 +203,7 @@ const MovieDetails = () => {
                                 <p className='text-xl'>Rating : {dataMovie.imdb ? dataMovie.imdb.rating : ''}/10</p>
                                 <p className='text-xs'> Votes: {dataMovie.imdb ? dataMovie.imdb.votes : ''}</p>
                             </div>
-                            <p className='text-xl'>Price : $6.68</p>
+                            <p className='text-xl'>Price : $6.68 - $10</p>
                         </div>
                     </div>
                 </div>

@@ -44,6 +44,17 @@ const ManagerController = {
             console.error('Error fetching movies:', error)
             throw error
         }
+    },
+    loginManager : async (value) => {
+        try {
+            const response = await axios.post(`${baseURL}/api/v1/manager/signin`,{
+                email : value.email,
+                password : value.password,
+            })         
+            return response.data
+        } catch (error) {
+        throw new Error(error.response.data.error)
+        }
     }
 }
 export default ManagerController

@@ -1,6 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 
 const HomeManager = () => {
+    // useEffect(() => {
+      
+    // }, [])
+    
     return (
         <div>
             <div className="h-10 bg-gradient-custom">
@@ -12,11 +16,13 @@ const HomeManager = () => {
                     <Link className="text-black hover:text-gray-500" to={'qrcode'}>Check Ticket User </Link>
                     <Link className="text-black hover:text-gray-500" to={'setting'}>Settings</Link>
                     <Link className="text-black hover:text-gray-500" to={'total'}>Total Revenue</Link>
+                    <Link className="text-black hover:text-gray-500" to={'create'}>Create Ticket</Link>
+                    <Link className="text-black hover:text-gray-500" to={'getId'}>Get Id Movie</Link>
                 </nav>
 
             </div>
 
-            <div className="pl-[250px] bg-slate-200 h-[100vh]">
+            <div className="pl-[250px] bg-slate-200 ">
                 <Outlet />
             </div>
         </div>

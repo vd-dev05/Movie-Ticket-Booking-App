@@ -11,7 +11,7 @@ import upLoadLogo from "../../controller/manager/auth/upload/index.js";
 
 const ManagerRouter = Router();
 ManagerRouter.post('/create',upload.single('logoSeller'),authMiddleware.auhthorizationCinemaManager,upLoadLogo.createSeller  , managerController.create )
-ManagerRouter.get('/', authMiddleware.auhthorizationCinemaManager , managerController.loginManager)
+ManagerRouter.post('/signin', authMiddleware.auhthorizationSeller , managerController.loginManager)
 ManagerRouter.post('/',authMiddleware.auhthorizationCinemaManager, MovieMiddleware.createMovie ,postManager.createMovie)
 ManagerRouter.post('/ticket/:id',ManagerMiddleware.checkSeats,postManager.createTicketMovie)
 ManagerRouter.get('/ticket/:id',Ticket.searchTicketId)

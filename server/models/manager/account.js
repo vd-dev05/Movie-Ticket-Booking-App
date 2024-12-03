@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 
 const newAccountSchema = new mongoose.Schema({
+    email : {
+        type : String,
+        required : true,
+    },
+    role : {
+        type : String,
+        enum : ['Admin', 'Seller'],
+        default : "Seller"
+    },
     code : {
         type : String,
         required : true
@@ -20,6 +29,10 @@ const newAccountSchema = new mongoose.Schema({
     password : {
         type : String,
         required : true
+    },
+    seller : {
+        type : String,
+        enum : ['CGV', 'LOTTE','GALAXY','BETA','BHD']
     },
     logo : String
 })

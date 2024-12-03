@@ -35,3 +35,4 @@ serverTest
 img
 admin
  server/uploads/
+ client/dist

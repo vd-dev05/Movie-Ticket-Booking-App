@@ -4,9 +4,6 @@ import { hashPass } from "../../../utils/hashPassword.js"
 const authManager = {
     create: async (value, url) => {
         try {   
-            console.log(value);
-            
-            
             const password =  hashPass(value.password)
         
             const seller = await  ManagerSeller.create({
@@ -16,7 +13,8 @@ const authManager = {
                 nameSeller: value.storeName ,
                 addressManager : value.address,
                 taxCode : value.taxCode,
-
+                email : value.email,
+                seller : value.seller
             })
             if (seller) {
                 return { success: true,  seller }

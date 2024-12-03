@@ -131,12 +131,10 @@ export const getHoolyWoodMovie = async (value) => {
         const movie = await Movies
         .aggregate([
             {$match : { 'awards.wins': {$gte : 150 } }},
-            {$project : {poster :1, title :1, imdb : 1, awards  :1 }},
+            {$project : {poster :1, title :1, imdb : 1, awards  :1 , trailer : 1}},
             { $sort: {  'awards.wins' : -1}},
             {$limit : 10}
         ])
-        console.log(movie.length);
-        
         
         return movie;  
     } catch (error) {

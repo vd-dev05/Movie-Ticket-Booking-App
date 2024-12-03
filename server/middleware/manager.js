@@ -17,6 +17,7 @@ const ManagerMiddleware = {
         } catch (error) {
             res.status(403).json({error: error.message});
         }
-    }
+    },
+    
 }
 export default ManagerMiddleware

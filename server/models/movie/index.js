@@ -180,7 +180,24 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies"
     },
-    seats: [mongoose.Schema.Types.Mixed] 
+    sellerId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "manager"
+    },
+    seats: [mongoose.Schema.Types.Mixed] ,
+    price : Number ,
+    address : {
+        type: String,
+        required: true,
+    },
+    createdAt : {
+        type: Date,
+        default: Date.now()
+    },
+    updatedAt : {
+        type: Date, 
+    }
+    
 });
 
 // Movie Schema

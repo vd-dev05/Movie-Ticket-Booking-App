@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 const SignupManager = () => {
       // Validation schema with Yup
   const validationSchema = Yup.object({
@@ -18,7 +19,9 @@ const SignupManager = () => {
         <div className="min-w-full h-[50vw] bg-[#4880FF] flex items-center justify-center font-movie">
           <div className="rounded-xl m-0 p-0 w-[500px] h-[620px]  bg-white shadow-lg">
             <h1 className="text-center text-2xl font-bold py-6">Trang quản lí rạp phim</h1>
-            <p className='text-center '>Sign in</p>
+            <p className='text-center '> <Link to='/auth/signin/manager' className=" hover:text-black">
+          Sign in
+          </Link></p>
             <Formik
               initialValues={{
                 name: '',
