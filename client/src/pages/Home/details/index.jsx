@@ -278,7 +278,7 @@ const MovieDetails = () => {
                     }
                 </div>
                 <div className='w-full'>
-                    <Link className='text-white  hover:text-white' to={`booking`} state={dataMovie} onClick={() => handleClick(data)}>
+                    <Link className='text-white  hover:text-white' to={`seller`} state={dataMovie} onClick={() => handleClick(data)}>
                         <Button className={`${btnSubmit} hover:bg-chairMovie-chairSelected w-full  h-16  text-xl `}>Select Seat</Button>
                     </Link>
                 </div>

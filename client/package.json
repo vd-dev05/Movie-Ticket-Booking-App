@@ -10,7 +10,8 @@
     "dev": "vite --host=192.168.10.207",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview --port 8080"
+    "preview": "vite preview --port 8080",
+    "deploy:prod": "npm run build && netlify deploy --prod"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",

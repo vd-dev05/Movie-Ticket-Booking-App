@@ -49,10 +49,10 @@ const RouteMovie = () => {
                     <Route path='/itemLove' element={<ItemLove />} />
                     <Route path="/love" element={<LoveMovie />} />
                     <Route path='/details/:id' element={<MovieDetails />} />
-                    <Route path='details/:id/seller' element={<SelectSeller/>}/>
-                    <Route path='/details/:id/booking' element={<Select />} />
-                    <Route path='/details/:id/booking/pay' element={<Pay />} />
-                    <Route path='/details/:id/booking/pay/vietqr' element={<VietQr/>} />
+                    <Route path='/details/:id/seller' element={<SelectSeller/>}/>
+                    <Route path='/details/:id/seller/booking' element={<Select />} />
+                    <Route path='/details/:id/seller/booking/pay' element={<Pay />} />
+                    <Route path='/details/:id/seller/booking/pay/vietqr' element={<VietQr/>} />
                     <Route path='/geners/:id' element={<Genners />} />  
                     <Route path='/qrcode/:id' element={<QrCode />} />
 

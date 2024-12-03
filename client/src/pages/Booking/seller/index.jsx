@@ -5,7 +5,7 @@ import { format, startOfMonth, endOfMonth, startOfDay, endOfDay, eachMinuteOfInt
 import { useThemeClasses } from "@/context/Theme/themeStyles";
 
 const SelectSeller = () => {
-    const { themeUniver, textClasses } = useThemeClasses();
+    const { themeUniver, textClasses,buttonClasses } = useThemeClasses();
     const [day, setDay] = useState([]);
     const [hours, setHours] = useState([]);
     const [currDay, setCurrDay] = useState(new Date()); // Assuming currDay is the current date initially
@@ -18,8 +18,16 @@ const SelectSeller = () => {
         { label: "12:00 - 15:00", start: "12:00", end: "15:00" },
         { label: "15:00 - 18:00", start: "15:00", end: "18:00" },
         { label: "18:00 - 21:00", start: "18:00", end: "21:00" },
-    ];
+        { label: "21:00 - 24:00", start: "21:00", end: "24:00" },
 
+    ];
+    const dataSeller = [
+        { label: "CGV", poster: "https://seeklogo.com/images/C/cj-cgv-logo-D89F116F7C-seeklogo.com.png" },
+        { label: "Lotte", poster: 'https://seeklogo.com/images/L/lotte-chemical-logo-EB0E1C9CE0-seeklogo.com.png' },
+        { label: "Beta", poster: 'https://www.betacinemas.vn/Assets/Common/logo/logo.png' },
+        { label: "BHD", poster: "	https://bhdstar.vn/wp-content/uploads/2024/09/logo2024.png" },
+        { label: "Galaxy", poster: "https://www.galaxycine.vn/_next/static/media/galaxy-logo-mobile.074abeac.png" }
+    ]
     // Handler for date selection
     const handleClickDate = (id) => {
         const updatedDays = day.map(d => {
@@ -73,13 +81,15 @@ const SelectSeller = () => {
 
             <div>
                 <img
-                    className="rounded-lg w-full"
+                    className="rounded-lg w-full h-40"
                     src="https://img.freepik.com/premium-vector/black-friday-sale-voucher-layout-design-advertising-poster-voucher-ticket-vector-illustration_436759-291.jpg?w=996"
                     alt="Voucher"
                 />
                 <hr className="my-2" />
                 <div>
-                    <h2 className="text-center">Select Date</h2>
+                    <h2 className="text-center">Select Date :  {selectedDate && (
+                        selectedDate.dayOfMonth
+                    )}</h2>
 
                     {/* Day picker */}
                     <ul className="p-4 w-full flex">
@@ -89,9 +99,8 @@ const SelectSeller = () => {
                                     <SwiperSlide key={item.id}>
                                         <div
                                             onClick={() => handleClickDate(item.id)}
-                                            className={`${
-                                                item.clickD ? "bg-blue-500 text-white" : "bg-[#eeeeee] text-black"
-                                            } cursor-pointer rounded-lg font-bold text-center p-3`}
+                                            className={`${item.clickD ? "bg-blue-500 text-white" : "bg-[#eeeeee] text-black"
+                                                } cursor-pointer rounded-lg font-bold text-center p-3`}
                                         >
                                             <p>{item.dayOfWeek}</p>
                                             <span className="font-bold">{item.dayOfMonth}</span>
@@ -106,27 +115,66 @@ const SelectSeller = () => {
                         </Swiper>
                     </ul>
                 </div>
-
-                {selectedDate && (
-                    <div className="mt-5">
-                        <h2 className="text-center">Select Time Slot for {selectedDate.dayOfMonth}</h2>
-                        <div className="grid grid-cols-2 gap-4 mt-4">
+                {/* hour picker */}
+                <div className="" >
+                    <ul className="flex w-full ">
+                        <Swiper spaceBetween={20} slidesPerView={4}>
                             {timeSlots.map((slot, idx) => (
-                                <div
-                                    key={idx}
-                                    onClick={() => handleClickTimeSlot(slot)}
-                                    className={`${
-                                        selectedTimeSlot?.label === slot.label
-                                            ? "bg-green-500 text-white"
+                                <SwiperSlide key={idx} >
+                                    <div
+
+                                        onClick={() => handleClickTimeSlot(slot)}
+                                        className={`${selectedTimeSlot?.label === slot.label
+                                            ? "bg-chairMovie-chairSelected text-white"
                                             : "bg-[#eeeeee] text-black"
-                                    } cursor-pointer rounded-lg p-4 text-center font-semibold`}
-                                >
-                                    {slot.label}
-                                </div>
+                                            } cursor-pointer rounded-lg p-4 w-fit text-nowrap  font-semibold`}
+                                    >
+                                        {slot.label}
+                                    </div>
+                                </SwiperSlide>
+
                             ))}
-                        </div>
-                    </div>
-                )}
+                        </Swiper>
+                    </ul>
+                </div>
+                <div >
+                    <ul className={`flex w-full ${buttonClasses} `}>
+                        <Swiper spaceBetween={20} slidesPerView={3}>
+                            {dataSeller.map((slot, idx) => (
+                                <SwiperSlide key={idx} >
+                                    <div 
+                                      onClick={() => handleClickTimeSlot(slot)}
+                                      className="flex flex-col items-center p-5 drop-shadow-2xl"
+                                    >
+                                        <div
+
+                                          
+                                            className={`${selectedTimeSlot?.label === slot.label
+                                                ? "border-chairMovie-chairSelected border-[3px] bg-white text-white"
+                                                : "bg-white text-black"
+                                                } cursor-pointer rounded-lg p-2 w-[100px] flex justify-center items-center h-[100px] text-nowrap  font-semibold`}
+                                        >
+                                            <img src={slot.poster} className="object-cover" alt="" />
+                                        </div>
+                                        <p className={`${selectedTimeSlot?.label === slot.label 
+
+                                             ? "text-primary-textMovie"
+                                            : {textClasses}
+                                             } font-semibold mt-2`}>
+                                            
+                                        {slot.label}</p>
+                                   
+                                    </div>
+
+                                </SwiperSlide>
+
+                            ))}
+                        </Swiper>
+                    </ul>
+                </div>
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus non alias ea eveniet excepturi quod commodi, fugiat voluptatibus distinctio dolores autem nobis minus molestiae perferendis perspiciatis provident quia dicta aliquid?
+                </div>
             </div>
         </div>
     );
