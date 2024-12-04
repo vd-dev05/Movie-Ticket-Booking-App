@@ -18,77 +18,6 @@ import { generateSeats } from "@/lib/createSeats";
 import SeatList from "./seatsList";
 import queryString from "query-string";
 
-// import { useItem } from "../GetApi/ItemContext";
-// const boooking = 5
-// const getSizeClass = () => {
-//     if (window.innerWidth < 320) return '10';
-//     if (window.innerWidth < 640) return '60';
-//     if (window.innerWidth < 768) return '70';
-//     if (window.innerWidth < 1024) return '100';
-//     return '90';
-// };
-
-// Component SeatList
-// const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
-//     const theme = useTheme()
-
-//     const [seats, setSeats] = useState(generateSeats(count, startIndex));
-//     // console.log(seats);
-
-
-
-//     // Hàm xử lý sự kiện khi nhấp vào ghế
-//     const handleSeatClick = (id) => {
-//         // console.log(id);
-//         setTotalTicket(id)
-
-//         // const t =  seats.filter(seat => seat.id == id)
-//         // console.log(seats.filter(seat => seat.id == id.id ?  ));
-
-
-//         const updatedSeats = seats.map((seat) =>
-
-//             seat.id === id && !seat.booked
-//                 ? ({ ...seat, selected: !seat.selected, price: !seat.selected ? 99 : 0 })
-//                 : seat
-//         );
-
-//         // console.log(updatedSeats);
-
-//         setSeats(updatedSeats);
-//         //    
-
-//     };
-
-//     useEffect(() => {
-//         onSeatsUpdate(seats);
-//         // console.log(TotalTicket);
-//     }, [seats]);
-
-//     return (
-//         <div className="flex flex-col">
-//             {seats.map((seat) => (
-//                 <div key={seat.id}>
-//                     {/* {seat.id} */}
-//                     <MdChair
-//                         key={seat.id}
-//                         id={seat.id}
-//                         size={'100%'}
-//                         // size={sizeClass}
-//                         className={`cursor-pointer ${seat.booked
-//                             ? theme.theme == 'travel' ? ' text-[#b8116a]' : 'text-chairMovie-chairBooked' : seat.selected
-//                                 ? theme.theme == 'travel' ? ' text-[#08fbd2]' : 'text-primary-textMovie'
-//                                 : theme.theme == 'travel' ? ' text-[#c4c4c2]' : 'text-chairMovie-chairAvailable'}    `}
-//                         onClick={() => handleSeatClick(seat.id)}
-//                     />
-
-//                 </div>
-//             ))}
-//         </div>
-//     );
-// };
-
-// console.log(si);
 
 const Select = () => {
     const nav = useNavigate()
@@ -103,7 +32,9 @@ const Select = () => {
     const paredUrl = queryString.parseUrl(location.pathname)
     const splitLocation = location.pathname.split('/booking')[0]
     const obj = paredUrl.url.split('/')
-    const [,,,, address, time,price,date] = obj;
+    const [,,,,, address, time,price,date] = obj;
+    console.log(price);
+    
     // console.log(obj);
     
    
@@ -372,7 +303,7 @@ const Select = () => {
                             className=" h-16  text-xl w-[200px]"
                         >Confirm Seat</Button> */}
                         <Link
-                            to={`${location.pathname}/pay?seats=${Ticket}&totalprice=${TotalPrice}&price${price}&isactive=false`}
+                            to={`${location.pathname}/pay?seats=${Ticket}&totalprice=${TotalPrice}&price=${price}&isactive=false`}
                             onClick={handleConfirm}
                             className="text-white hover:text-white" 
                             // TotalPrice={TotalPrice} Ticket={Ticket} dataTicket={dataTicket} dataBook={dataBook}

@@ -2,6 +2,7 @@ import { useTheme } from "@/context/Theme";
 import { generateSeats } from "@/lib/createSeats";
 import { showErrorToast } from "@/lib/toastUtils";
 import MovieController from "@/services/movie/Movie.controller";
+import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { MdChair } from "react-icons/md";
 import { useLocation } from "react-router-dom";
@@ -12,11 +13,17 @@ const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
     const theme = useTheme();
     const location = useLocation();
     const movieId = location.pathname.split('/')[2];  
-
+    // const location = useLocation()
+    const paredUrl = queryString.parseUrl(location.pathname)
+    // const splitLocation = location.pathname.split('/booking')[0]
+    const obj = paredUrl.url.split('/')
+    const [,,,,sellerId, address, time,price,date] = obj;
+    // console.log(sellerId);
+    
     useEffect(() => {
         const fetchBookingData = async () => {
             try {
-                const response = await MovieController.getBookingSeats(movieId); 
+                const response = await MovieController.getBookingSeats(movieId,sellerId); 
                 const data = generateSeats(count, startIndex, response); 
                 if (data && response) {
                     setSeats(data);

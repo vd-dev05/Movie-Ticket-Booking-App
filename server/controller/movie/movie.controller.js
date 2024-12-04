@@ -105,9 +105,10 @@ const MovieController = {
     },
     getSeats  : async (req,res) => {
         try {
-            const movieId = req.params.id
-            
-            const response = await getSeats(movieId)
+
+            const {movieId, sellerId} = req.query
+
+            const response = await getSeats(movieId,sellerId)
             res.status(200).json(response)
         } catch (error) {
             res.status(401).json({
@@ -118,4 +119,4 @@ const MovieController = {
 }
 
 
-export default MovieController 
+export default MovieController  

@@ -166,23 +166,24 @@ export const getMovieSettings = async (year ,rating , genres) => {
     }
 }
 
-export const getSeats  = async (movieId) =>{
+export const getSeats  = async (movieId,seller) =>{
    try {
     const objectIdMovieId = new mongoose.Types.ObjectId(movieId);
+    const objectIdSeller = new mongoose.Types.ObjectId(seller);
     const response  = await Booking.aggregate([
-        { $match: { movieId: objectIdMovieId } },
+        { $match: { movieId: objectIdMovieId , sellerId : objectIdSeller } },
         { $unwind: "$seats" },
         { $match: { "seats.status": "Booked" } },
         { $project: { "seats.seatsId": 1 }}
       ]) ;
     //   console.log(response);
       
-    const obj = response.map((item) => item.seats.seatsId )
+    // const obj = response.map((item) => item.seats.seatsId )
 
     if (!response) {
         throw new Error("Error: Couldn't find Movie");
     }
-    return obj;
+    return response.map((item) => item.seats.seatsId );
     
    } catch (error) {
     throw new Error(error.message);

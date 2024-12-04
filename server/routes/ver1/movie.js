@@ -11,6 +11,6 @@ MovieRouter.get('/topmovies/:id', MovieController.getTopMovie)
 MovieRouter.get('/products/company', MovieController.getProductionMovie)
 MovieRouter.get('/oscar/win', MovieController.getTopHoolyWord)
 MovieRouter.get('/genres/all', MovieController.getMovieGenres)
-MovieRouter.get('/seats/:id',MovieController.getSeats)
+MovieRouter.get('/seats/seller',MovieController.getSeats)
 
 export default MovieRouter;

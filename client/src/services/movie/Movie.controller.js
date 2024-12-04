@@ -76,11 +76,11 @@ const MovieController = {
             return error
         }
     },
-    getBookingSeats : async (movieId) => {
+    getBookingSeats : async (movieId,sellerId) => {
         try {
             
            if (movieId) {
-            const response = await axios.get(`${baseURL}/api/v1/movies/seats/${movieId}`)
+            const response = await axios.get(`${baseURL}/api/v1/movies/seats/seller?movieId=${movieId}&sellerId=${sellerId}`)
             
             
             return response.data

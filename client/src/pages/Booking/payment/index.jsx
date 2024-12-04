@@ -33,12 +33,13 @@ const Pay = () => {
 
     const obj = paredUrl.url.split('/')
 
-    const [, , , , address, time, price, date] = obj;
+    const [,, , ,sellerId, address, time, price, date] = obj;
     const addressPared = decodeURIComponent(address)
     const timeStart = time.split('-')[0]
     const timeEnd = time.split('-')[1]
     const datepared = date.split('-')
-
+    console.log(datepared);
+    
 
 
     const nav = useNavigate()

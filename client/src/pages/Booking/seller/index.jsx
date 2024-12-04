@@ -286,7 +286,7 @@ const SelectSeller = () => {
                                                                     showErrorToast("Please select")
 
                                                                 } else {
-                                                                    nav(`${item.sellerNameSeller}/${event.startTime}-${event.endTime}/${item.price}/${a[0].date}/booking`)
+                                                                    nav(`${item.sellerId}/${item.sellerNameSeller}/${event.startTime}-${event.endTime}/${item.price}/${a[0].date}/booking`)
                                                                 }
                                                             }}
                                                             className="p-2 w-[150px] bg-white drop-shadow-md rounded-lg text-center text-black">
@@ -303,9 +303,7 @@ const SelectSeller = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div>
-                                ok
-                            </div>
+                     
                         </div>
 
                     </div>

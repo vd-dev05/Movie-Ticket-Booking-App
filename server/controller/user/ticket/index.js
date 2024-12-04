@@ -69,7 +69,7 @@ const BookTicket = {
             const isoDateStart = format(parseDateWithTime( date, event.start), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             const isoDateEnd = format(parseDateWithTime(date, event.end), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             
-            const book = await Booking.findOne({ movieId: movieId }, { seats: 1, movieId: 1 }).lean();
+            const book = await Booking.findOne({ movieId: movieId  }, { seats: 1, movieId: 1 }).lean();
       
             
             if (!book) {
