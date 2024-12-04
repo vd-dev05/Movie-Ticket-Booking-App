@@ -32,41 +32,44 @@ import QrCode from '@/components/common/booking/detailsQrcode'
 import NotFound from '@/pages/404';
 import VietQr from '@/layout/qrcode/payVietQr';
 import SelectSeller from '@/pages/Booking/seller';
+import TicketHistory from '@/components/common/file/history/ticket';
 const RouteMovie = () => {
     return (
         // <div>
         <Routes>
-                    <Route path="/" exact element={<Home />} />
-                    <Route path="/L" element={<Login />} />
-                    <Route path="/login" element={<Otp />} />
-                    <Route path="/history" element={<LastMovies />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/home" element={<HomeMovie />} />
-                    <Route path="/test" element={<TestOtp />} />
-                    <Route path="/reset" element={<Password />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path='/search/:id' element={<ItemLove />} />
-                    <Route path='/itemLove' element={<ItemLove />} />
-                    <Route path="/love" element={<LoveMovie />} />
-                    <Route path='/details/:id' element={<MovieDetails />} />
-                    <Route path='/details/:id/seller' element={<SelectSeller/>}/>
-                    <Route path='/details/:id/seller/booking' element={<Select />} />
-                    <Route path='/details/:id/seller/booking/pay' element={<Pay />} />
-                    <Route path='/details/:id/seller/booking/pay/vietqr' element={<VietQr/>} />
-                    <Route path='/geners/:id' element={<Genners />} />  
-                    <Route path='/qrcode/:id' element={<QrCode />} />
+            <Route path="/" exact element={<Home />} />
+            <Route path="/L" element={<Login />} />
+            <Route path="/login" element={<Otp />} />
+            <Route path="/history" element={<LastMovies />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/home" element={<HomeMovie />} />
+            <Route path="/test" element={<TestOtp />} />
+            <Route path="/reset" element={<Password />} />
+            <Route path="/search" element={<Search />} />
+            <Route path='/search/:id' element={<ItemLove />} />
+            <Route path='/itemLove' element={<ItemLove />} />
+            <Route path="/love" element={<LoveMovie />} />
+            <Route path='/details/:id' element={<MovieDetails />} />
+            <Route path='/details/:id/seller' element={<SelectSeller />} />
+            <Route path='/details/:id/seller/:sellerName/:event/:price/:date/booking' element={<Select />} />
+            <Route path='/details/:id/seller/:sellerName/:event/:price/:date/booking/pay' element={<Pay />} />
+            <Route path='/details/:id/seller/:sellerName/:event/:price/:date/booking/pay/vietqr' element={<VietQr />} />
+            <Route path='/geners/:id' element={<Genners />} />
+            <Route path='/qrcode/:id' element={<QrCode />} />
 
-                    <Route path="/profile" element={<HomeFile />} >
-                        <Route path="privacy" element={<Privacy />} />
-                        <Route path="terms" element={<Terms />} />
-                        <Route path="rename" element={<UserRename />} />
-                        <Route path="change-password" element={<ChangePassWord />} />
-                        <Route path='setting' element={<SettingProfile />} />
-                        <Route path='voucher' element={<TicketVoucher />} />
-                    </Route>
-                    <Route path="/ticket" element={<Myticket />} />
-                    {/* <Route path="*" element={<NotFound/>}/> */}
-                
+            <Route path="/profile" element={<HomeFile />} >
+                <Route path="privacy" element={<Privacy />} />
+                <Route path="terms" element={<Terms />} />
+                <Route path="rename" element={<UserRename />} />
+                <Route path="change-password" element={<ChangePassWord />} />
+                <Route path='voucher' element={<TicketVoucher />} />
+                <Route path='setting' element={<SettingProfile />} >
+                    <Route path='ticket' element={<TicketHistory />} />
+                </Route>
+            </Route>
+            <Route path="/ticket" element={<Myticket />} />
+            {/* <Route path="*" element={<NotFound/>}/> */}
+
             {/* </ThemeProvider> */}
         </Routes>
         // </div>

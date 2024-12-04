@@ -246,7 +246,7 @@ const HomeFile = () => {
 
                         </Link>
 
-                        <Link className={`${textClasses} hover:${textClasses}`} to="/profile/setting">
+                        <Link className={`${textClasses} hover:${textClasses}`} to="setting">
                             <div className="flex  justify-between items-center py-5">
                                 <div className="flex">
 

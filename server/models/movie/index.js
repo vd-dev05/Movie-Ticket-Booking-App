@@ -77,6 +77,11 @@ const ticketSchema = new mongoose.Schema({
     movieQr: {
         type: String,
     },
+    address : String,
+    event : {
+        start : String,
+        end : String
+    },
     seat: {
         type: [String], // Array of strings to store seat identifiers
     },
@@ -173,6 +178,20 @@ const userSchema = new mongoose.Schema({
         type: String,
     }
 });
+// Event Scheme 
+
+const eventSchema = new mongoose.Schema({
+    startTime: {
+      type: String,  
+      required: true
+    },
+    endTime: {
+      type: String,  
+      required: true
+    },
+    _id : false
+  });
+
 
 // Booking Schema
 const bookSchema = new mongoose.Schema({
@@ -188,6 +207,12 @@ const bookSchema = new mongoose.Schema({
     price : Number ,
     address : {
         type: String,
+        required: true,
+    },
+    events : [eventSchema],
+    type : {
+        type: String,
+        enum : ['CGV', 'LOTTE','GALAXY','BETA','BHD'],
         required: true,
     },
     createdAt : {

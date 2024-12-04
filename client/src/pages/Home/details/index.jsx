@@ -179,7 +179,7 @@ const MovieDetails = () => {
     
                         className='object-cover  h-full z-20 '
                         ref={videoRef}
-    
+                        controls
                         onClick={handleVideoClick}
     
                     >

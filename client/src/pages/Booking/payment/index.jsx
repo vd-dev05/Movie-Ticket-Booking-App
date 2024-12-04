@@ -26,6 +26,21 @@ const Pay = () => {
     const splitId = parsedId.url.split('/')[2]
     const splitBooking = parsedId.url.split('/pay')[0]
 
+
+    const paredUrl = queryString.parseUrl(location.pathname)
+    const splitLocation = location.pathname.split('/booking')[0]
+
+
+    const obj = paredUrl.url.split('/')
+
+    const [, , , , address, time, price, date] = obj;
+    const addressPared = decodeURIComponent(address)
+    const timeStart = time.split('-')[0]
+    const timeEnd = time.split('-')[1]
+    const datepared = date.split('-')
+
+
+
     const nav = useNavigate()
 
 
@@ -165,7 +180,7 @@ const Pay = () => {
         if (token) {
             try {
 
-                const response = await BookingController.seatsBookings(token, parsed, splitId)
+                const response = await BookingController.seatsBookings(token, parsed, splitId , addressPared ,timeStart ,timeEnd ,datepared  )
 
                 if (response.success === true) {
                     setIsOpenPay(true)
@@ -207,28 +222,28 @@ const Pay = () => {
     };
 
     const handlePayMentVietQR = (value) => {
-    
+
         if (parsed.isactive === 'false') {
-            import ("randn" )
-            .then((moude) =>{
-                const randn = moude.default
-                const ordersCode = `${randn(4)}`
-                const vnd = parsed.totalprice * 25
-                // console.log(vnd);
-                const testNumeral = numeral(vnd).format('0,0.00đ')
-                console.log(testNumeral);
-                
-                
-                nav(`vietqr?title=${value.title}&seats=${parsed.seats}&orderId=${ordersCode}&total=${testNumeral}&isBooking=true`, )
-            })
-            .catch((err) => {
-                showErrorToast(err)
-            })
-        
+            import("randn")
+                .then((moude) => {
+                    const randn = moude.default
+                    const ordersCode = `${randn(4)}`
+                    const vnd = parsed.totalprice * 25
+                    // console.log(vnd);
+                    const testNumeral = numeral(vnd).format('0,0.00đ')
+                    console.log(testNumeral);
+
+
+                    nav(`vietqr?title=${value.title}&seats=${parsed.seats}&orderId=${ordersCode}&total=${testNumeral}&isBooking=true`,)
+                })
+                .catch((err) => {
+                    showErrorToast(err)
+                })
+
         }
-   
+
         // console.log( parsed );
-        
+
     }
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie px-5 ${themeUniver}`}>
@@ -320,7 +335,7 @@ const Pay = () => {
                             </div>
                             <div className='w-[1px] h-[100px] my-10  bg-gray-600'></div>
                             <div className='w-[50%] m-2 py-10 flex justify-between gap-10 items-center px-5'
-                            onClick={() => handlePayMentVietQR({title : payBookData.title, total: parsed.totalprice })}
+                                onClick={() => handlePayMentVietQR({ title: payBookData.title, total: parsed.totalprice })}
                             >
                                 <div className='flex flex-col items-center gap-4 '>
                                     <img src="https://i.gyazo.com/566d62fd25cf0867e0033fb1b9b47927.png" width={100} alt="" />
@@ -332,7 +347,11 @@ const Pay = () => {
                         <div className='flex flex-col gap-10'>
                             <div>
                                 <div className='h-[1px] w-full bg-gray-600'></div>
-                                <div className='flex justify-between py-10'>
+                                <div className='flex justify-between pt-10'>
+                                    <p>Current Price</p>
+                                    <span>${Number(price).toLocaleString()} USD</span>
+                                </div>
+                                <div className='flex justify-between py-5 '>
                                     <p>Item Total</p>
                                     <span>${Number(parsed.totalprice).toLocaleString()} USD</span>
                                 </div>

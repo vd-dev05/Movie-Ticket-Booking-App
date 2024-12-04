@@ -1,17 +1,36 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { format, startOfMonth, endOfMonth, startOfDay, endOfDay, eachMinuteOfInterval, eachDayOfInterval } from "date-fns";
 import { useThemeClasses } from "@/context/Theme/themeStyles";
+import axios from "axios";
+import BookingController from "@/services/users/booking";
+import { useDispatch, useSelector } from "react-redux";
+import { SellerBooking } from "@/features/movie/movieThunks";
+import { selectMessageSeller, selectSuccessfullSeller, selectSellers, selectIsLoadingSeller } from "@/features/movie/movieSelectors";
+import { showErrorToast } from "@/lib/toastUtils";
+import queryString from "query-string";
+
 
 const SelectSeller = () => {
-    const { themeUniver, textClasses,buttonClasses } = useThemeClasses();
+    const { themeUniver, textClasses, buttonClasses } = useThemeClasses();
     const [day, setDay] = useState([]);
     const [hours, setHours] = useState([]);
     const [currDay, setCurrDay] = useState(new Date()); // Assuming currDay is the current date initially
     const [selectedDate, setSelectedDate] = useState(null); // Track selected date
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // Track selected time slot
+    const [seller, setSeller] = useState({ label: "CGV" });
+    const [DataSeller, setDataSeller] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectSeller, setSelectSeller] = useState(false)
 
+    // redux 
+    const message = useSelector(selectMessageSeller)
+    const success = useSelector(selectSuccessfullSeller)
+    const SellerData = useSelector(selectSellers)
+    const isLoadingSellers = useSelector(selectIsLoadingSeller)
+    const dispatch = useDispatch()
+    
     // Define time slots
     const timeSlots = [
         { label: "9:00 - 12:00", start: "09:00", end: "12:00" },
@@ -23,28 +42,79 @@ const SelectSeller = () => {
     ];
     const dataSeller = [
         { label: "CGV", poster: "https://seeklogo.com/images/C/cj-cgv-logo-D89F116F7C-seeklogo.com.png" },
-        { label: "Lotte", poster: 'https://seeklogo.com/images/L/lotte-chemical-logo-EB0E1C9CE0-seeklogo.com.png' },
-        { label: "Beta", poster: 'https://www.betacinemas.vn/Assets/Common/logo/logo.png' },
+        { label: "LOTTE", poster: 'https://seeklogo.com/images/L/lotte-chemical-logo-EB0E1C9CE0-seeklogo.com.png' },
+        { label: "BETA", poster: 'https://www.betacinemas.vn/Assets/Common/logo/logo.png' },
         { label: "BHD", poster: "	https://bhdstar.vn/wp-content/uploads/2024/09/logo2024.png" },
-        { label: "Galaxy", poster: "https://www.galaxycine.vn/_next/static/media/galaxy-logo-mobile.074abeac.png" }
+        { label: "GALAXY", poster: "https://www.galaxycine.vn/_next/static/media/galaxy-logo-mobile.074abeac.png" }
     ]
+
+    const nav = useNavigate()
+    const  location = useLocation()
+    const querystring = queryString.parseUrl( location.pathname)
+    const movieId = querystring.url.split('/')[2]
+   
+    
     // Handler for date selection
     const handleClickDate = (id) => {
         const updatedDays = day.map(d => {
-            if (d.id === id) {
-                return { ...d, clickD: !d.clickD }; // Toggle selected state
+            if (d.id === id ) {
+                return { ...d, clickD: true  }; // Toggle selected state
             }
-            return d;
+            return {...d, clickD: false};
+            // d.id === id 
+            // ? { ...d, clickD: true}
+            // : {...d, clickD: false}
         });
+   
+        
         setDay(updatedDays);
         setSelectedDate(updatedDays.find(d => d.id === id)); // Set the selected date
+        console.log(day);
+        console.log(selectedDate);
+        
+        
     };
 
     // Handler for time slot selection
     const handleClickTimeSlot = (slot) => {
         setSelectedTimeSlot(slot); // Set the selected time slot
     };
+    const handleClickSeller = async (slot) => {
+        try {
 
+            if (slot.label) {
+                setSeller(slot)
+                const response = await BookingController.getBookingSeller(slot.label)
+                setDataSeller(response)
+                setLoading(false)
+                // console.log(response);
+
+                // console.log(DataSeller);
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
+    const fetchData = async () => {
+        try {
+            const response = await BookingController.getBookingSeller(seller.label)
+
+
+            if (response.status === 200) {
+                setDataSeller(response)
+                setLoading(false)
+                console.log(DataSeller);
+
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     // Effect to fetch and update days and times
     useEffect(() => {
         const formatW = "EEE";
@@ -66,7 +136,15 @@ const SelectSeller = () => {
         setDay(daysInRange);
 
     }, [currDay]);
+    useEffect(() => {
+        if (DataSeller.length < 0) {
+            fetchData()
 
+
+        }
+    }, [DataSeller])
+    // console.log(DataSeller);
+    // console.log(selectedDate);
     return (
         <div className={`iphone-12-pro-max:flex w-full flex-col min-h-screen ${themeUniver} ${textClasses}`}>
             <div className="pt-10 px-5">
@@ -99,7 +177,7 @@ const SelectSeller = () => {
                                     <SwiperSlide key={item.id}>
                                         <div
                                             onClick={() => handleClickDate(item.id)}
-                                            className={`${item.clickD ? "bg-blue-500 text-white" : "bg-[#eeeeee] text-black"
+                                            className={`${item.clickD === true  ? "bg-chairMovie-chairSelected text-white" : "bg-[#eeeeee] text-black"
                                                 } cursor-pointer rounded-lg font-bold text-center p-3`}
                                         >
                                             <p>{item.dayOfWeek}</p>
@@ -142,28 +220,28 @@ const SelectSeller = () => {
                         <Swiper spaceBetween={20} slidesPerView={3}>
                             {dataSeller.map((slot, idx) => (
                                 <SwiperSlide key={idx} >
-                                    <div 
-                                      onClick={() => handleClickTimeSlot(slot)}
-                                      className="flex flex-col items-center p-5 drop-shadow-2xl"
+                                    <div
+                                        onClick={() => handleClickSeller(slot)}
+                                        className="flex flex-col items-center p-5 drop-shadow-2xl"
                                     >
                                         <div
 
-                                          
-                                            className={`${selectedTimeSlot?.label === slot.label
+
+                                            className={`${seller?.label === slot.label
                                                 ? "border-chairMovie-chairSelected border-[3px] bg-white text-white"
                                                 : "bg-white text-black"
                                                 } cursor-pointer rounded-lg p-2 w-[100px] flex justify-center items-center h-[100px] text-nowrap  font-semibold`}
                                         >
                                             <img src={slot.poster} className="object-cover" alt="" />
                                         </div>
-                                        <p className={`${selectedTimeSlot?.label === slot.label 
+                                        <p className={`${seller?.label === slot.label
 
-                                             ? "text-primary-textMovie"
-                                            : {textClasses}
-                                             } font-semibold mt-2`}>
-                                            
-                                        {slot.label}</p>
-                                   
+                                            ? "text-primary-textMovie"
+                                            : { textClasses }
+                                            } font-semibold mt-2`}>
+
+                                            {slot.label}</p>
+
                                     </div>
 
                                 </SwiperSlide>
@@ -172,9 +250,68 @@ const SelectSeller = () => {
                         </Swiper>
                     </ul>
                 </div>
-                <div>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus non alias ea eveniet excepturi quod commodi, fugiat voluptatibus distinctio dolores autem nobis minus molestiae perferendis perspiciatis provident quia dicta aliquid?
-                </div>
+                {/* Seller data  */}
+                {DataSeller && seller && !loading ? (
+                    <div>
+                        <h2 className=" px-5 my-10">{seller.label} ({DataSeller.filter((item) => item.type === seller.label  && item.movieId ===  movieId ).length})</h2>
+                        <div className="px-5">
+                            <div>
+                                {DataSeller.filter((item) => item.type === seller.label && item.movieId ===  movieId ).map((item) => (
+
+                                    <div key={item._id} className="flex flex-col gap-2 w-full">
+                                        <div className="flex justify-between">
+                                            <div className="flex items-start justify-start gap-2 ">
+                                                <div className="bg-white p2 w-[50px] h-[60px]">
+                                                    <img src={item.sellerLogo} alt="logoSeller" className="rounded-lg object-cover " />
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-semibold">{item.sellerNameSeller}</h3>
+                                                    <p className="text-slate-500">Quận {item?.sellerAddressManager.split(', ')[4]}</p>
+                                                </div>
+                                            </div>
+                                            <button onClick={() => setSelectSeller(!selectSeller)}>^</button>
+
+                                        </div>
+                                        {selectSeller ? (
+                                            <div >
+                                                <p className="font-mono">4k video</p>
+                                                <div className=" grid grid-cols-3  gap-2">
+                                                    {item.events.filter((item) => item.startTime ).map((event, idx) => (
+                                                        <button
+
+                                                            key={idx}
+                                                            onClick={() => {
+                                                                const a = (day.filter((item) => item.clickD === true))
+                                                                if (a.length === 0) {
+                                                                    showErrorToast("Please select")
+
+                                                                } else {
+                                                                    nav(`${item.sellerNameSeller}/${event.startTime}-${event.endTime}/${item.price}/${a[0].date}/booking`)
+                                                                }
+                                                            }}
+                                                            className="p-2 w-[150px] bg-white drop-shadow-md rounded-lg text-center text-black">
+                                                            <span className="font-semibold">{event.startTime} - {event.endTime}</span>
+                                                        </button>
+                                                    ))}
+
+                                                </div>
+
+
+                                            </div>
+                                        ) : null}
+                                        <hr className="p-10" />
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                ok
+                            </div>
+                        </div>
+
+                    </div>
+                ) : null}
+
+
             </div>
         </div>
     );

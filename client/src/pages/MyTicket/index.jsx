@@ -81,7 +81,7 @@ const Myticket = () => {
         return <div>Loading...</div>
     }
    return (
-        <div className={`${themeUniver} h-full min-w-full`}>
+        <div className={`${themeUniver} min-h-screen min-w-full`}>
             <div className=" px-5 pt-5  ">
                 <h1 className="text-center mb-5 font-bold font-movie">My Tickets</h1>
                 <div className={`flex justify-between  ${inputClasses} rounded-lg `}>

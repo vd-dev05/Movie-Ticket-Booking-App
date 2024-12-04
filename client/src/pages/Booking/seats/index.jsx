@@ -16,6 +16,7 @@ import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toastUtil
 import { useUser } from "@/context/User";
 import { generateSeats } from "@/lib/createSeats";
 import SeatList from "./seatsList";
+import queryString from "query-string";
 
 // import { useItem } from "../GetApi/ItemContext";
 // const boooking = 5
@@ -99,8 +100,22 @@ const Select = () => {
     const [TotalTicket, setTotalTicket] = useState([])
 
     const location = useLocation()
+    const paredUrl = queryString.parseUrl(location.pathname)
     const splitLocation = location.pathname.split('/booking')[0]
+    const obj = paredUrl.url.split('/')
+    const [,,,, address, time,price,date] = obj;
+    // console.log(obj);
+    
+   
+    const addressPared = decodeURIComponent(address)
+    const timeStart = time.split('-')[0]
+    const timeEnd = time.split('-')[1]
+    const datepared = date.split('-')
 
+  
+    
+    // console.log(obj );
+    
 
     const dataBook = location.state || {}
     // console.log(dataBook);
@@ -180,116 +195,7 @@ const Select = () => {
     // const [book, setBook] = useState({
     //     date: false,
     //     hours: false
-    // })
-
-    useEffect(() => {
-        const formatW = "EEE"
-        const formatD = "dd"
-        const timeFormat = "HH:mm"
-
-
-        const F = dateFns.startOfMonth(currDay)
-        const L = dateFns.lastDayOfMonth(currDay)
-        const FH = startOfDay(currDay);
-        const LH = endOfDay(currDay);
-        const MiniTime = eachMinuteOfInterval({
-            start: FH,
-            end: LH
-        }, { step: 15 }).map((time, idx) => ({ keyHours: format(time, timeFormat), id: idx += 1, clickH: false }))
-
-        setHours(MiniTime)
-
-        const daysInRange = eachDayOfInterval({
-            start: F,
-            end: L
-        }).map((day, idx) => ({
-            date: format(day, 'yyyy'),
-            dayOfWeek: format(day, formatW),
-            dayOfMonth: format(day, formatD),
-            id: idx += 1,
-            clickD: false
-        }));
-        setDay(daysInRange)
-
-        // setDataUser(pre => ({...pre,
-        //     dataTimeBook:dataTicket,
-        //     total: TotalPrice,
-        //     dataTicket:Ticket
-        // }))
-
-    }, [currDay])
-    const handleCLickDate = (id) => {
-        const updatedHours = day.map(hour =>
-            hour.id === id
-                ? { ...hour, clickD: true }
-                : { ...hour, clickD: false }
-        )
-
-
-        setDay(updatedHours)
-        // console.log(updatedHours);
-
-
-
-    }
-    const handleClickHours = (i) => {
-        const updatedHours = hours.map(hour =>
-            hour.id === i
-                ? { ...hour, clickH: true }
-                : { ...hour, clickH: false }
-        );
-        setHours(updatedHours)
-
-        const dH = hours.filter((item) => item.clickH == true)
-
-    }
-
-
-    useEffect(() => {
-        const dD = day.filter((item) => item.clickD == true)
-        const dH = hours.filter((item) => item.clickH == true).map(hour => ({ keyHours: hour.keyHours, id: hour.id }))
-
-        //  setDataUser(pre => ({...pre,dataTicket:dD}))
-
-        setDataUser(pre => ({
-            ...pre,
-            dataTicket: {
-                dataMovieBook: Ticket,
-                dataTimeBook: dH,
-                dataDayBook: dD,
-                total: TotalPrice,
-            },
-
-            // total: TotalPrice,
-            // dataTicket:Ticket,
-            // dataDayBook:dD,
-            // dataTimeBook:dH,
-        }))
-        setDataTicket({
-            dataD: dD,
-            dataH: dH,
-        })
-
-        if (!dD && !dH && !Ticket && !TotalPrice) {
-            setDataUser(pre => ({ ...pre, select: true }))
-        }
-        if (dD && dH) {
-            const dateCache = dD[0]
-            if (dateCache) {
-                const cacheDate = `${dateCache.dayOfWeek}-${dateCache.dayOfMonth}-${dateCache.date}`
-                setqueryDate(cacheDate)
-            }
-            const timeCache = dH[0]
-            if (timeCache) {
-                const cacheTime = timeCache.keyHours
-                setqueryTime(cacheTime)    
-            }
-
-        }
-
-
-        // setqueryDate()
-    }, [TotalPrice, Ticket, day, hours])
+    // }
 
     const handlePay = async () => {
         // const updateData = {
@@ -443,63 +349,12 @@ const Select = () => {
             </div>
 
             <div className={` ${DatePickerButton}   mt-10 rounded-t-[50px]  py-10  min-h-full `}>
-                <h2 className="text-center font-bold ">Select date and time</h2>
-                <ul className=' p-4 w-full flex  '  >
-                    <Swiper
-                        spaceBetween={20}
-                        slidesPerView={5}
-
-                    >
-
-                        {day.length > 0 ? day.map((item) =>
-                            <li >
-                                <SwiperSlide
-                                    key={item.id}
-                                    onClick={() => handleCLickDate(item.id)}
-                                    style={{ width: '20px', padding: '13px' }}
-                                    className={`${!!item.clickD ? buttonCLick : "bg-[#eeeeee] text-black"} cursor-pointer rounded-lg font-bold text-center`}
-                                >
-                                    <p>{item.dayOfWeek}</p>
-                                    <span className="font-bold">{item.dayOfMonth}</span>
-                                </SwiperSlide>
-                            </li>
-                        ) : (<div className=' p-3 bg-[#eeeeee]  rounded-lg mx-2 text-black'>
-                            <p></p>
-                            <span className="font-bold"></span>
-                        </div>)
-                        }
-                    </Swiper>
-                </ul>
-
-                <ul className='flex p-4 w-full ' >
-                    <Swiper
-                        spaceBetween={20}
-                        slidesPerView={4}
-                    >
-                        {hours.length > 0 ? hours.map((item) => (
-                            <li key={item.id}>
-                                {/* <span>{item.keyHours}</span> */}
-                                <SwiperSlide
-                                    key={item.id}
-                                    onClick={() => handleClickHours(item.id)}
-                                    style={{ width: '20px', padding: '13px' }}
-                                    className={`${!!item.clickH ? buttonCLick : "bg-[#eeeeee] text-black"}  cursor-pointer rounded-lg font-bold text-center`}
-                                >
-                                    <span>{item.keyHours}</span>
-                                </SwiperSlide>
-                            </li>
-
-
-                        ))
-                            : (
-                                <div className='bg-primary-textMovie p-3 rounded-lg mx-2 w-20 flex justify-center text-white'>
-                                    <span>error</span>
-                                </div>
-                            )
-                        }
-                    </Swiper>
-
-                </ul>
+                <h2 className="text-center font-bold ">Order food </h2>
+                <div className="flex px-5">
+                    <img src="https://down-bs-vn.img.susercontent.com/vn-11134513-7r98o-lsv9ka6918785b@resize_ss640x400!@crop_wfull_h50_cT"  className="h-[100px]" alt="" />
+                        <h2>Coming soom ...</h2>
+                </div>
+             
                 <div className="flex justify-between mt-5 px-5  ">
                     <div className="p-3 ">
                         <p>Total Price :<span className="font-bold " > {TotalPrice ? (`${Number(TotalPrice).toLocaleString()} USD `) : ''}</span></p>
@@ -517,7 +372,7 @@ const Select = () => {
                             className=" h-16  text-xl w-[200px]"
                         >Confirm Seat</Button> */}
                         <Link
-                            to={`${location.pathname}/pay?seats=${Ticket}&day=${queryDate}&hour=${queryTime}&totalprice=${TotalPrice}&isactive=false`}
+                            to={`${location.pathname}/pay?seats=${Ticket}&totalprice=${TotalPrice}&price${price}&isactive=false`}
                             onClick={handleConfirm}
                             className="text-white hover:text-white" 
                             // TotalPrice={TotalPrice} Ticket={Ticket} dataTicket={dataTicket} dataBook={dataBook}

@@ -27,6 +27,7 @@ const postManager = {
     },
     createTicketMovie: async (req, res) => {
         try {
+            console.log(req.body);
             
             const movieId = await Movies.findById(req.params.id)
             if (movieId) {
@@ -59,10 +60,15 @@ const postManager = {
                     const data = {
                         movieId : movieId,
                         seats: seats,
-                        userId : null
+                        sellerId : req.body.userId,
+                        type : req.body.type,
+                        events : req.body.event,
+                        address : req.body.address,
+                        price : req.body.price,
+                     
+
                     }
                     await Booking.create(data)
-                    // await test.save();
                     res.status(201).json("Create Seats successfully")
                 }
 

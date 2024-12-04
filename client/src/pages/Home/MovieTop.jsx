@@ -158,7 +158,7 @@ const MovieTop = ({ isLoading, setIsLoading }) => {
                                                     <img
                                                         src={item.poster}
                                                         alt={item.title}
-                                                        // loading="lazy"
+                                                        loading="lazy"
                                                         className="rounded-e-2xl  drop-shadow-2xl  rounded-t-lg  h-[400px]   object-cover  cursor-pointer "
                                                     />
                                                 </div>
@@ -197,7 +197,7 @@ const MovieTop = ({ isLoading, setIsLoading }) => {
                                                 <img
                                                     src={item.poster}
                                                     alt={item.title}
-                                                    // loading="lazy"
+                                                    loading="lazy"
                                                     className="rounded-e-2xl -z-20 rounded-t-lg h-[300px] w-[290px]  object-cover  cursor-pointer "
                                                 />
                                             </div>

@@ -8,15 +8,66 @@ import { parseDateWithTime } from "../../../utils/configDate.js";
 
 
 const BookTicket = {
+    getSellerTickets  : async (req,res) =>{
+        try {
+        
+            if (req.body) {
+       
+                const seller = await Booking.aggregate([
+                    { $match: { type: req.body.type } },
+                    {
+                      $project: {
+                        sellerId: 1,
+                        _id: 1,
+                        movieId: 1,
+                        price: 1,
+                        seat: 1,
+                        type : 1,
+                        events : 1,
+                      },
+                    },
+                    {
+                      $lookup: {
+                        from: "managers",  
+                        localField: "sellerId", 
+                        foreignField: "_id",  
+                        as: "sellerDetails",  
+                      },
+                    },
+                    {
+                      $unwind: "$sellerDetails",    
+                    },
+                    {
+                      $project: {
+                        _id: 1,
+                        movieId: 1,
+                        price: 1,
+                        seat: 1,
+                        sellerId: 1,
+                        sellerAddressManager: "$sellerDetails.addressManager",  
+                        sellerNameSeller: "$sellerDetails.nameSeller",  
+                        sellerLogo: "$sellerDetails.logo",  
+                        type : 1,
+                        events : 1,
+                      },
+                    },
+                  ]);
+                res.status(200).json(seller)
+            }
+        } catch (error) {
+            res.status(401).send({ error: error.message })
+        }
+    },
     bookticket: async (req, res) => {
         try {
             const keyCode = uuidv4().split('-')[4];
             
             const id = req.userId;
-            const { movieId, price, seat, status, day, hour } = req.body;
-            const isoDate = format(parseDateWithTime(day, hour), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            // console.log(isoDate);
-            // console.log(status);
+            const { movieId, price, seat, status, date, event,address } = req.body;
+
+            
+            const isoDateStart = format(parseDateWithTime( date, event.start), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            const isoDateEnd = format(parseDateWithTime(date, event.end), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             
             const book = await Booking.findOne({ movieId: movieId }, { seats: 1, movieId: 1 }).lean();
       
@@ -73,12 +124,16 @@ const BookTicket = {
                     seat: seat,
                     status: "Expired",
                     keyCode: qrData,
-                    date: isoDate,
-                    keyCode: keyCode
+                    date: isoDateStart,
+                    keyCode: keyCode,
+                    event : {
+                        start: event.start,
+                        end: event.end
+                    },
+                    address : address
                 },
                 _id: new mongoose.Types.ObjectId()
-            };
-
+            };            
             userTicket.ticket.push(data);
 
 
@@ -93,7 +148,7 @@ const BookTicket = {
                 userTicket.save(),
 
             ]);
-            // console.log(updatedUserTicket);
+            console.log(updatedUserTicket);
             
             return res.status(200).json({
                 message: 'Ticket booked successfully!',
@@ -114,7 +169,7 @@ const BookTicket = {
 
     removeAllTicket: async (req, res) => {
         try {
-            const ticket = await Users.findByIdAndUpdate(req.params.id, { $set: { ticket: [] } })
+            const ticket = await Users.findByIdAndUpdate(req.userId, { $set: { ticket: [] } })
             if (ticket) {
                 res.status(200).json({
                     message: 'All ticket removed successfully!',

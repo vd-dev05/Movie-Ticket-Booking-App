@@ -30,7 +30,7 @@ const LoveMovie = ({ data ,sizew,sizeh,space,isize,page,texts}) => {
                             <img
                                 src={item.poster}
                                 alt={item.title}
-                                loading="eager"
+                                loading="lazy"
                                 className={`rounded-xl w-full h-[${isize}px] object-cover  bg-red-700  drop-shadow-2xl    cursor-pointer `}
                             />
                         </div>

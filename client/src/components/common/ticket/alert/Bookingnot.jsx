@@ -18,18 +18,19 @@ import { Box, Typography } from "@mui/joy";
 import updateBookingStatus from '@/hooks/GetApi/GetRemoveData'
 import { toast } from "react-toastify";
 import CancelServices from "@/services/users/cancel";
+import { showSuccessToast } from "@/lib/toastUtils";
 
-const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,ticketId, movieId ,seat}) => {    
-    
+const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ticketId, movieId, seat }) => {
+
     const test = useMemo(() => {
         if (data && data.title) {
             return truncateText(data.title, 15);
         }
         return '';
-    }, [data]);    
+    }, [data]);
     const [rating, setRating] = useState(0);
     const [selectedValue, setSelectedValue] = useState('');
-    
+
     const handleChangeText = (event) => {
         setRating(event.target.value)
     }
@@ -49,16 +50,27 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,ticket
         // console.log(selectedValue);
         // console.log(rating);
         // console.log(data);
-        
+
         // console.log(id);
         // const data  =  {
         //     reason: selectedValue,
         //     rating: rating,
         //     movieId: id
         // }
-        const response = await CancelServices.create( selectedValue,rating,ticketId, movieId,seat)
-        console.log(response);
-        
+        try {
+            const response = await CancelServices.create(selectedValue, rating, ticketId, movieId, seat)
+            if (response) {
+                showSuccessToast(response.data)
+                setIsOpen(!isOpen)
+                setDataLoad(!dataLoad)
+            }
+
+        } catch (error) {
+
+        }
+
+
+
         // await updateBookingStatus (data,{paid:false})
         // setIsOpen(!isOpen)
         // setDataLoad(!dataLoad)
@@ -85,7 +97,7 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,ticket
                         <AlertDialogHeader >
                             <AlertDialogTitle className="text-center">Cancel Booking</AlertDialogTitle>
                             <AlertDialogDescription className="text-gray-500 mb-5 text-center">
-                            Please select the reason for cancellation
+                                Please select the reason for cancellation
                             </AlertDialogDescription>
                             <div>
                                 {options.map((option, index) => (
@@ -102,17 +114,17 @@ const CancelTicket = ({ data, text,isOpen,setIsOpen,setDataLoad ,dataLoad,ticket
                                     </div>
                                 ))}
                                 <div>
-                                    <textarea 
-                                    onChange={handleChangeText}
-                                    placeholder="Tell us reason"
-                                    className="h-52 border-[1px] w-full outline-none p-5"></textarea>
+                                    <textarea
+                                        onChange={handleChangeText}
+                                        placeholder="Tell us reason"
+                                        className="h-52 border-[1px] w-full outline-none p-5"></textarea>
                                 </div>
                             </div>
                         </AlertDialogHeader>
 
                         <AlertDialogFooter className=" flex gap-2 p-2 peer ">
 
-                            <AlertDialogAction  className="  bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  ">Cancel</AlertDialogAction>
+                            <AlertDialogAction className="  bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  ">Cancel</AlertDialogAction>
                             <button
                                 onClick={handleSubmit}
                                 className=" focus:animate-jelly bg-chairMovie-chairSelected hover:bg-chairMovie-chairSelected  text-white focus:bg-chairMovie-chairSelected  w-full h-[60px] p-5 rounded-lg  "

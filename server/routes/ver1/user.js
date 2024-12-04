@@ -21,9 +21,10 @@ UserRouter.post('/upload-avatar',upload.single('avatar'), authMiddleware.authSes
 UserRouter.put('/update-name',authMiddleware.authSessionToken, UserUpdateMovie.updateUser)
 
 UserRouter.post('/ticket', authMiddleware.authSessionToken, BookTicket.bookticket)
+UserRouter.post('/seller/all', authMiddleware.authSessionToken, BookTicket.getSellerTickets)
 UserRouter.get('/ticket/all', authMiddleware.authSessionToken , BookTicket.getAllTickets)
 UserRouter.get('/ticket/:id', authMiddleware.authSessionToken , BookTicket.getTicketId)
-UserRouter.delete('/deleteTicket/:id',BookTicket.removeAllTicket)
+UserRouter.delete('/deleteTicket',authMiddleware.authSessionToken,BookTicket.removeAllTicket)
 UserRouter.delete('/deleteOneTicket/:id',authMiddleware.authSessionToken ,BookTicket.removeOneTicket)
 
 UserRouter.get('/:id' ,Products.getUserOneMovie)

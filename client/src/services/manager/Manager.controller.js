@@ -13,17 +13,23 @@ const ManagerController = {
     //         throw error
     //     }
     // } ,
-    createMovie : async (movieId) => {
+    createMovie : async (value) => {
         try {
-            const response = await axios.post(`${baseURL}/api/v1/manager/ticket/${movieId}`)
-            console.log(response);
+            const {_id} = JSON.parse(localStorage.getItem('seller'))
+ 
+            
+            
+            const response = await axios.post(`${baseURL}/api/v1/manager/ticket/${ value.movieId}` , {
+                userId : _id , 
+                type  : value.sellerId[0],
+                event : value.time_slots,
+                price : value.price,
+                address : value.address
+            })
             
             return response
-        } catch (error) {
-            // console.log(error);
-            
-            return error.response
-           
+        } catch (error) {   
+            throw new Error( error.response.data.error)
         }
     },
     searchMovieCreateId : async (movieId) => {

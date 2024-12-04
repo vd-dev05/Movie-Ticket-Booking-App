@@ -25,6 +25,18 @@ const TicketController = {
         } catch (error) {
             return error
         }
+    },
+    deleteTicketDb : async (value) => {
+        try {
+            const response = await axios.delete(`${import.meta.env.VITE_REACT_API_URL}/api/v1/users/deleteTicket`,{
+             headers : {
+                 'authorization': `Bearer ${localStorage.getItem('access_token')}`
+             }
+           })
+           return response
+        } catch (error) {
+            return error
+        }
     }
 }
 export  default TicketController

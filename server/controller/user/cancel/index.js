@@ -19,7 +19,9 @@ const CancelController = {
                 movieQr: '',
                 price: '',
                 date: null,
-                seat: null
+                seat: null,
+                date : null,
+                event :null
             }
            
             const movieId = new mongoose.Types.ObjectId(req.body.ticketId)

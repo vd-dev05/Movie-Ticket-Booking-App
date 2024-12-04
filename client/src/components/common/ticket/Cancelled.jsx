@@ -26,7 +26,7 @@ const Cancelled = (props) => {
 
 
     return (
-        <div className="translate-y-7drop-shadow-2xl  font-movie h-screen  drop-shadow-lg">
+        <div className="translate-y-7  font-movie min-h-screen  drop-shadow-lg ">
             {data.length === 0 &&
                 <div className={`flex-shrink-0 w- pr-2 mt-10 flex    rounded-3xl p-5 ${buttonClasses}`}>
                     <div className="animate-pulse flex space-x-4">

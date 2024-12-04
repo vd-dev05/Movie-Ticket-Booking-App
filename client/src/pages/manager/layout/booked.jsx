@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, message, Select, InputNumber, Flex } from 'antd';
+import ManagerController from '@/services/manager/Manager.controller';
 
 
 const CreateTicket = () => {
     // State for handling form data
     const [form] = Form.useForm();
     const [addressSeller, setAddress] = useState()
+
     // Load form data from localStorage when the component mounts
     useEffect(() => {
         const savedFormData = JSON.parse(localStorage.getItem('ticketFormData'));
@@ -22,13 +24,34 @@ const CreateTicket = () => {
     }, [form]);
 
     // Handle form submission
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         // Handle form submission (e.g., send the data to an API or backend)
-        message.success('Ticket created successfully!');
-        console.log('Ticket data:', values);
+        // const [s,e] =  values.time.split('-');
+        // console.log(s,e);
+        // console.log(values);
+        try {
+            const timeSlots = values.time.map((time) => {
+                const [start_time, end_time] = time.split('-'); // Tách chuỗi tại dấu '-'
+                return { startTime: start_time.trim(), endTime: end_time.trim() }; // Trả về đối tượng với start_time và end_time
+            });
+            const data = {
+                ...values,
+                time_slots: timeSlots,
+            }
+            const response = await ManagerController.createMovie(data)
+            if (response.status === 201) {
+                message.success(response.data);
+                form.resetFields();
+                localStorage.removeItem('ticketFormData');
+            }
+   
+            
+        } catch (error) {
+           message.error(error.message)
+            
+        }
 
-        // Save the form data to localStorage
-        localStorage.setItem('ticketFormData', JSON.stringify(values));
+
     };
 
     // Handle form validation failure
@@ -49,7 +72,6 @@ const CreateTicket = () => {
         form.resetFields();
         localStorage.removeItem('ticketFormData');
     };
-    console.log(addressSeller);
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -67,27 +89,43 @@ const CreateTicket = () => {
                 >
                     {/* Movie Time */}
                     <Form.Item
-                        name="movieTime"
-                        label="Movie Time"
-                        rules={[{ required: true, message: 'Please select the movie time!' }]}
+                        name="time"
+                        label="Movie Start Time"
+                        rules={[{ required: true, message: 'Please select the movie start time!' }]}
                     >
                         <Select
                             placeholder="Select movie time"
                             className="w-full"
-                            mode="multiple" // Allows multiple selections
+                            mode="multiple"
                         >
                             {/* Predefined time options */}
-
-                            <Option value="08:30">08:30</Option>
-                            <Option value="09:30">09:30</Option>
-                            <Option value="10:30">10:30</Option>
-                            <Option value="13:20">13:20</Option>
-                            <Option value="15:00">15:00</Option>
-                            <Option value="17:30">17:30</Option>
-                            <Option value="20:00">20:00</Option>
-                            <Option value="21:30">21:30</Option>
-                            <Option value="23:00">23:00</Option>
-
+                            <Option value="08:00-09:00">08:00 - 09:00</Option>
+                            <Option value="08:30-09:30">08:30 - 09:30</Option>
+                            <Option value="09:00-10:00">09:00 - 10:00</Option>
+                            <Option value="09:30-10:30">09:30 - 10:30</Option>
+                            <Option value="10:00-11:00">10:00 - 11:00</Option>
+                            <Option value="10:30-11:30">10:30 - 11:30</Option>
+                            <Option value="11:00-12:00">11:00 - 12:00</Option>
+                            <Option value="11:30-12:30">11:30 - 12:30</Option>
+                            <Option value="13:00-14:00">13:00 - 14:00</Option>
+                            <Option value="13:20-14:20">13:20 - 14:20</Option>
+                            <Option value="13:30-14:30">13:30 - 14:30</Option>
+                            <Option value="14:00-15:00">14:00 - 15:00</Option>
+                            <Option value="15:00-16:00">15:00 - 16:00</Option>
+                            <Option value="15:30-16:30">15:30 - 16:30</Option>
+                            <Option value="16:00-17:00">16:00 - 17:00</Option>
+                            <Option value="16:30-17:30">16:30 - 17:30</Option>
+                            <Option value="17:00-18:00">17:00 - 18:00</Option>
+                            <Option value="17:30-18:30">17:30 - 18:30</Option>
+                            <Option value="18:00-19:00">18:00 - 19:00</Option>
+                            <Option value="19:00-20:00">19:00 - 20:00</Option>
+                            <Option value="20:00-21:00">20:00 - 21:00</Option>
+                            <Option value="20:30-21:30">20:30 - 21:30</Option>
+                            <Option value="21:00-22:00">21:00 - 22:00</Option>
+                            <Option value="21:30-22:30">21:30 - 22:30</Option>
+                            <Option value="22:00-23:00">22:00 - 23:00</Option>
+                            <Option value="22:30-23:30">22:30 - 23:30</Option>
+                            <Option value="23:00-24:00">23:00 - 24:00</Option>
                         </Select>
                     </Form.Item>
 
