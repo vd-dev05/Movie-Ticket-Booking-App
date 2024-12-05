@@ -1,4 +1,4 @@
-import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie, getMovieSettings, getSeats} from './getMovieByID.js';
+import { getMovieById , getMovieByTitle, getAllMovie,getTopMovie, getProductionMovie ,getHoolyWoodMovie, getMovieSettings, getSeats, putReview} from './getMovieByID.js';
 const MovieController = {
    
     searchMovie :  async (req,res) => { 
@@ -114,6 +114,20 @@ const MovieController = {
             res.status(401).json({
               error: error.message
             })
+        }
+    },
+    updateRevies : async (req,res) => {
+        try {
+            const {star, review} = req.body
+            const userId = req.userId
+            const movieId = req.params.id
+            // console.log(movieId, userId, review,star);
+            
+            
+            const response = await putReview(movieId, review,star,userId)
+            res.status(200).json(response)
+        } catch (error) {
+            res.status(400).json({error: error.message})
         }
     }
 }

@@ -11,7 +11,6 @@ const SignIn = () => {
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
       });
       const nav = useNavigate()
-      // Submit function to handle form submission
       const handleSubmit = async (values) => {
         const toastId = showLoadingToast("Please Loading ...")
         try {
@@ -44,7 +43,7 @@ const SignIn = () => {
         }
       };
     return (  
-        <div className="min-w-full h-[50vw] bg-[#4880FF] flex items-center justify-center font-movie">
+        <div className="min-w-full min-h-screen bg-[#4880FF] flex items-center justify-center font-movie">
         <div className="rounded-xl m-0 p-0 w-[500px] h-[620px]  bg-white shadow-lg">
           <h1 className="text-center text-2xl font-bold py-6">Trang quản lí rạp phim</h1>
           <p className='text-center'>

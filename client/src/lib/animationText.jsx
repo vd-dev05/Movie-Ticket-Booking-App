@@ -36,7 +36,23 @@ const TypingSearchEffect = ({text}) => {
             />
     );
 } 
+
+const TypingEffectSeller = ({nameUser}) =>  {
+   
+    const arr = [`Welcome ${ nameUser ? nameUser : 'user' } 👋`,3500,"Create Ticket",3500,"Scan Ticket User"]
+    return (
+        <h1 className="font-logo text-white text-xs sm:text-[15px]">
+            <TypeAnimation
+                sequence={arr} // Thay đổi thời gian hiển thị
+                // speed={1}
+                repeat={100} 
+                cursor = {false}
+            />
+        </h1>
+    );
+}
 export {
     TypingSearchEffect,
     TypingEffect,
+    TypingEffectSeller,
 }

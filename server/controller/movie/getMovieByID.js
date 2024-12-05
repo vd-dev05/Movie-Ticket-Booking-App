@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { Booking, Movies } from "../../models/movie/index.js";
+import { Booking, Movies, Users } from "../../models/movie/index.js";
+import { Comments } from "../../models/comment/index.js";
 
 export const getAllMovie = async (query) => {
 
@@ -189,4 +190,62 @@ export const getSeats  = async (movieId,seller) =>{
     throw new Error(error.message);
    }
     
+}
+export const putReview = async (movieId,review ,star,userId) => {
+    try {
+        const number = Number(star)
+       const movie = await Movies.findById(movieId)
+       .select('imdb')
+       movie.imdb.rating = ((movie.imdb.rating * movie.imdb.votes) + number) / (movie.imdb.votes + 1).toFixed(2);
+       movie.imdb.votes++;
+    
+    //    await movie.save();
+       
+     
+    // const comments = await Comments.create({
+    //     userId ,
+    //     movie_id : movieId,
+    //     text : review,
+    //     star,
+    //     _id : new  mongoose.Types.ObjectId()
+    // })
+       const comments = new Comments({
+        userId ,
+        movie_id : movieId,
+        text : review,
+        star,
+        _id : new  mongoose.Types.ObjectId()
+    })
+    // console.log(comments._id);
+    
+   if (comments) {
+       const movieObj = new mongoose.Types.ObjectId(movieId)
+    const data = {
+        movieId : movieObj,
+        commentId : comments._id,
+        status : "Active"
+    }
+    const users =  await Users.findByIdAndUpdate(userId, {
+   
+    },{new : true})
+    .select('comment')
+    console.log(users);
+    
+
+   }
+
+    
+    //    await movie.save();
+    //    return movie;
+   
+       
+    //    console.log(movie);
+       
+        // if (!movie) {
+        //     throw new Error("Error: Couldn't find Movie");
+        // }
+        // return movie;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 }

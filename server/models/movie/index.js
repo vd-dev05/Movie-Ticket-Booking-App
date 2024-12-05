@@ -96,7 +96,11 @@ const ticketSchema = new mongoose.Schema({
     date : {
         type : Date,
     },
-    codeQR : String
+    codeQR : String,
+    review : {
+        type : Boolean,
+        default: false,
+    }
 });
 
 // Auto-generate movieQr if not provided
@@ -163,6 +167,10 @@ const userSchema = new mongoose.Schema({
             default: 'InActive',
         },
         date: Date,
+        commentId : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "comments"
+        }
       
     }],
     history: [{

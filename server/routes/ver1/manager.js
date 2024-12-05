@@ -16,6 +16,8 @@ ManagerRouter.post('/',authMiddleware.auhthorizationCinemaManager, MovieMiddlewa
 ManagerRouter.post('/ticket/:id',ManagerMiddleware.checkSeats,postManager.createTicketMovie)
 ManagerRouter.get('/ticket/:id',Ticket.searchTicketId)
 ManagerRouter.get('/book', Ticket.getAllTicket)
+ManagerRouter.get('/sellerTicket',Ticket.getOneTicket)
+ManagerRouter.put('/scanTicket',authMiddleware.authScanSeller, managerController.scanSeller)
 // ManagerRouter.get('/:id', MovieController.getByID)
 
 export default ManagerRouter;

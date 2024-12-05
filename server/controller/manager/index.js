@@ -1,4 +1,5 @@
 import authManager from "./auth/index.js"
+import { UpdateScanTicket } from "./put/index.js";
 
 const managerController = {
     loginManager: async (req, res) => {
@@ -32,6 +33,17 @@ const managerController = {
 
         } catch (error) {
             return res.status(400).json({ message: "Manager creation Error", error: error.message })
+        }
+    },
+    scanSeller : async (req,res) => {
+        try {
+            const code = req.body.code
+            const response = await UpdateScanTicket(code)
+            console.log(response);
+            
+            res.status(200).json(response)
+        } catch (error) {
+            res.status(404).json({error: error.message})
         }
     }
 }

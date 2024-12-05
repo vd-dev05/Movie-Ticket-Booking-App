@@ -7,32 +7,38 @@ const CreateTicket = () => {
     // State for handling form data
     const [form] = Form.useForm();
     const [addressSeller, setAddress] = useState()
-
+    const [role, setRole] = useState("")
     // Load form data from localStorage when the component mounts
     useEffect(() => {
-        const savedFormData = JSON.parse(localStorage.getItem('ticketFormData'));
-        if (savedFormData) {
-            form.setFieldsValue(savedFormData); // Prefill the form with saved data
-        }
-        // console.log(localStorage.getItem('seller'));
+        const seller = localStorage.getItem('seller')
+        if (!seller || seller === null) {
+            setRole('guest')
+        } else {
+            setRole('seller')
+            const savedFormData = JSON.parse(localStorage.getItem('ticketFormData'));
+            if (savedFormData) {
+                form.setFieldsValue(savedFormData); // Prefill the form with saved data
+            }
 
-        const { address } = JSON.parse(localStorage.getItem('seller'))
-        if (address) {
-            setAddress(address)
-        }
+            const { address } = JSON.parse(localStorage.getItem('seller'))
+            if (address) {
+                setAddress(address)
+            }
 
+        }
     }, [form]);
 
     // Handle form submission
     const onFinish = async (values) => {
-        // Handle form submission (e.g., send the data to an API or backend)
-        // const [s,e] =  values.time.split('-');
-        // console.log(s,e);
-        // console.log(values);
+
         try {
+            if (role === 'guest') {
+                message.error("You must be a seller to create a movie ! Please enter your login seller")
+                return
+            }
             const timeSlots = values.time.map((time) => {
-                const [start_time, end_time] = time.split('-'); // Tách chuỗi tại dấu '-'
-                return { startTime: start_time.trim(), endTime: end_time.trim() }; // Trả về đối tượng với start_time và end_time
+                const [start_time, end_time] = time.split('-'); 
+                return { startTime: start_time.trim(), endTime: end_time.trim() };
             });
             const data = {
                 ...values,
@@ -44,11 +50,11 @@ const CreateTicket = () => {
                 form.resetFields();
                 localStorage.removeItem('ticketFormData');
             }
-   
-            
+
+
         } catch (error) {
-           message.error(error.message)
-            
+            message.error(error.message)
+
         }
 
 
@@ -63,6 +69,10 @@ const CreateTicket = () => {
 
     // Handle form change and save to localStorage on any change
     const handleFormChange = () => {
+        if (role === 'guest') {
+            message.error("You must be a seller to create a movie")
+            return
+        }
         const currentFormData = form.getFieldsValue();
         localStorage.setItem('ticketFormData', JSON.stringify(currentFormData));
     };
@@ -72,7 +82,6 @@ const CreateTicket = () => {
         form.resetFields();
         localStorage.removeItem('ticketFormData');
     };
-
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="max-w-xl mx-auto bg-white p-6 rounded shadow-lg">

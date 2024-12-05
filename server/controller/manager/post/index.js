@@ -83,7 +83,7 @@ const postManager = {
                 status: false
             })
         }
-    }
+    },
 }
 
 export default postManager;

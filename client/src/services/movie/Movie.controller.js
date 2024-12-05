@@ -88,22 +88,24 @@ const MovieController = {
         } catch (error) {
             return error
         }
-    }
-    // getGenersMovie : async (value) => {
-    //     try {
-    //     //    console.log(value);
-           
-    //         if (value) {
-                
-    //             const r  = await axios.get(`${baseURL}/api/v1/movies/genres`,{
-    //                 genres : value,
-    //             })
-    //             return r.data
-    //         }
-    //     } catch (error) {
-    //         return error
-    //     }
-    // }
+    },
+    updateReview : async  (movieId, star , review) => {
+        try {
+            const response = await axios.put(`${baseURL}/api/v1/movies/${movieId}/review`, {
+                star,
+                review
 
+            },{
+                headers : {
+                    'Authorization' : `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            
+            
+            return response.data
+        } catch (error) {
+            return error
+        }
+    }  
 }
 export default MovieController

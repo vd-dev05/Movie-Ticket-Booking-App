@@ -61,6 +61,29 @@ const ManagerController = {
         } catch (error) {
         throw new Error(error.response.data.error)
         }
+    },
+    getOneTicketManager  : async (sellerId) => {
+        try {
+            const response = await axios.get(`${baseURL}/api/v1/manager/sellerTicket`, { 
+                sellerId
+        })         
+            return response.data
+        } catch (error) {
+            console.error('Error fetching tickets:', error)
+            throw error
+        }
+    },
+    postScanTicket : async (code,sellerId) => {
+        try {
+            const response = await axios.put(`${baseURL}/api/v1/manager/scanTicket`, {
+                code,
+                sellerId
+            })         
+            return response.data
+        } catch (error) {
+            console.error('Error scanning ticket:', error)
+            throw error
+        }
     }
 }
 export default ManagerController

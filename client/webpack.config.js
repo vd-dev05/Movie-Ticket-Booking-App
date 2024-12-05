@@ -8,3 +8,6 @@ module.exports = {
         })
     ]
 }
+
+//   import 
+// import.meta.env.<bien moi truong>

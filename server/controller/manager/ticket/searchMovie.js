@@ -37,6 +37,18 @@ const Ticket = {
         } catch (error) {
             res.status(400).json({ error: error});
         }
-    }
+    },
+    getOneTicket : async (req,res) => {
+        try {
+            const sellerTicket = await Booking.findOne({sellerId : req.body.sellerId})
+            console.log(sellerTicket);
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+       
+    },
+    
 }
 export default Ticket

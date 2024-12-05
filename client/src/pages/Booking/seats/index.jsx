@@ -33,7 +33,7 @@ const Select = () => {
     const splitLocation = location.pathname.split('/booking')[0]
     const obj = paredUrl.url.split('/')
     const [,,,,, address, time,price,date] = obj;
-    console.log(price);
+
     
     // console.log(obj);
     

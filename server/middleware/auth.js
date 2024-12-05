@@ -113,8 +113,15 @@ const authMiddleware = {
 
     }
   },
-  authApiKey: (req, res, next) => {
-
+  authScanSeller: async (req, res, next) => {
+    try {
+      const response = await ManagerSeller.findOne({_id : req.body.sellerId})
+      if (!response) throw new Error('Seller not found')
+        req.sellerId = response._id
+      next()
+    } catch (error) {
+      res.status(403).json({error : error.message})
+    }
   },
   authToken: async (req, res, next) => {
     try {

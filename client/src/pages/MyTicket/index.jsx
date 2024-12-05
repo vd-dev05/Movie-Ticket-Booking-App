@@ -22,7 +22,7 @@ const Myticket = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await TicketController.getAllTicket();            
+                const response = await TicketController.getAllTicket();      
                 if (response) {
                     const data = response.data.ticket      
                     
@@ -35,7 +35,7 @@ const Myticket = () => {
                          
                     } 
                     if (tabClick === 'Past') {
-                        const pastData = data.filter(ticket => ticket.book.status === 'Active')
+                        const pastData = data.filter(ticket => ticket.book.status === 'Active')            
                         setData(pastData)
                          setDataLoad(true)
                     }
