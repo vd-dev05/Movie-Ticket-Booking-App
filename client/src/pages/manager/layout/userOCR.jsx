@@ -26,9 +26,19 @@ const UserOCR = () => {
         })
         scanner.render(success)
         function success(result) {
+            // console.log(result);
+            
             ( async () => {
                 const response =  await ManagerController.postScanTicket(result,sellerId)
-                console.log(response);
+                if (response.status ===  200) {
+                    // setResult(false)
+                    // showErrorToast('Ticket scanned successfully!')
+                    console.log(response);
+                    
+                } else {
+                    console.log(response);
+                    
+                }
                 
             })()
            
@@ -39,6 +49,7 @@ const UserOCR = () => {
             // if (result ===true) {
             //     console.error(error)
             // }
+         console.log(error);
          
         }
     }, [result === true])
@@ -79,7 +90,7 @@ const UserOCR = () => {
         // console.log(value)
     }
     return (
-        <div className="">
+        <div className="pl-10 sm:pl-0">
             {/* <div
             onClick={() => {
                 ( async () => {
@@ -88,12 +99,12 @@ const UserOCR = () => {
                
             }}
             >test</div> */}
-            <h2 className="text-xl">Ticket Scanner </h2>
-            <div className="flex gap-2">
-                <form onSubmit={handleSubmit}>
+            <h2 className="text-xl text-center py-2">Ticket Scanner </h2>
+            <div className="flex gap-2 ">
+                <form onSubmit={handleSubmit} className="flex">
                     <input
                         type="text"
-                        className="w-[500px] h-10 outline-none p-2 rounded-lg text-xs"
+                        className="w-full sm:w-[500px]  h-10 outline-none p-2 rounded-lg text-xs"
                         placeholder="Enter your id movie"
                         value={value}
                         onChange={handleInputChange}

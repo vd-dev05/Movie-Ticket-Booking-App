@@ -5,6 +5,7 @@ import { generateQRCode } from "../../../utils/generateQR.js";
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns'
 import { parseDateWithTime } from "../../../utils/configDate.js";
+import { Comments } from "../../../models/comment/index.js";
 
 
 const BookTicket = {
@@ -70,7 +71,7 @@ const BookTicket = {
             const isoDateEnd = format(parseDateWithTime(date, event.end), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             
             const book = await Booking.findOne({ movieId: movieId  }, { seats: 1, movieId: 1 }).lean();
-      
+            await Comments.find({}).lean()
             
             if (!book) {
                 throw new Error(`The movie theater hasn't opened for ticket sales yet`)
@@ -90,7 +91,7 @@ const BookTicket = {
             });
             
             
-            const userTicketPromise = Users.findOne({ _id: id }).select('name ticket comment role');
+            const userTicketPromise = Users.findOne({ _id: id }).select('name ticket role ');
             const userTicket = await userTicketPromise;
 
             if (!userTicket) {
@@ -111,12 +112,18 @@ const BookTicket = {
             
 
             const dataComment = {
-
+                name : userTicketPromise.name,
+                createAt : new Date(),
                 movieId: movieId,
-                status: "InActive"
+                status: "InActive",
+                userId :  userTicketPromise._id,
+                _id  : new mongoose.Types.ObjectId()
             };
-
+            // const userdataComment = {
+            //     comentId : dataComment._id
+            // }
             const data = {
+                commentId :dataComment._id,
                 movieId: movieId,
                 book: {
                     movieQr: keyCode,
@@ -130,14 +137,12 @@ const BookTicket = {
                         start: event.start,
                         end: event.end
                     },
-                    address : address
+                    address : address,
+                    
                 },
                 _id: new mongoose.Types.ObjectId()
             };            
             userTicket.ticket.push(data);
-
-
-            userTicket.comment.push(dataComment);
 
             const [updatedUserTicket] = await Promise.all([
                 // upLoadPromise,
@@ -145,6 +150,8 @@ const BookTicket = {
                     { movieId: movieId },
                     { $set: { seats: updatedSeats } }
                 ),
+                Comments.create(dataComment),
+                
                 userTicket.save(),
 
             ]);
@@ -210,8 +217,9 @@ const BookTicket = {
         try {
             const ticket = await Users.findById(req.userId)
                 // .select('ticket')
-                .select('ticket.movieId ticket.book.status ticket.book._id ticket.book.movieQr ticket._id ticket.book.seat')
+                .select('ticket.movieId ticket.book.status ticket.book._id ticket.book.movieQr ticket._id ticket.book.seat ticket.commentId')
                 .populate('ticket.movieId', 'title tomatoes languages poster ')
+
             // console.log(ticket);
 
             res.status(200).json(ticket)

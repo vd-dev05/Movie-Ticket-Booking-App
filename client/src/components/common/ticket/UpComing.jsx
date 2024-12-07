@@ -18,6 +18,7 @@ const Upcoming = (props) => {
     const [data1, setMovieData1] = useState([]);
     const [isOpen, setIsOpen] = useState(false)
     const [dataLoad, setDataLoad] = useState(false)
+    const [commentId , setCommentId] = useState()
     const { inputClasses, backGround, textClasses, themePaid, buttonClasses, btnSubmit } = useThemeClasses();
     const themeCtx = useTheme()
     const processedData = useMemo(() => {
@@ -30,7 +31,9 @@ const Upcoming = (props) => {
     const clickme = (id) => {
         setIsOpen(!isOpen)
         setMovieData1(id._id);
-
+        setCommentId(id.commentId)
+        // console.log(id);
+        
         // toast.success('Cancel SuccessFull !')
         // console.log(dataLoad);
 
@@ -121,7 +124,7 @@ const Upcoming = (props) => {
                             </Link>
                         </div>
                   </div>
-                    <CancelTicket seat={item.book.seat} data={data1} movieId={item.movieId._id}  ticketId={item._id} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad}  />
+                    <CancelTicket commentId={commentId} seat={item.book.seat} data={data1} movieId={item.movieId._id}  ticketId={item._id} isOpen={isOpen} setIsOpen={setIsOpen} setDataLoad={setDataLoad} dataLoad={dataLoad}  />
                 </div>
 
             ))

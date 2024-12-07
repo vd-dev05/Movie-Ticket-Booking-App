@@ -37,11 +37,16 @@ const managerController = {
     },
     scanSeller : async (req,res) => {
         try {
-            const code = req.body.code
+            const code = req.body.code            
             const response = await UpdateScanTicket(code)
             console.log(response);
             
-            res.status(200).json(response)
+            // if (response.success === true) {
+            //     res.status(200).json({ message: "Scan Successful"})
+            // } else if (response.success === false) {
+            //     res.status(400).json({ error : "Scan Failed"})
+            // }
+            
         } catch (error) {
             res.status(404).json({error: error.message})
         }

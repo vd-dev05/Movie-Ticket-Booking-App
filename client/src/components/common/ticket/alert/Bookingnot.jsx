@@ -20,8 +20,9 @@ import { toast } from "react-toastify";
 import CancelServices from "@/services/users/cancel";
 import { showSuccessToast } from "@/lib/toastUtils";
 
-const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ticketId, movieId, seat }) => {
-
+const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ticketId, movieId, seat,commentId }) => {
+ 
+    
     const test = useMemo(() => {
         if (data && data.title) {
             return truncateText(data.title, 15);
@@ -33,6 +34,7 @@ const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ti
 
     const handleChangeText = (event) => {
         setRating(event.target.value)
+        console.log(commentId);
     }
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
@@ -47,6 +49,7 @@ const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ti
     ];
 
     const handleSubmit = async () => {
+      
         // console.log(selectedValue);
         // console.log(rating);
         // console.log(data);
@@ -58,7 +61,7 @@ const CancelTicket = ({ data, text, isOpen, setIsOpen, setDataLoad, dataLoad, ti
         //     movieId: id
         // }
         try {
-            const response = await CancelServices.create(selectedValue, rating, ticketId, movieId, seat)
+            const response = await CancelServices.create(selectedValue, rating, ticketId, movieId, seat, commentId)
             if (response) {
                 showSuccessToast(response.data)
                 setIsOpen(!isOpen)

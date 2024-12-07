@@ -32,6 +32,27 @@ const commentSchema = new mongoose.Schema({
             validator : Number.isInteger,
             message : "star must be an integer value between 0 and 5"
         }
+    },
+    movieId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "movies",
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'InActive'],
+        default: 'InActive',
+    },
+    commentId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comments"
+    },
+    createAt : {
+        type: Date,
+        default: Date.now,
+    },
+    updatedAt : {
+        type: Date,
+        // default: Date.now,
     }
 
 })

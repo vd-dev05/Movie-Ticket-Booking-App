@@ -222,14 +222,23 @@ export const putReview = async (movieId,review ,star,userId) => {
        const movieObj = new mongoose.Types.ObjectId(movieId)
     const data = {
         movieId : movieObj,
+        
         commentId : comments._id,
         status : "Active"
     }
-    const users =  await Users.findByIdAndUpdate(userId, {
-   
-    },{new : true})
+    const userUpdate = await Users.findById(userId)
     .select('comment')
-    console.log(users);
+    userUpdate.comment.forEach((item) => {
+        if (item.movieId.toString() === movieId) {
+            // item.commentId.push(data.commentId)
+            console.log(item);
+            
+        }
+    })
+
+
+    console.log(userUpdate);
+    
     
 
    }

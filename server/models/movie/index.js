@@ -13,30 +13,30 @@ const transactionSchema = new mongoose.Schema({
     transaction_content: String,
     reference_number: String,
     body: String
-  });
-  
-  const orderSchema = new mongoose.Schema({
+});
+
+const orderSchema = new mongoose.Schema({
     id: Number,
     total: Number,
     payment_status: String
-  });
-  
+});
+
 
 
 // ticket booking canncell 
 const cancelSchema = new mongoose.Schema({
-    ticketId : {
+    ticketId: {
         type: mongoose.Schema.Types.ObjectId,
         // ref: ""
     },
-    movieId : {
+    movieId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies"
     },
     cancelReason: String,
-    checkBox : {
-        type : String,
-        enum : [
+    checkBox: {
+        type: String,
+        enum: [
             "I have a better deal",
             "Some other work, can't come",
             "I want to book another movie",
@@ -77,10 +77,10 @@ const ticketSchema = new mongoose.Schema({
     movieQr: {
         type: String,
     },
-    address : String,
-    event : {
-        start : String,
-        end : String
+    address: String,
+    event: {
+        start: String,
+        end: String
     },
     seat: {
         type: [String], // Array of strings to store seat identifiers
@@ -93,12 +93,12 @@ const ticketSchema = new mongoose.Schema({
         enum: ['Active', 'Cancelled', 'Expired'],
         default: 'Active',
     },
-    date : {
-        type : Date,
+    date: {
+        type: Date,
     },
-    codeQR : String,
-    review : {
-        type : Boolean,
+    codeQR: String,
+    review: {
+        type: Boolean,
         default: false,
     }
 });
@@ -146,6 +146,11 @@ const userSchema = new mongoose.Schema({
         }
     }],
     ticket: [{
+        commentId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "comments",
+            required: true
+        },
         movieId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "movies", // Reference to movie model
@@ -155,24 +160,18 @@ const userSchema = new mongoose.Schema({
             ref: "booking", // Optionally, set this for better referencing
         },
     }],
-    comment: [{
-        _id: false,
-        movieId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "movies",
-        },
-        status: {
-            type: String,
-            enum: ['Active', 'InActive'],
-            default: 'InActive',
-        },
-        date: Date,
-        commentId : {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "comments"
-        }
-      
-    }],
+    // comment: [{
+    //         commentId : {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "comments",
+    //             required: true
+    //         },
+    //         movieId : {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "movies",
+    //             required: true
+    //         }
+    // }],
     history: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies",
@@ -190,15 +189,15 @@ const userSchema = new mongoose.Schema({
 
 const eventSchema = new mongoose.Schema({
     startTime: {
-      type: String,  
-      required: true
+        type: String,
+        required: true
     },
     endTime: {
-      type: String,  
-      required: true
+        type: String,
+        required: true
     },
-    _id : false
-  });
+    _id: false
+});
 
 
 // Booking Schema
@@ -207,30 +206,30 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies"
     },
-    sellerId : {
+    sellerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "manager"
     },
-    seats: [mongoose.Schema.Types.Mixed] ,
-    price : Number ,
-    address : {
+    seats: [mongoose.Schema.Types.Mixed],
+    price: Number,
+    address: {
         type: String,
         required: true,
     },
-    events : [eventSchema],
-    type : {
+    events: [eventSchema],
+    type: {
         type: String,
-        enum : ['CGV', 'LOTTE','GALAXY','BETA','BHD'],
+        enum: ['CGV', 'LOTTE', 'GALAXY', 'BETA', 'BHD'],
         required: true,
     },
-    createdAt : {
+    createdAt: {
         type: Date,
         default: Date.now()
     },
-    updatedAt : {
-        type: Date, 
+    updatedAt: {
+        type: Date,
     }
-    
+
 });
 
 // Movie Schema
@@ -249,22 +248,22 @@ const movieSchema = new mongoose.Schema({
     awards: {
         wins: String,
         nominations: String,
-        text : String
+        text: String
     },
     lastupdated: Date,
     year: Number,
     imdb: {
-        rating : Number,
-        votes : Number,
+        rating: Number,
+        votes: Number,
     }, // Mixed to allow flexible structure
     countries: [String],
     type: String,
     tomatoes: mongoose.Schema.Types.Mixed, // Mixed type for dynamic content
-    trailer : {
+    trailer: {
         type: String,
         required: true,
     },
-    cast : Array,
+    cast: Array,
     num_mflix_comments: Number,
 });
 

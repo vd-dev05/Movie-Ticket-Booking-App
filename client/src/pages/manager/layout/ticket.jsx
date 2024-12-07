@@ -73,7 +73,7 @@ const TicketBooking = () => {
         return text;
     };
     return (
-        <div>
+        <div className="pl-10 sm:pl-0">
             <h2>Create Ticket Seats</h2>
             <div className="flex gap-2">
                 <form onSubmit={handleSubmit}>

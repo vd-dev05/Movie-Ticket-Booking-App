@@ -33,6 +33,7 @@ import NotFound from '@/pages/404';
 import VietQr from '@/layout/qrcode/payVietQr';
 import SelectSeller from '@/pages/Booking/seller';
 import TicketHistory from '@/components/common/file/history/ticket';
+import SortTrailer from '@/pages/video';
 const RouteMovie = () => {
     return (
         // <div>
@@ -56,7 +57,7 @@ const RouteMovie = () => {
             <Route path='/details/:id/seller/:sellerId/:sellerName/:event/:price/:date/booking/pay/vietqr' element={<VietQr />} />
             <Route path='/geners/:id' element={<Genners />} />
             <Route path='/qrcode/:id' element={<QrCode />} />
-
+            <Route path="/sorts" element={<SortTrailer />} />
             <Route path="/profile" element={<HomeFile />} >
                 <Route path="privacy" element={<Privacy />} />
                 <Route path="terms" element={<Terms />} />

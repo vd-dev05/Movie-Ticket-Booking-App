@@ -4,8 +4,8 @@ import MovieController from '@/services/movie/Movie.controller';
 
 const GetIdMovie = () => {
     const [searchTerm, setSearchTerm] = useState(''); // State for search input
-    const [filteredMovies, setFilteredMovies] = useState([]); 
-    
+    const [filteredMovies, setFilteredMovies] = useState([]);
+
     const handleCopyId = (movieId) => {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(movieId)
@@ -82,17 +82,23 @@ const GetIdMovie = () => {
     ];
 
     return (
-        <div>
-            <Input
-                value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Search by movie title"
-                style={{ width: 300, marginBottom: 20 }}
-            />
-            <Button onClick={handleSubmit} type="primary">
-                Search Movies
-            </Button>
+        <div className='sm:w-full flex flex-col'>
+            <div className='flex gap-2 p-10'>
+                <Input
+
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    placeholder="Search by movie title"
+                    className=' sm:w-full mb-4 flex items-center justify-center '
+                // style={{ width: '100%', marginBottom: 20 , display: 'flex', alignItems : 'center' , justifyContent : 'center'  }}
+                />
+                <Button onClick={handleSubmit} type="primary">
+                    Search Movies
+                </Button>
+            </div>
+
             <Table
+                className='px-10'
                 columns={columns}
                 dataSource={filteredMovies}
                 rowKey="_id"

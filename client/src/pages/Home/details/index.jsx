@@ -96,8 +96,20 @@ const MovieDetails = () => {
                     if (reponse === undefined) {
                         window.location.href = '/home'
                     }
-
-                    setDataMovie(reponse.data)
+                    if (reponse &&reponse.data.trailer ) {
+                        const splitText = reponse.data.trailer.split('/upload')
+                        const trailer = reponse.data.trailer ? ( reponse.data.trailer.includes('/upload') 
+                        ? splitText[0] + '/upload/q_auto:low,h_900,w_1600/c_limit,e_blur:100/' + splitText[1]
+                        : reponse.data.trailer
+                     ): reponse.data.trailer
+                     setDataMovie({
+                        ...reponse.data,
+                        trailer : trailer
+                    })
+                    }  else {
+                        setDataMovie(reponse.data)
+                    }             
+                
                     setIsValid(true)
                     setIsLoading(true)
                 }
@@ -111,7 +123,8 @@ const MovieDetails = () => {
         }
         fetchData()
     }, [location])
-
+    console.log(dataMovie);
+    
     const handleAddLove = async () => {
         if (localStorage.getItem('access_token')) {
             const reponse = await UserHistory.loveMovie('like', location.pathname.split('/')[2] || data._id)
@@ -148,7 +161,7 @@ const MovieDetails = () => {
                 dataMovie && isValid ? (
                     <div> <div className='relative w-full h-[500px]'>
                     <div
-                        className={`w-full h-full ${isPlaying ? '-z-10' : ''} `}
+                        className={`w-full h-full  ${isPlaying ? '-z-10 blur-sm drop-shadow-xl ' : ''} `}
                         style={{
                             position: 'absolute',
                             top: '0',
@@ -176,14 +189,15 @@ const MovieDetails = () => {
     
                     </div>
                     <video
-    
-                        className='object-cover  h-full z-20 '
+                        
+                        className=' object-center  h-full z-20   '
                         ref={videoRef}
-                        controls
+                        // controls
                         onClick={handleVideoClick}
+                        
     
                     >
-                        <source src={`${dataMovie.trailer ? dataMovie.trailer  :"https://res.cloudinary.com/dlpxfxpdn/video/upload/v1732811181/idydihhtp0yoebaaohna.mp4"}`}type="video/mp4" />
+                        <source src={`${dataMovie.trailer ? dataMovie.trailer  :"https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/v1732811181/idydihhtp0yoebaaohna.mp4"}`}type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <div className=' absolute top-10 left-5 items-center  z-50   '>

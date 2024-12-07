@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const CancelServices = {
-    create : async ( selectedValue,rating,movieId,ticketId,seat) => {
+    create : async ( selectedValue,rating,movieId,ticketId,seat,commentId) => {
      try {
         // console.log( selectedValue,rating,id);
         // console.log( JSON.parse(localStorage.getItem('account-info')));
@@ -12,7 +12,8 @@ const CancelServices = {
             rating,
             movieId ,
             nameUser : JSON.parse(localStorage.getItem('account_info')),
-            seats : seat
+            seats : seat,
+            commentId
         },{
             headers : {
                 'authorization': `Bearer ${localStorage.getItem('access_token')}`
