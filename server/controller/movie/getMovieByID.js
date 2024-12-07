@@ -258,3 +258,16 @@ export const putReview = async (movieId,review ,star,userId) => {
         throw new Error(error.message);
     }
 }
+export const getAllTrailers = async () => {
+    try {
+        const movie = await Movies.aggregate([
+            { $match: { trailer : { $exists: true, $ne: null } } },
+            { $project : { poster :1, title :1, imdb : 1, trailer : 1,plot : 1 , languages : 1}},
+            { $sort: { title : 1 }}
+        ])
+
+        return movie;  
+    } catch (error) {
+        throw new Error(error.message);  
+    }
+}

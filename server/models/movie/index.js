@@ -246,8 +246,8 @@ const movieSchema = new mongoose.Schema({
     directors: [String],
     writers: [String],
     awards: {
-        wins: String,
-        nominations: String,
+        wins: Number,
+        nominations: Number,
         text: String
     },
     lastupdated: Date,
@@ -265,6 +265,7 @@ const movieSchema = new mongoose.Schema({
     },
     cast: Array,
     num_mflix_comments: Number,
+    poster : String,
 });
 
 // Models

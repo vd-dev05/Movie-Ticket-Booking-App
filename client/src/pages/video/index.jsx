@@ -1,97 +1,150 @@
 import { useState, useRef, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Nav from "@/layout/Nav";
+import Video, { ContentVideo, VideoContent } from "@/components/common/video/video";
+import { useThemeClasses } from "@/context/Theme/themeStyles";
+import { Link } from "react-router-dom";
+import VideoServices from "@/services/users/video";
 
 const SortTrailer = () => {
-    const videoRef = useRef(null);
+    const videoRef = useRef();
+    const { themeUniver, backGround } = useThemeClasses()
     const [playing, setPlaying] = useState(false);
     const [currentVideo, setCurrentVideo] = useState(0);
+    const [videos,setVideos] = useState([])
+    const [isLoading,setIsloading] = useState(false);
+    // useEffect(() => {
+    //  document.getElementById('focus').focus()
+    // }, [])
 
+    // const handleVideo = () => {
+    //     // setPlaying(!playing);
+    //     if (playing) {
+    //         videoRef.current.pause();
+    //         setPlaying(false);
+    //     } else {
+    //         videoRef.current.play();
+    //         setPlaying(true);
+    //     }
+    // }
+    useEffect(() => {
+        const fetchTrailer = async () => {
+            // setIsloading(true)
+            const response  =  await VideoServices.getTrailer()
+            // console.log(response.data);
+            if (response) {
+                const splitText = response.data.map((item) => {
+                    const splitText = item.trailer.split('/upload')
+                    const trailer = item.trailer ? ( item.trailer.includes('/upload') 
+                        ? splitText[0] + '/upload/c_crop,g_north,h_1000,w_500/g_auto:faces' + splitText[1]
+                        : item.trailer
+                     ): item.trailer
+                     return {
+                        ...item,
+                        trailer : trailer
+                     }
+                })
+                setVideos( splitText)
+                setIsloading(true)
+                // console.log(splitText);
+                
+            //  console.log( trailer);
+            }
+       
+            
+           
+            // setData(response)
+        }
+        fetchTrailer()
+      
+    }, [])
+    console.log(videos);
+    
     // Danh sách video trailer
-    const videos = [
-        {
-            id: 1,
-            title: "Doctor Strange Official Trailer 1 (2016)",
-            src: "https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/v1733156845/folder-video/Doctor%20Strange%20Official%20Trailer%201%20%282016%29%20-%20Benedict%20Cumberbatch%20Movie%20-%20Rotten%20Tomatoes%20Trailers%20%28720p%2C%20h264%2C%20youtube%29_video_1733156838549.mp4"
-        },
-        {
-            id: 2,
-            title: "Avengers: Endgame Official Trailer",
-            src: "https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/v1733156845/folder-video/Doctor%20Strange%20Official%20Trailer%201%20%282016%29%20-%20Benedict%20Cumberbatch%20Movie%20-%20Rotten%20Tomatoes%20Trailers%20%28720p%2C%20h264%2C%20youtube%29_video_1733156838549.mp4"
-        },
-        {
-            id: 3,
-            title: "Spider-Man: No Way Home Official Trailer",
-            src: "https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/v1733156845/folder-video/Doctor%20Strange%20Official%20Trailer%201%20%282016%29%20-%20Benedict%20Cumberbatch%20Movie%20-%20Rotten%20Tomatoes%20Trailers%20%28720p%2C%20h264%2C%20youtube%29_video_1733156838549.mp4"
-        }
-    ];
+    // const videos = [
+    //     {
+    //         language: 'English',
+    //         poster: 'https://res.cloudinary.com/dlpxfxpdn/image/upload/v1733154302/folder-movie/poster15450logo20240.png',
+    //         id: 1,
+    //         title: "Doctor Strange Official Trailer 1 (2016)",
+    //         src: 'https://res.cloudinary.com/demo/video/upload/c_crop,g_north,h_1000,w_500/g_auto:faces/ski_jump.mp4'
+    //     },
+    //     {
+    //         poster: 'https://res.cloudinary.com/dlpxfxpdn/image/upload/v1733154302/folder-movie/poster15450logo20240.png',
+    //         id: 2,
+    //         title: "Avengers: Endgame Official Trailer",
+    //         src: "https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/c_crop,g_north,h_1000,w_500/g_auto:faces/v1733156845/folder-video/Doctor%20Strange%20Official%20Trailer%201%20%282016%29%20-%20Benedict%20Cumberbatch%20Movie%20-%20Rotten%20Tomatoes%20Trailers%20%28720p%2C%20h264%2C%20youtube%29_video_1733156838549.mp4"
+    //     },
+    //     {
+    //         poster: 'https://res.cloudinary.com/dlpxfxpdn/image/upload/v1733154302/folder-movie/poster15450logo20240.png',
+    //         id: 3,
+    //         title: "Spider-Man: No Way Home Official Trailer",
+    //         src: "https://res.cloudinary.com/dlpxfxpdn/video/upload/q_auto:low/v1733156845/folder-video/Doctor%20Strange%20Official%20Trailer%201%20%282016%29%20-%20Benedict%20Cumberbatch%20Movie%20-%20Rotten%20Tomatoes%20Trailers%20%28720p%2C%20h264%2C%20youtube%29_video_1733156838549.mp4"
+    //     }
+    // ];
 
-    // Hàm điều khiển phát và tạm dừng video
-    const handlePlayPause = (inView, index) => {
-        if (inView) {
-            // Khi video vào màn hình, tự động phát
-            setCurrentVideo(index);
-            setPlaying(true);
-        } else {
-            // Khi video ra khỏi màn hình, tạm dừng
-            setPlaying(false);
-        }
-    };
-
+if (!isLoading) {
     return (
-        <div className="relative w-full h-screen overflow-hidden bg-black">
-            <h1 className="absolute top-10 text-center font-bold text-xl text-white z-10">
+        <div className="flex h-screen justify-center items-center">
+            <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+            </div>
+        </div>
+    );
+}
+    return (
+        <div className={`mb-10`}>
+
+
+            <h1 className=" top-10 text-center font-bold text-xl z-10">
                 Sort Trailer
             </h1>
 
-            {/* Danh sách video scrollable */}
-            <div className="h-full overflow-y-scroll flex flex-col space-y-4">
-                {videos.map((video, index) => (
-                    <div key={video.id} className="relative w-full min-h-screen">
-                        <video
-                            ref={videoRef}
-                            loop
-                            muted
-                            className="object-cover rounded-2xl w-full h-full opacity-90"
-                            autoPlay={currentVideo === index && playing}
-                            src={video.src}
-                        />
+            {/* <div className={themeUniver}>
+        
 
-                     
+            </div> */}
+            {/* <div className="">
 
-                        <div className="absolute top-5 w-full text-center z-20">
-                            <h2 className="text-white font-bold">{video.title}</h2>
-                        </div>
+            </div> */}
+            {videos.map((video, index) => (
+                <div className=" flex flex-col gap-2">
 
-                        {/* Intersection Observer để theo dõi video */}
-                        <div className="absolute inset-0" style={{ zIndex: 10 }}>
-                            <div
-                                className="w-full h-full"
-                                ref={videoRef}
-                                onMouseEnter={() => handlePlayPause(true, index)}
-                                onMouseLeave={() => handlePlayPause(false, index)}
-                            >
-                                <div
-                                    className="h-full w-full"
-                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                                >
-                                    {/* Optional Play/Pause Icon */}
-                                    <span
-                                        className="text-white font-bold text-xl cursor-pointer"
-                                    >
-                                        {currentVideo === index && playing ? 'Pause' : 'Play'}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-               {/* Kiểm tra xem video có trong màn hình hay không */}
-               <div className="absolute bottom-5 w-full text-center z-20">
-                            <Nav data={"sorts"} />
-                        </div>
+                    <Video key={video._id} data={{
+                        title: video.title,
+                        plot: video.plot,
+                        poster: video.poster,
+                        language: video.languages,
+                        trailer: video.trailer,
+                        id: video._id
+                    }} />
+                    {/* <hr /> */}
+                    
+                    <Video key={video._id} data={{
+                        title: video.title,
+                        plot: video.plot,
+                        poster: video.poster,
+                        language: video.languages,
+                        trailer: video.trailer,
+                        id: video._id
+                    }} />
+                    {/* <div className="text-white absolute bottom-0" onClick={() => console.log("hello")
+                    }>Button</div> */}
+                    {/* <ContentVideo/>
+                        <VideoContent/> */}
+                    {/* <div className="absolute left-0 bottom-10 px-10  flex items-center  justify-between w-full text-xs sm:text-xl ">
+                            <button className="text-black bg-slate-500">Click me</button>
+                        </div> */}
+                </div>
+            ))}
+            {/* <div className={` h-full  flex flex-col space-y-4 mr-10   -z-10 `}>
+
+           
+
+            </div> */}
+            <Nav data={"sorts"} />
         </div>
+
     );
 };
 

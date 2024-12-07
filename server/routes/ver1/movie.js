@@ -14,5 +14,6 @@ MovieRouter.get('/oscar/win', MovieController.getTopHoolyWord)
 MovieRouter.get('/genres/all', MovieController.getMovieGenres)
 MovieRouter.get('/seats/seller',MovieController.getSeats)
 MovieRouter.put('/:id/review',authMiddleware.authSessionToken, MovieController.updateRevies)
+MovieRouter.get('/video/trailers',MovieController.getTrailers)
 
 export default MovieRouter;

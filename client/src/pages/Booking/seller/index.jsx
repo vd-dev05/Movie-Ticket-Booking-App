@@ -23,7 +23,7 @@ const SelectSeller = () => {
     const [DataSeller, setDataSeller] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectSeller, setSelectSeller] = useState(false)
-
+    const [role,setRole] = useState()
     // redux 
     const message = useSelector(selectMessageSeller)
     const success = useSelector(selectSuccessfullSeller)
@@ -80,17 +80,24 @@ const SelectSeller = () => {
         setSelectedTimeSlot(slot); // Set the selected time slot
     };
     const handleClickSeller = async (slot) => {
+       
         try {
-
-            if (slot.label) {
-                setSeller(slot)
-                const response = await BookingController.getBookingSeller(slot.label)
-                setDataSeller(response)
-                setLoading(false)
-                // console.log(response);
-
-                // console.log(DataSeller);
+            if (role === 'guest') {
+                showErrorToast('You need to login to book a movie')
+                return
+            } else if (role === 'user') {
+                if (slot.label) {
+                    setSeller(slot)
+                    const response = await BookingController.getBookingSeller(slot.label)
+                    setDataSeller(response)
+                    setLoading(false)
+                    // console.log(response);
+    
+                    // console.log(DataSeller);
+                }
             }
+
+        
 
         } catch (error) {
             console.log(error);
@@ -137,6 +144,12 @@ const SelectSeller = () => {
 
     }, [currDay]);
     useEffect(() => {
+        const name = localStorage.getItem('access_token')
+        if (name) {
+            setRole('user')
+        }else {
+            setRole('guest')
+        }
         if (DataSeller.length < 0) {
             fetchData()
 
@@ -221,7 +234,7 @@ const SelectSeller = () => {
                             {dataSeller.map((slot, idx) => (
                                 <SwiperSlide key={idx} >
                                     <div
-                                        onClick={() => handleClickSeller(slot)}
+                                        onClick={() =>  handleClickSeller(slot)}
                                         className="flex flex-col items-center p-5 drop-shadow-2xl"
                                     >
                                         <div
@@ -281,6 +294,7 @@ const SelectSeller = () => {
 
                                                             key={idx}
                                                             onClick={() => {
+                                                                
                                                                 const a = (day.filter((item) => item.clickD === true))
                                                                 if (a.length === 0) {
                                                                     showErrorToast("Please select")

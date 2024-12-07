@@ -25,7 +25,7 @@ const HomeMovie = () => {
     const [dataHistory, setDataHistory] = useState([]);
 
     const themeCtx = useTheme();
-    const { inputClasses, themeBackGround } = useThemeClasses();
+    const { inputClasses, themeBackGround,themeUniver } = useThemeClasses();
     const { dataUser } = useUser();
     const [user, setUser] = useState('guest')
     // const
@@ -102,7 +102,7 @@ const HomeMovie = () => {
 
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeBackGround}`}>
+        <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeUniver}`}>
             <div className="px-5">
                 {/* Welcome User Section */}
                 <div className="flex justify-between">
