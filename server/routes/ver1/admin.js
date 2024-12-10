@@ -11,5 +11,5 @@ AdminRouter.post('/create',  MovieMiddleware.createMovie, authMiddleware.auhthor
 AdminRouter.post('/upload-poster',upload.single('poster'),authMiddleware.auhthorizationAdmin,adminController.uploadMovie )
 AdminRouter.post('/video',upload.single('trailer'),authMiddleware.auhthorizationAdmin,adminController.uploadTrailer)
 AdminRouter.post('/get-users',authMiddleware.auhthorizationAdmin,adminController.getAllUsers)
-
+AdminRouter.put('/update-movie/:id' , authMiddleware.auhthorizationAdmin, adminController.updateMovie)
 export default AdminRouter;

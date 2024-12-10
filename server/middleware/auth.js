@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { ManagerSeller } from "../models/manager/account.js";
 import { verifyPass } from "../utils/hashPassword.js";
+import { UnauthorizedError } from "../error/index.js";
+import { authorizationError, rollerError } from "../error/ErrorResponse.js";
 dotenv.config()
 const authMiddleware = {
   authentication: (req, res, next) => {
@@ -16,29 +18,28 @@ const authMiddleware = {
   },
   auhthorizationAdmin: async (req, res, next) => {
     try {
-
-      const textAdmin = await Users.findOne({ phone: req.body.phone })    
+      const phone = req.body.phone;
+      const query = { phone: { $regex: new RegExp(`^${phone}$`, 'i') } };
+      
+      const textAdmin = await Users.findOne(query)    
       if (textAdmin === undefined || textAdmin === null || !textAdmin) {
-        throw new Error(' Role not found')
+        throw new UnauthorizedError(' Role not found')
       }
       if (textAdmin.role === 'Admin') {
 
         return next();
       } else if (!textAdmin.role) {
-        throw new Error('Please Enter a role')
+        throw new UnauthorizedError('Please Enter a role')
       }
       else {
-        throw new Error('Error Forbiden')
+        throw new UnauthorizedError('Error Forbiden')
       }
     } catch (error) {
-      return res.status(403).json({
-        message: error.message,
-        success: false,
-        data: null
-      })
+      return authorizationError(res,error,401)
     }
 
   },
+
   auhthorizationSeller : async (req,res,next) => {
     try {
       const seller = await ManagerSeller.findOne({email : req.body.email})
@@ -73,35 +74,27 @@ const authMiddleware = {
       const textAdmin = await Users.findOne({ phone: req.body.phone })
       
       if (textAdmin === undefined || textAdmin === null || !textAdmin) {
-        throw new Error(' Role not found')
+        throw new UnauthorizedError(' Role not found')
       }
       if (!textAdmin.role) {
-        throw new Error('Please Enter a role')
+        throw new UnauthorizedError('Please Enter a role')
       }
       else if (textAdmin.role === 'Manager' || textAdmin.role === 'Admin' ||  textAdmin.role === 'Seller') {
         req.data = textAdmin
         next();
       }
     } catch (error) {
-      res.status(403).send({ error: error.message })
+      return  rollerError(res,error,401)
     }
 
   },
   authSessionToken: (req, res, next) => {
     try {      
+      if (req.headers['authorization'] === undefined) throw new UnauthorizedError('Authentication required')
       const token = req.headers['authorization'];
       const split = token.split(' ')[1]
-      // console.log(split);
-      
-
       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
-        if (err) throw new Error("Invalid or expired token")
-        // req.userId = user.userId   
-        //  console.log(user);
-
-        // console.log(req.body);
-        // console.log(user);
-
+        if (err) throw new UnauthorizedError('Invalid or expired token')
         req.userId = user.userId
         next()
 
@@ -110,43 +103,31 @@ const authMiddleware = {
 
 
     } catch (error) {
-      return res.status(403).json("Please Enter a token")
-
+      return authorizationError(res, error)
+      
     }
   },
   authScanSeller: async (req, res, next) => {
     try {
       const response = await ManagerSeller.findOne({_id : req.body.sellerId})
-      if (!response) throw new Error('Seller not found')
+      if (!response) throw new NotfoundError('Seller not found')
         req.sellerId = response._id
       next()
     } catch (error) {
-      res.status(403).json({error : error.message})
+      return  authorizationError(res, error,401)
     }
   },
   authToken: async (req, res, next) => {
     try {
-      const token = req.headers['Authorization']?.split(' ')[1]; // Expect "Bearer <token>"
-      // console.log(req.body);
+      const token = req.headers['Authorization']?.split(' ')[1]; 
       const a = jwt.decode(token)
-      // console.log(a);
-
-      // console.log(token);
-
+ 
 
       const r = jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")
-        // const userId = user.userId
-        // req.userId = userId
-        // console.log(user);
-
-        // return res.json(userId);
-        // console.log(req.userId);
-
       });
 
       if (!token) throw new Error("Authentication required")
-      // console.log( req.userId);
 
       return next()
     } catch (error) {
@@ -155,28 +136,24 @@ const authMiddleware = {
   },
   authOtp: (req, res, next) => {
     try {
-      // console.log(req.body);
-      // console.log(req.headers[`authorization`]);
 
       const token = req.headers[`authorization`]
       const tokenParts = token.split(" ");
       const actualToken = tokenParts[1];
-      if (!actualToken) throw new Error("Invalid token");
+      if (!actualToken) throw new UnauthorizedError("Invalid token");
       if (!token) {
-        throw new Error("Invalid token");
+        throw new UnauthorizedError("Invalid token");
       }
 
       jwt.verify(actualToken, process.env.SECRET_KEY, (err, user) => {
         if (err) {
-          return res.status(403).json({ error: 'Invalid or expired token' });
+        throw new UnauthorizedError('Invalid or expired token')
         }
-        // console.log(user + "done");
 
-        // req.user = user;  // Attach user info to the request object
         next();
       });
     } catch (error) {
-      res.status(403).send({ error: error.message })
+      return authorizationError(res,error,401)
     }
   }
 

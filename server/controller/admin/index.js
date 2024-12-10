@@ -134,6 +134,49 @@ const adminController = {
         } catch (error) {
             res.status(400).json({error: error.message})
         }
+    },
+    updateMovie : async (req,res) => {
+        try {
+            const movieId = req.params.id;
+            const { title, plot, genres, runtime, cast, fullplot, languages, released, directors, writers, awards, imdb, countries, type, poster, trailer, production, year } = req.body.value;
+            const movie = await Movies.findByIdAndUpdate(movieId, {
+                title,
+                plot,
+                genres,
+                runtime,
+                cast,
+                fullplot,
+                languages,
+                released,
+                directors,
+                writers,
+                // awards: {
+                //     wins: awards.split(',')[0],
+                //     nominations: awards.split(',')[1],
+                //     text: awards.split(',')[2]
+                // },
+                // imdb: {
+                //     rating: imdb.split(',')[0],
+                //     votes: imdb.split(',')[1],
+                // },
+                countries,
+                type,
+                poster,
+                trailer,
+                lastupdated: new Date(),
+                tomatoes: {
+                    production : production
+                },
+                year
+            }, { new: true });
+            res.status(200).json({
+                message: "Movie updated successfully",
+                success: true,
+                data: movie
+            })
+        } catch (error) {
+            res.status(400).json({error: error.message})
+        }
     }
 
 

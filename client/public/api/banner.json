@@ -1,26 +1,27 @@
 [
-    {
+        {
             "id": 1,
-            "titleH1": "Find the latest and greatest movive here",
+            "titleH1": "Find the latest and greatest movie here",
             "titleColor": "latest and greatest",
-            "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
+            "p": "Christopher Nolan's epic drama about J. Robert Oppenheimer and the creation of the atomic bomb.",
             "imgName": "the girl is ya",
             "url": "/assets/img/1.png"
-    },
-    {
+        },
+        {
             "id": 2,
             "titleH1": "Enjoy your favourite movie with us",
             "titleColor": "favourite movie",
-            "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
+            "p": "Browse through a wide range of movies, from timeless classics to the latest hits.",
             "imgName": "the girl is love",
             "url": "/assets/img/2.png"
-    },
-    {
+        },
+        {
             "id": 3,
-            "titleH1": "Book your favourite movie ticket here ",
+            "titleH1": "Book your favourite movie ticket here",
             "titleColor": "favourite movie",
-            "p": "Lorem ipsum dolor sit, amet consectetur adipisicing elit ipsum dolor sit.",
+            "p": "Reserve tickets for your favourite films and enjoy them on the big screen.",
             "imgName": "the girl is oh",
             "url": "/assets/img/3.png"
-    }
-]
+        }
+    ]
+    
