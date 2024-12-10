@@ -85,47 +85,45 @@ Dự án **Hệ Thống Đặt Vé Phim** là một ứng dụng web cho phép n
 
 ---
 
-## Cấu Trúc Dự Án 
+## Cấu Trúc Dự Án
+
 /client            # Mã nguồn Frontend
-    /public               # Tài nguyên (hình ảnh, video, ...)
-  /api                # API banner
-  /assets             # Ảnh, icon
+  /public           # Tài nguyên (hình ảnh, video, ...)
+  /api             # API banner
+  /assets          # Ảnh, icon
 
 /src
-  /components         # Các thành phần giao diện
-    /common           # Các UI con của pages
-    /ui               # Cấu hình UI shadcn
-  /features           # Quản lý trạng thái
-  /controller         # Xử lý nghiệp vụ với services
-  /pages              # Giao diện chính (home, profile, search, ...)
-  /routes             # Định tuyến các routes
-  /store              # Khởi tạo store với redux
-  /services           # Kết nối API từ server
-  /validations        # Xử lý đầu vào dữ liệu
-  /context            # Store Provider
-    /Theme            # Quản lý theme giao diện, hàm tái sử dụng
-    /User             # Quản lý dữ liệu state, dữ liệu component
-  /lib                # Thư viện cấu hình hàm (random, toast, ...)
-  /layout             # NavBar, loading
-    
-/server            # Mã nguồn Backend
-  /cache           # Cache dữ liệu ( otp , token)
-  /models          # Mô hình dữ liệu MongoDB
-  /database        # database , collection theo Mongo
-  /routes          # Các API routes
-  /controllers     # Logic xử lý các yêu cầu từ phí client 
-  /error           # Xử lí lỗi ( error 404, 500, ...)
+  /components      # Các thành phần giao diện
+    /common        # Các UI con của pages
+    /ui            # Cấu hình UI shadcn
+  /features        # Quản lý trạng thái
+  /controller      # Xử lý nghiệp vụ với services
+  /pages           # Giao diện chính (home, profile, search, ...)
+  /routes          # Định tuyến các routes
+  /store           # Khởi tạo store với redux
+  /services        # Kết nối API từ server
+  /validations     # Xử lý đầu vào dữ liệu
+  /context         # Store Provider
+    /Theme         # Quản lý theme giao diện, hàm tái sử dụng
+    /User          # Quản lý dữ liệu state, dữ liệu component
+  /lib             # Thư viện cấu hình hàm (random, toast, ...)
+  /layout          # NavBar, loading
 
+/server          # Mã nguồn Backend
+  /cache          # Cache dữ liệu ( otp , token)
+  /models         # Mô hình dữ liệu MongoDB
+  /database       # database , collection theo Mongo
+  /routes         # Các API routes
+  /controllers    # Logic xử lý các yêu cầu từ phí client
+  /error          # Xử lí lỗi ( error 404, 500, ...)
   /middleware
-    /auth.js         # Xử lí xác thực người dùng, xử lí xác thực OTP,xử lí xác thực token , ... 
-    /manager.js      # Xử lí logic nghiệp vụ của admin
-    /movie.js        # Xử lí logic nghiệp vụ của phim
-    /user.js         # Xử lí logic nghiệp vụ của người dùng
-  /utils             # Cấu hình các hàm tiện ích chung (gen code, hash password, ...)
-  /config            # Cấu hình các hằng số, các biến môi trường
+    /auth.js      # Xử lí xác thực người dùng, xử lí xác thực OTP,xử lí xác thực token , ...
+    /manager.js   # Xử lí logic nghiệp vụ của admin
+    /movie.js     # Xử lí logic nghiệp vụ của phim
+    /user.js      # Xử lí logic nghiệp vụ của người dùng
+  /utils          # Cấu hình các hàm tiện ích chung (gen code, hash password, ...)
+  /config         # Cấu hình các hằng số, các biến môi trường
 
----
-<h1>✨ Cảm ơn bạn đã tham gia dự án này! Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ!</h1>
 ### Giải thích các phần:
 
 1. **Mô Tả Dự Án**: Phần này giúp người đọc hiểu về ứng dụng và các tính năng chính của nó.
@@ -134,6 +132,9 @@ Dự án **Hệ Thống Đặt Vé Phim** là một ứng dụng web cho phép n
 5. **Deploy**: Thông tin về các môi trường triển khai của dự án.
 6. **Cấu Trúc Dự Án**: Hướng dẫn về cấu trúc thư mục và cách tổ chức mã nguồn của dự án.
 
+
+
+<h1>✨ Cảm ơn bạn đã xem dự án này! Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ!</h1>
 📞 Liên Hệ
 Email: dbui0025@gmail.com
 GitHub: github.com/vd-dev05
