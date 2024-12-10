@@ -1,8 +1,6 @@
 import { TypeAnimation } from 'react-type-animation';
 const TypingEffect = ({nameUser}) =>  {
     const displayName = nameUser || 'user'; 
-
-    console.log(displayName); 
       
    
     const arr = [`Welcome ${ nameUser ? nameUser : 'user' } 👋`,3500,"Book Ticket My App",3500,"Add Voucher Movie to List "]

@@ -37,7 +37,7 @@ const LoveMovie = ({ data ,sizew,sizeh,space,isize,page,texts}) => {
                     </Link>
                     <div className={`mt-2 `}>
                     <h2 className="font-[700] text-nowrap">{truncateText(item.title,texts)}</h2>
-                    <p className="text-gray-400 text-xs text-nowrap">{item.tomatoes && item.tomatoes.production ? item.tomatoes.production : 'hang phim ko ton tai' }</p>
+                    <p className="text-gray-400 text-xs text-nowrap">{item.tomatoes && item.tomatoes.production ? item.tomatoes.production : 'production not found' }</p>
                     </div>
                 </div>
                  

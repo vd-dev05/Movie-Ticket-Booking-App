@@ -37,9 +37,9 @@ const OTPVery = ({ text, phone, setTrue, True }) => {
                         ...pre,
                         token: r?.data?.token
                     }))
-                    if (r) {
-                        showSuccessToast("Send Otp SuccessFull")
-                    }
+                    // if (r) {
+                    //     showSuccessToast("Send Otp SuccessFull")
+                    // }
                 }
             )()
             // const r =  await GetOtp(phone);

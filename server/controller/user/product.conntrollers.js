@@ -12,9 +12,10 @@ const Products = {
     signinUser: async (req, res) => {
       
             const user = await Users.findOne({ phone: req.body.phone })
-            .select("name phone role  movieLove history ")
+            .select("name phone role  movieLove history vouchers ")
             .populate("movieLove" )
             .populate("history" )
+            .populate('vouchers')
 
             const asscess = await Sessions.findOne({user_id : user._id})
             // console.log(req.body);
@@ -176,7 +177,7 @@ const Products = {
         } catch (error) {
             res.status(401).json({ error: error.message });
         }
-    }
+    },
 
 }
 export default Products;

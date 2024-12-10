@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns'
 import { parseDateWithTime } from "../../../utils/configDate.js";
 import { Comments } from "../../../models/comment/index.js";
-
+import Voucher from '../../../models/User/voucher/index.js'
 
 const BookTicket = {
     getSellerTickets  : async (req,res) =>{
@@ -62,21 +62,50 @@ const BookTicket = {
     bookticket: async (req, res) => {
         try {
             const keyCode = uuidv4().split('-')[4];
-            
+            let priceDiscount ;
             const id = req.userId;
-            const { movieId, price, seat, status, date, event,address } = req.body;
-
+            
+            
+            const { movieId, price, seat, status, date, event,address ,
+                code,
+                _id,
+                sellerId
+             } = req.body;
+     
+          
+            // console.log(sellerId,code);
+            
             
             const isoDateStart = format(parseDateWithTime( date, event.start), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             const isoDateEnd = format(parseDateWithTime(date, event.end), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             
-            const book = await Booking.findOne({ movieId: movieId  }, { seats: 1, movieId: 1 }).lean();
+            const book = await Booking.findOne({ movieId: movieId , 
+                sellerId : sellerId  }, { seats: 1, movieId: 1 }).lean();
+
+            // console.log(book.seats.find(seat => seat.userId === id.toString() ));
+            const idCheck =  new mongoose.Types.ObjectId(id)
+            const check = book.seats.find(seat => seat.userId === idCheck );
+ 
+            if (check && check !== undefined) {
+                throw new Error('Ticket already booked for this movie')
+            }
             await Comments.find({}).lean()
             
             if (!book) {
                 throw new Error(`The movie theater hasn't opened for ticket sales yet`)
             }
+            if (_id ) {
+                const updateVocher = await Voucher.findByIdAndUpdate(_id, {
+                    $set: {
+                        isClaimed: true
+                    }
+                })
 
+               priceDiscount =  (price -(updateVocher.discountAmount / 100) * price).toFixed(3)
+                // console.log(priceDiscount);
+                
+            }
+          
             const userId = new mongoose.Types.ObjectId(id);
             const updateSeats = seat;
             const seats = book.seats;
@@ -127,7 +156,7 @@ const BookTicket = {
                 movieId: movieId,
                 book: {
                     movieQr: keyCode,
-                    price: price,
+                    price:  priceDiscount  ?  priceDiscount : price,
                     seat: seat,
                     status: "Expired",
                     keyCode: qrData,
@@ -155,7 +184,7 @@ const BookTicket = {
                 userTicket.save(),
 
             ]);
-            console.log(updatedUserTicket);
+       
             
             return res.status(200).json({
                 message: 'Ticket booked successfully!',

@@ -18,29 +18,33 @@ import { toast } from 'react-toastify';
 import Payment from '@/services/users/payment';
 import { useUser } from '@/context/User';
 import numeral from 'numeral';
+import UserServices from '@/services/users/User.controller';
+import { IoMdArrowDropdown } from "react-icons/io";
+import { BiSolidDiscount } from "react-icons/bi";
+import React from 'react';
+import { decodeString, encodeString, parseQueryString } from '@/lib/encode';
+ 
 const Pay = () => {
     const localtion = useLocation()
-    const parsed = queryString.parse(location.search);
-    const parsedId = queryString.parseUrl(localtion.pathname, { parseFragmentIdentifier: true });
+    // console.log(location.search);
+   
+    const decode =  decodeString(location.search.split('?').join(''),import.meta.env.VITE_SECRET_KEY)
+    const parsed = parseQueryString(decodeURIComponent(decode))
+    // console.log( decodeURIComponent(decode));
+    
+    const splitId = localtion.pathname.split('/')[2]
 
-    const splitId = parsedId.url.split('/')[2]
-    const splitBooking = parsedId.url.split('/pay')[0]
-
-
-    const paredUrl = queryString.parseUrl(location.pathname)
+    
     const splitLocation = location.pathname.split('/booking')[0]
-
-
-    const obj = paredUrl.url.split('/')
-
-    const [,, , ,sellerId, address, time, price, date] = obj;
-    const addressPared = decodeURIComponent(address)
+   
+    
+    const { sellerId, nameSeller  , time, price, date , totalprice,code  ,seats ,_id } = parsed;
+    // console.log(parsed );
+    // const addressPared = decodeURIComponent(address)
     const timeStart = time.split('-')[0]
     const timeEnd = time.split('-')[1]
     const datepared = date.split('-')
-    console.log(datepared);
-    
-
+    // console.log(obj);
 
     const nav = useNavigate()
 
@@ -54,17 +58,6 @@ const Pay = () => {
     const [isOpenPay, setIsOpenPay] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isValid, setIsValid] = useState(true);
-
-
-    // const [numberCard, setNumberCard] = useState({
-    //     master: '',
-    //     payPal: ''
-    // });
-
-
-    // const queryParams = new URLSearchParams(localtion.pathname);
-    // console.log(queryParams.get('seats'));
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -181,8 +174,8 @@ const Pay = () => {
         if (token) {
             try {
 
-                const response = await BookingController.seatsBookings(token, parsed, splitId , addressPared ,timeStart ,timeEnd ,datepared  )
-
+                const response = await BookingController.seatsBookings(token, parsed, splitId, nameSeller, timeStart, timeEnd, datepared, code, _id,sellerId )
+            
                 if (response.success === true) {
                     setIsOpenPay(true)
                     setQrData(response.imgUrl)
@@ -246,6 +239,7 @@ const Pay = () => {
         // console.log( parsed );
 
     }
+
     return (
         <div className={`iphone-12-pro-max:flex flex flex-col min-h-screen w-full font-movie px-5 ${themeUniver}`}>
 
@@ -253,7 +247,9 @@ const Pay = () => {
                 : <div>
                     <div>
                         <div className="translate-y-9">
-                            <Link to={`${splitBooking}`}>
+                            <Link 
+                            // to={`${splitBooking}`}
+                            >
                                 <box-icon name='chevron-left' size={"40px"} color={color}></box-icon>
                             </Link>
                         </div>
@@ -356,15 +352,38 @@ const Pay = () => {
                                     <p>Item Total</p>
                                     <span>${Number(parsed.totalprice).toLocaleString()} USD</span>
                                 </div>
-                                <div className='flex justify-between'>
-                                    <p>Discount</p>
-                                    <span>- $5</span>
+                                <div className="flex justify-between">
+                                    <h2 className="">Select Voucher</h2>
+                                    <div className="space-y-4">
+                                        <div
+                                            onClick={() =>
+                                                nav(`/discount?string=${location.search.split('?').join('')}&page=${localtion.pathname.split('?')[0]}`)
+                                            }
+                                        ><IoMdArrowDropdown size={40} className='cursor-pointer ' /></div>
+
+                                    </div>
+
                                 </div>
+                                {parsed.title && parsed.code ? <span>Voucher select : {parsed.title} </span> : ""}
                             </div>
                             <div className='h-[1px] w-full bg-gray-600'></div>
+                            {parsed.title && parsed.code ?
+                                <div className='flex justify-between'>
+                                    <div className='flex items-center gap-2'>
+                                        <BiSolidDiscount />
+                                        <span>Discount</span>
+                                    </div>
+                                    <p className='text-green-800 font-bold'>Sale {parsed.discountAmount} %</p>
+                                </div> : ''}
                             <div className='flex justify-between mb-20 font-bold text-lg'>
                                 <h2>Grand Total</h2>
-                                <p>${Number(parsed.totalprice - 5).toLocaleString()} USD</p>
+                                {parsed.discountAmount
+                                    ? 
+                                    <div className='flex gap-2 items-center'>
+                                        <p className='text-gray-400 font-be text-pretty line-through text-base'>{Number(parsed.totalprice).toLocaleString()} USD</p>
+                                        <p>${Number(parsed.totalprice - (parsed.totalprice * (parsed.discountAmount / 100))).toLocaleString()} USD</p>
+                                    </div>
+                                    : <p>${Number(parsed.totalprice).toLocaleString()} USD</p>}
                             </div>
                         </div>
                     </div>

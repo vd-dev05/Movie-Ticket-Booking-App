@@ -35,6 +35,8 @@ const MovieController = {
     getAllMovie : async (req ,res ) => { 
         try {
             const query = req.query
+            console.log(query);
+            
             const r = await getAllMovie(query)            
            return res.status(200).json({
                 success : true,
@@ -107,7 +109,7 @@ const MovieController = {
         try {
 
             const {movieId, sellerId} = req.query
-
+            console.log(movieId, sellerId);
             const response = await getSeats(movieId,sellerId)
             res.status(200).json(response)
         } catch (error) {

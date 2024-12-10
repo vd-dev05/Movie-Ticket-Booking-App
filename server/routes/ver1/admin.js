@@ -10,6 +10,6 @@ AdminRouter.get('/', authMiddleware.auhthorizationAdmin ,adminController.loginAd
 AdminRouter.post('/create',  MovieMiddleware.createMovie, authMiddleware.auhthorizationAdmin ,adminController.createMovie)
 AdminRouter.post('/upload-poster',upload.single('poster'),authMiddleware.auhthorizationAdmin,adminController.uploadMovie )
 AdminRouter.post('/video',upload.single('trailer'),authMiddleware.auhthorizationAdmin,adminController.uploadTrailer)
-// AdminRouter.get('/:id', MovieController.getByID)
+AdminRouter.post('/get-users',authMiddleware.auhthorizationAdmin,adminController.getAllUsers)
 
 export default AdminRouter;

@@ -1,5 +1,6 @@
 import { useTheme } from "@/context/Theme";
 import { generateSeats } from "@/lib/createSeats";
+import { decodeString } from "@/lib/encode";
 import { showErrorToast } from "@/lib/toastUtils";
 import MovieController from "@/services/movie/Movie.controller";
 import queryString from "query-string";
@@ -12,13 +13,13 @@ const SeatList = ({ count, onSeatsUpdate, startIndex, setTotalTicket }) => {
     const [isLoading, setIsLoading] = useState(true); 
     const theme = useTheme();
     const location = useLocation();
-    const movieId = location.pathname.split('/')[2];  
-    // const location = useLocation()
-    const paredUrl = queryString.parseUrl(location.pathname)
-    // const splitLocation = location.pathname.split('/booking')[0]
-    const obj = paredUrl.url.split('/')
-    const [,,,,sellerId, address, time,price,date] = obj;
-    // console.log(sellerId);
+    const movieId = location.pathname.split('/')[2];
+
+    const ok = decodeURIComponent(decodeString(location.search.split('?')[1],import.meta.env.VITE_SECRET_KEY))
+
+    const { sellerId } = queryString.parse(ok);
+
+    
     
     useEffect(() => {
         const fetchBookingData = async () => {

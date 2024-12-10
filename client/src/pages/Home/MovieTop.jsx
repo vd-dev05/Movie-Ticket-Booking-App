@@ -17,7 +17,7 @@ import { selectUserLove } from "@/features/auth/authSelectors";
 import { getHistoryUser, getLoveUser } from "@/features/auth/authThunks";
 
 const MovieTop = ({ isLoading, setIsLoading }) => {
-    console.log(isLoading);
+   
 
     const [data, setData] = useState([])
     const [topMovie, setTopMovie] = useState([])
@@ -119,7 +119,7 @@ const MovieTop = ({ isLoading, setIsLoading }) => {
                                 <div className="flex gap-3  z-10 mt-2 ">
                                     <Link
                                         state={data._id}
-                                        to={`/details/${data._id}/booking`}
+                                        to={`/details/${data._id}/seller`}
                                         className="text-white hover:text-white ">
                                         <div className="cursor-pointer hover:scale-110 motion-reduce:transform-none flex rounded-lg bg-btn-gradient  px-2 py-5 text-nowrap w-full items-center justify-center gap-4">
                                             <span><BarcodeOutlined /></span>

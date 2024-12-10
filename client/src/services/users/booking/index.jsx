@@ -42,7 +42,10 @@ const BookingController = {
                 end : timeEnd
                },
                address : addressPared,
-               date : datepared
+               date : datepared,
+               sellerId : value.sellerId,
+               code : value.code,
+               _id : value._id
              },{
                 headers : {
                     'Authorization': `Bearer ${token}`

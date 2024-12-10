@@ -67,6 +67,7 @@ const HomeFile = () => {
                 ...pre,
                 user : accountInfo.name
             }))
+            
             setTrue(false)
             setIsLoading(false)
            } else if (isLogout  === true || !accessToken ||  accountInfo === null || !accountInfo ) {
@@ -90,36 +91,6 @@ const HomeFile = () => {
             displayName: "user",
             photoURL: ''
         }
-        // localStorage.setItem('user', JSON.stringify(currentUser))
-
-        // deleteData(`users/auth`) 
-        //     .then(() => {
-        //      setDataLoad(false)
-        //      toast.success("Logout SuccessFull !" , {
-        //         autoClose:2000
-        //     })
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error deleting movie:', error);
-        //     });
-
-        // deleteData(`users/userCard`) 
-        // .then(() => {
-        //  setDataLoad(false)
-        //  toast.success("Logout SuccessFull !" , {
-        //     autoClose:2000
-        // })
-        // })
-        // .catch((error) => {
-        //     console.error('Error deleting movie:', error);
-        // });
-        //     setDataLoad(false)
-        //     setTimeout(() => {
-        //         setReset('')
-        //         setTrue(!True)
-        //     }, 1900);
-
-
     }
     const handleLogin = () => {
 
@@ -143,6 +114,7 @@ const HomeFile = () => {
                 phone : response.data.phone,
                 avatar : response.data.avatar,
             })
+            localStorage.setItem('avatar', response.data.avatar)
         } else {
             return
         }

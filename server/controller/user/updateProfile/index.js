@@ -5,16 +5,19 @@ const UserUpdateMovie = {
 
     updateUser: async (req, res) => {
         try {
-            // const userId = new mongoose.Types.ObjectId(req.params.id);
+            console.log(typeof req.body.phone); 
+            
             const user = await Users.findByIdAndUpdate(req.userId, {
+                phone:req.body.phone,
                 name: req.body.name,
                 address: req.body.address,
-                phone: req.body.number,
             }, { new: true });
-
-            if (user) {
-                res.status(200).json("Edit Profile SuccessFull !");
-            }
+            // console.log(user);
+            
+            // if (user) {
+            //     res.status(200).json("Edit Profile SuccessFull !");
+            // }
+            res.status(200).json("Edit Profile SuccessFull !");
 
 
         } catch (error) {

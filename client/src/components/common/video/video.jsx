@@ -15,12 +15,12 @@ export const ContentVideo = ({ title, plot, poster, language, id }) => {
                 </div>
 
             </div>
-            <div className="absolute left-0 bottom-0 px-10  flex items-center  justify-between w-full text-xs sm:text-xl gap-5">
+            <div className="absolute   left-0 bottom-0 px-10  flex items-center  justify-between w-full text-xs sm:text-xl gap-5">
                 <p className="">plot :{plot}</p>
                 <button className={`${buttonClasses}  text-nowrap z-10` }><Link 
                 to={`/details/${id}/seller`}
-                className={textClasses}
-                >Book Tickket</Link></button>
+                className={`${textClasses} `}
+                >Book Ticket</Link></button>
             </div>
 
 

@@ -34,6 +34,7 @@ import VietQr from '@/layout/qrcode/payVietQr';
 import SelectSeller from '@/pages/Booking/seller';
 import TicketHistory from '@/components/common/file/history/ticket';
 import SortTrailer from '@/pages/video';
+import PayMentVoucher from '@/pages/Booking/payment/voucher/Discount';
 const RouteMovie = () => {
     return (
         // <div>
@@ -52,12 +53,14 @@ const RouteMovie = () => {
             <Route path="/love" element={<LoveMovie />} />
             <Route path='/details/:id' element={<MovieDetails />} />
             <Route path='/details/:id/seller' element={<SelectSeller />} />
-            <Route path='/details/:id/seller/:sellerId/:sellerName/:event/:price/:date/booking' element={<Select />} />
-            <Route path='/details/:id/seller/:sellerId/:sellerName/:event/:price/:date/booking/pay' element={<Pay />} />
-            <Route path='/details/:id/seller/:sellerId/:sellerName/:event/:price/:date/booking/pay/vietqr' element={<VietQr />} />
+            <Route path='/details/:id/seller/booking' element={<Select />} />
+            <Route path='/details/:id/seller/booking/pay' element={<Pay />} />
+            <Route path='/details/:id/seller/booking/pay/vietqr' element={<VietQr />} />
+            <Route path="/discount" element={< PayMentVoucher/>} />
             <Route path='/geners/:id' element={<Genners />} />
             <Route path='/qrcode/:id' element={<QrCode />} />
             <Route path="/sorts" element={<SortTrailer />} />
+
             <Route path="/profile" element={<HomeFile />} >
                 <Route path="privacy" element={<Privacy />} />
                 <Route path="terms" element={<Terms />} />

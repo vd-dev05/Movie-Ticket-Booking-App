@@ -10,6 +10,7 @@ import authMiddleware from "../../middleware/auth.js";
 import UserHistory from "../../controller/user/history/index.js";
 import { upload } from "../../utils/fileUpLoad.js";
 import { createPayment } from "../../controller/user/payment/index.js";
+import VoucherUser from "../../controller/user/voucher/index.js";
 // import middlewares from "../../middlewares/index.js";
 
 const UserRouter = Router();
@@ -41,6 +42,9 @@ UserRouter.post('/create-token',UserMiddleware.authTokenCreate,createAsscessToke
 
 UserRouter.post('/payments',createPayment)
 UserRouter.post('/sepay_webhook' )
+
+UserRouter.post('/create-voucher',authMiddleware.authSessionToken, VoucherUser.newVoucherUser)
+UserRouter.get('/vouchers/all' ,authMiddleware.authSessionToken, VoucherUser.getVoucherUser)
 
 
 export default UserRouter;

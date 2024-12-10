@@ -10,7 +10,7 @@ import { SellerBooking } from "@/features/movie/movieThunks";
 import { selectMessageSeller, selectSuccessfullSeller, selectSellers, selectIsLoadingSeller } from "@/features/movie/movieSelectors";
 import { showErrorToast } from "@/lib/toastUtils";
 import queryString from "query-string";
-
+import { decodeString, encodeString } from "@/lib/encode";
 
 const SelectSeller = () => {
     const { themeUniver, textClasses, buttonClasses } = useThemeClasses();
@@ -52,7 +52,8 @@ const SelectSeller = () => {
     const  location = useLocation()
     const querystring = queryString.parseUrl( location.pathname)
     const movieId = querystring.url.split('/')[2]
-   
+    // console.log(selectSeller);
+    
     
     // Handler for date selection
     const handleClickDate = (id) => {
@@ -69,8 +70,8 @@ const SelectSeller = () => {
         
         setDay(updatedDays);
         setSelectedDate(updatedDays.find(d => d.id === id)); // Set the selected date
-        console.log(day);
-        console.log(selectedDate);
+        // console.log(day);
+        // console.log(selectedDate);
         
         
     };
@@ -156,8 +157,7 @@ const SelectSeller = () => {
 
         }
     }, [DataSeller])
-    // console.log(DataSeller);
-    // console.log(selectedDate);
+    
     return (
         <div className={`iphone-12-pro-max:flex w-full flex-col min-h-screen ${themeUniver} ${textClasses}`}>
             <div className="pt-10 px-5">
@@ -210,7 +210,7 @@ const SelectSeller = () => {
                 <div className="" >
                     <ul className="flex w-full ">
                         <Swiper spaceBetween={20} slidesPerView={4}>
-                            {timeSlots.map((slot, idx) => (
+                            {timeSlots ? timeSlots.map((slot, idx) => (
                                 <SwiperSlide key={idx} >
                                     <div
 
@@ -224,7 +224,7 @@ const SelectSeller = () => {
                                     </div>
                                 </SwiperSlide>
 
-                            ))}
+                            )) :<div>No data</div>}
                         </Swiper>
                     </ul>
                 </div>
@@ -300,7 +300,15 @@ const SelectSeller = () => {
                                                                     showErrorToast("Please select")
 
                                                                 } else {
-                                                                    nav(`${item.sellerId}/${item.sellerNameSeller}/${event.startTime}-${event.endTime}/${item.price}/${a[0].date}/booking`)
+                                                                    const ok = `${encodeURIComponent(`sellerId=${item.sellerId}&nameSeller=${item.sellerNameSeller}&time=${event.startTime}-${event.endTime}&price=${encodeURIComponent(String(item.price))}&date=${a[0].date}`)}`
+                                                                    const queryEndcode = encodeString(ok,import.meta.env.VITE_SECRET_KEY)
+                                                                    // console.log(queryEndcode);
+                                                                    // 
+                                                                    nav(`booking?${queryEndcode}`)
+                                                                    // const test = decodeString("QlRdXVRDeFUUAnUHBgQBAQYIAFRXAgcGAARSAVcFBFMJAAgUAwdfUFxUYlRdXVRDFAJ1cnZnFAMBZ1hfUl5cFAMBcxR0ABRzcBRwd1IUAwFlFHQAFHNzFHBzFAMBfVgUcgIUcHBcFAMHRVhcVBQCdQEJFAJwAgEcAQgUAnACARQDB0FDWFJUFAJ1Bx8ICBQDB1VQRVQUAnUDAQMFHAADHAEA","123")
+                                                                    
+                                                                    // console.log(test);
+                                                                    // nav(`booking?${encodeURI(`sellerId=${item.sellerId}&nameSeller=${item.sellerNameSeller}&time=${event.startTime}-${event.endTime}&price=${item.price}&date=${a[0].date}`)}`)
                                                                 }
                                                             }}
                                                             className="p-2 w-[150px] bg-white drop-shadow-md rounded-lg text-center text-black">

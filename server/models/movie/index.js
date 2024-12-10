@@ -160,18 +160,12 @@ const userSchema = new mongoose.Schema({
             ref: "booking", // Optionally, set this for better referencing
         },
     }],
-    // comment: [{
-    //         commentId : {
-    //             type: mongoose.Schema.Types.ObjectId,
-    //             ref: "comments",
-    //             required: true
-    //         },
-    //         movieId : {
-    //             type: mongoose.Schema.Types.ObjectId,
-    //             ref: "movies",
-    //             required: true
-    //         }
-    // }],
+    vouchers: [
+        { 
+          type: mongoose.Schema.Types.ObjectId, 
+          ref: 'vouchers'  
+        }
+      ],
     history: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "movies",

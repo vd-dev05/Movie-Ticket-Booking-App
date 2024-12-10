@@ -10,7 +10,8 @@ const initialState = {
     loveData: null,
     historyData: null,
     isLoadingData : false,
-    isLogout : false
+    isLogout : false,
+    vouchers : null
 }
 
 const authSlice = createSlice({
@@ -51,6 +52,9 @@ const authSlice = createSlice({
             state.isError = false
             state.message = action.payload.message
             state.historyData = action.payload.data.history
+            state.vouchers = action.payload.data.vouchers
+            // console.log(action.payload.data.vouchers);
+            
             // console.log(action.payload.data.movieLove);
         })
         builder.addCase(loginUser.rejected, (state, action) => {
@@ -63,6 +67,7 @@ const authSlice = createSlice({
             // console.log('Error:', action.error.message)
 
         })
+       
 
         builder.addCase(getLoveUser.pending, (state) => {
           
@@ -90,7 +95,7 @@ const authSlice = createSlice({
 
 
         builder.addCase(getHistoryUser.fulfilled, (state, action) => {
-            console.log(action);
+            // console.log(action);
             
             state.isLoadingData = true
             state.historyData = action.payload

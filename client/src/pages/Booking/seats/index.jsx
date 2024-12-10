@@ -17,6 +17,7 @@ import { useUser } from "@/context/User";
 import { generateSeats } from "@/lib/createSeats";
 import SeatList from "./seatsList";
 import queryString from "query-string";
+import { decodeString, encodeString } from "@/lib/encode";
 
 
 const Select = () => {
@@ -31,21 +32,11 @@ const Select = () => {
     const location = useLocation()
     const paredUrl = queryString.parseUrl(location.pathname)
     const splitLocation = location.pathname.split('/booking')[0]
-    const obj = paredUrl.url.split('/')
-    const [,,,,, address, time,price,date] = obj;
-
-    
-    // console.log(obj);
-    
-   
-    const addressPared = decodeURIComponent(address)
-    const timeStart = time.split('-')[0]
-    const timeEnd = time.split('-')[1]
-    const datepared = date.split('-')
-
-  
-    
-    // console.log(obj );
+    // const obj = queryString.parseUrl(location.search)
+    // console.log(obj.query);
+    const decodeQuery = decodeString(location.search.split('?').join(''),import.meta.env.VITE_SECRET_KEY)
+    const parsed = queryString.parseUrl(decodeQuery)
+    const decodeComponent = decodeURIComponent(parsed.url)
     
 
     const dataBook = location.state || {}
@@ -99,20 +90,7 @@ const Select = () => {
 
         return t
     }, [data])
-    // const TotalBookTicket = useMemo(() => {
-    //     return data.reduce((total, seat) =>  {seat.id ? [...total,seat.id] },0);
-    // }, [data]);
-    const Click = () => {
-        // console.log( TotalPrice);
-        // console.log(Ticket);
-        // console.log(day);
-        // console.log(hours);
-        // console.log(book);
-        console.log(dataTicket);
-
-        // console.log(TotalBookTicket);
-
-    }
+ 
 
     const [currDay, setCurrDay] = useState(new Date())
     const [day, setDay] = useState([])
@@ -121,76 +99,19 @@ const Select = () => {
         dataD: null,
         dataH: null
     })
-    const [queryDate, setqueryDate] = useState()
-    const [queryTime, setqueryTime] = useState()
-    // const [book, setBook] = useState({
-    //     date: false,
-    //     hours: false
-    // }
-
-    const handlePay = async () => {
-        // const updateData = {
-        //     codeQr: `Mov ${generateRandomString(12)}`,
-        //     dateBook: dataUser.dataTicket.dataDayBook,
-        //     total: dataUser.dataTicket.total,
-        //     seatBook: dataUser.dataTicket.dataMovieBook,
-        //     timeBook: dataUser.dataTicket.dataTimeBook,
-        // }
-        // await updateBookingStatus(localStorage.getItem('pay'), updateData)
-        // try {
-        //     const PayRef = ref(database, 'users/dataTicket/book');
-        //     const snapshot = await get(PayRef);
-
-        //     if (snapshot.exists()) {
-        //         const data = snapshot.val();
-        //         for (const key in data) {
-        //             // console.log(key);
-        //             // console.log(data[key].id );
-        //             // console.log(localStorage.getItem('pay'));
-
-        //             if (data[key].id == localStorage.getItem('pay')) {
-        //                 // console.log(dataUser.dataTimeBook);
-
-        //                 await update(ref(database, `users/dataTicket/book/${key}`), {
-        //                     // timeBook: dataUser,
-        //                     codeQr:`Mov ${generateRandomString(12)}`,
-        //                     dateBook:dataUser.dataTicket.dataDayBook,
-        //                     total:dataUser.dataTicket.total,
-        //                     seatBook:dataUser.dataTicket.dataMovieBook,
-        //                     timeBook:dataUser.dataTicket.dataTimeBook,
-        //                 });
-
-        //                 return;
-        //             }
-        //         }
-        //         console.log("No matching booking found.");
-        //     } else {
-        //         console.log("No data found in 'book' path.");
-        //     }
-        // } catch (error) {
-        //     console.error("Error updating data:", error);
-        // }
-    };
+ 
+    // const handlePay = async () => {
+    
+    // };
     const handleConfirm = () => {
-        // console.log(data);
-        // console.log(dataUser.dataTicket);
-        // console.log(dataUser);
-        // console.log(dataTicket);
-
-
-        // if (Ticket && TotalPrice ) {
-        //     showSuccessToast("Book SuccessFull")
-        //     setTimeout(() => {
-        //         nav('/pay')
-        //     }, 2400);
-        // } else {
-        //     showInfoToast('Please book your tickets') 
-        // }
-        // if (dataUser.dataTicket === null || dataUser.dataTicket === undefined) {
-        //     showInfoToast('Please book your tickets')
-        // }
-
-
+        if (Ticket.length == 0 && TotalPrice == 0) {
+            showErrorToast("Please select a seat")
+        } else {
+            const StringEncode = decodeComponent + `&seats=${Ticket}&totalprice=${TotalPrice}&isactive=false`
+            const queryEncode = encodeString(encodeURIComponent(StringEncode), import.meta.env.VITE_SECRET_KEY)
+            nav(`pay?${queryEncode}`)
+            
+        }
 
     }
     
@@ -205,6 +126,12 @@ const Select = () => {
             <span className="">Loading...</span>
         )
     }
+
+  
+   
+    // console.log(queryEncode);
+    
+    
     return (
 
         <div className={` font-movie ${themeUniver}  min-h-screen `}>
@@ -302,16 +229,19 @@ const Select = () => {
                             onClick={handleConfirm}
                             className=" h-16  text-xl w-[200px]"
                         >Confirm Seat</Button> */}
-                        <Link
-                            to={`${location.pathname}/pay?seats=${Ticket}&totalprice=${TotalPrice}&price=${price}&isactive=false`}
-                            onClick={handleConfirm}
+                        {/* <Link
+                            // to={`${location.pathname}/pay?seats=${Ticket}&totalprice=${TotalPrice}&price=${price}&isactive=false`}
+                            onClick={handleConfirm}  
                             className="text-white hover:text-white" 
                             // TotalPrice={TotalPrice} Ticket={Ticket} dataTicket={dataTicket} dataBook={dataBook}
                               >
-                            <Button
-                                className=" h-16  text-xl w-[200px]"
+                         
+                        </Link> */}
+                           <Button
+                                  onClick={handleConfirm}  
+                                //   className="text-white hover:text-white" 
+                                className=" h-16  text-xl w-[200px] text-white hover:text-white"
                             >Confirm Seat</Button>
-                        </Link>
 
                     </div>
                 </div>

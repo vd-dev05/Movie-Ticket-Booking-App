@@ -7,3 +7,4 @@ export const selectHistory = (state) => state.auth.historyData
 export const selectSuccessfull =  (state) => state.auth.successfull
 export const selectIsLoadingData = (state) => state.auth.isLoadingData
 export const selectLogout = (state) => state.auth.isLogout
+export const selectVoucher = (state) => state.auth.vouchers

@@ -139,6 +139,33 @@ const UserServices = {
         } catch (error) {
             return error?.response
         }
+    },
+    createVoucherNewUser : async (value) => {
+        try {
+            const response = await axios.post(`${baseURL}/api/v1/users/create-voucher`,{
+              
+            }, {
+                headers :{
+                    'authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+            console.log(response);
+            return response
+        } catch (error) {
+            return error?.reponse
+        }
+    },
+    getvoucherUser  : async () => {
+        try {
+            const response = await axios.get(`${baseURL}/api/v1/users/vouchers/all`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+            return response
+        } catch (error) {
+            return error
+        }
     }
 }
 

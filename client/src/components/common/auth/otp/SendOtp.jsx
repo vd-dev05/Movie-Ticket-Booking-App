@@ -50,7 +50,9 @@ const SendOtp = ({ phoneN, setOpen, isOpen, titlePass, paraPass1, paraPass2 }) =
                         showErrorToast("Failed to send OTP.");
                     }
                 } catch (error) {
-                    showErrorToast("An error occurred while sending OTP.");
+                    console.log(error);
+                    
+                    // showErrorToast("An error occurred while sending OTP.");
                 }
             };
             fetchOtp();

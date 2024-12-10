@@ -11,21 +11,24 @@ import UserHistory from "@/services/users/history";
 import MovieTop from "./MovieTop";
 import LoveMovie from "./loveMovie";
 import Nav from "@/layout/Nav/index";
-import { selectIsLoading, selectSuccessfull, selectUserLove, selectHistory, selectIsLoadingData } from "@/features/auth/authSelectors";
+import { selectIsLoading, selectSuccessfull, selectUserLove, selectHistory, selectIsLoadingData, selectVoucher } from "@/features/auth/authSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavURL } from "@/hooks/nav/NavUrl";
 import { showErrorToast } from "@/lib/toastUtils";
 import { getLoveUser, getHistoryUser } from "@/features/auth/authThunks";
+import Voucher from "@/components/common/voucher";
 
 const HomeMovie = () => {
-    const [nameUser, setNameUser] = useState(''); 
+    const [nameUser, setNameUser] = useState('');
     const [check, setCheck] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [dataLove, setDataLove] = useState([]);
     const [dataHistory, setDataHistory] = useState([]);
+    const [showVoucher, setShowVoucher] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     const themeCtx = useTheme();
-    const { inputClasses, themeBackGround,themeUniver } = useThemeClasses();
+    const { inputClasses, themeBackGround, themeUniver } = useThemeClasses();
     const { dataUser } = useUser();
     const [user, setUser] = useState('guest')
     // const
@@ -46,6 +49,8 @@ const HomeMovie = () => {
     const dispatch = useDispatch();
     const loveMovieUser = useSelector(selectUserLove)
     const historyMovieUser = useSelector(selectHistory)
+    const vouchers = useSelector(selectVoucher)
+    // console.log(vouchers);
 
     useEffect(() => {
         setIsLoading(true);
@@ -89,6 +94,41 @@ const HomeMovie = () => {
         }
     }, [loveMovieUser, historyMovieUser, loading, user]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollHeight = window.scrollY;
+
+            // console.log(vouchers);
+            if (vouchers && vouchers !== null) {
+                vouchers.map((item) => {
+                    if (item.title.toString() === "50% off first order") {
+                        localStorage.setItem('isVoucher', false)
+                    }
+                })
+            }
+            const a = localStorage.getItem('isVoucher')
+            if (a === false) {
+                setShowVoucher(false);
+            } else if (scrollHeight > 500 && !a) {
+                setShowVoucher(true);
+            }
+
+            // if (scrollHeight > 500 ) {
+            //     setShowVoucher(true);
+            //     // console.log(showVoucher);
+
+            // } else {
+            //     setShowVoucher(false);
+            // }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
 
 
@@ -102,17 +142,27 @@ const HomeMovie = () => {
 
 
     return (
-        <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeUniver}`}>
+        <div className={`iphone-12-pro-max:flex flex flex-col font-movie pt-10 relative opacity-95 ${themeUniver} `}>
+
+            {showVoucher &&
+
+                <div className={`${localStorage.getItem('isVoucher') ? 'hidden' : 'fixed inset-0 bg-black bg-opacity-50 z-50'}`}>
+
+                    <Voucher setIsVisible={setIsVisible} isVisible={isVisible}/>
+
+                </div>
+
+            }
             <div className="px-5">
                 {/* Welcome User Section */}
                 <div className="flex justify-between">
                     <div>
-                     { nameUser ?  <TypingEffect nameUser={nameUser}/> : null }
+                        {nameUser ? <TypingEffect nameUser={nameUser} /> : null}
                         <p>Book your favourite movie</p>
                     </div>
                     <div>
                         <Avatar>
-                            <AvatarImage src={"https://github.com/shadcn.png"} />
+                            <AvatarImage src={localStorage.getItem('avatar') ? localStorage.getItem('avatar') : "https://github.com/shadcn.png"} />
                             <AvatarFallback>Avatar</AvatarFallback>
                         </Avatar>
                     </div>
@@ -175,7 +225,7 @@ const HomeMovie = () => {
                         state={{ data: dataHistory }} className="text-chairMovie-chairSelected text-2xl">See all</Link>
                 </div>
                 <div className="mt-5 ">
-                    {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory} page={2} sizew={400} sizeh={460} space={190} isize={350} texts={40} /> : 'Not found'}
+                    {dataHistory && dataHistory.length ? <LoveMovie data={dataHistory} page={2} sizew={400} sizeh={460} space={5} isize={350} texts={20} /> : 'Not found'}
                 </div>
 
                 {/* Love Movies Section */}

@@ -1,8 +1,5 @@
-import { Movies } from "../../models/movie/index.js"
+import { Movies, Users } from "../../models/movie/index.js"
 import { v2 as cloudinary } from 'cloudinary'
-import { log } from "console"
-import fs from 'fs'
-import mongoose from "mongoose"
 const adminController = {
     loginAdmin: async (req, res) => {
         try {
@@ -21,36 +18,7 @@ const adminController = {
 
             const { title, plot, genres, runtime, cast, fullplot, languages, released, directors, writers, awards, imdb, countries, type, poster, trailer, production, year } = req.body.value;
            
-            // const data = {
-            //     title,
-            //     plot,
-            //     genres,
-            //     runtime,
-            //     cast,
-            //     fullplot,
-            //     languages,
-            //     released,
-            //     directors,
-            //     writers,
-            //     awards: {
-            //         win: awards.split(',')[0],
-            //         nominations: awards.split(',')[1],
-            //         text: awards.split(',')[2]
-            //     },
-            //     imdb: {
-            //         rating: imdb.split(',')[0],
-            //         votes: imdb.split(',')[1],
-            //     },
-            //     countries,
-            //     type,
-            //     poster,
-            //     trailer,
-            //     lastupdated: new Date(),
-            //     tomatoes: {
-            //         production : production
-            //     },
-            //     year 
-            // }
+    
             const movie = await Movies.create({
                     title,
                     plot,
@@ -154,7 +122,20 @@ const adminController = {
                 message: 'Error uploading video to Cloudinary',
             });
         }
+    },
+    getAllUsers : async (req, res) => {
+        try {
+            const response = await Users.find({})
+            .select('name phone number avatar email role ticket address') 
+           
+         
+            res.status(200).json(response)
+            
+        } catch (error) {
+            res.status(400).json({error: error.message})
+        }
     }
+
 
 
 }

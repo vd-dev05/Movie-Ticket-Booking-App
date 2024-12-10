@@ -17,7 +17,7 @@ const authMiddleware = {
   auhthorizationAdmin: async (req, res, next) => {
     try {
 
-      const textAdmin = await Users.findOne({ phone: req.body.phone })
+      const textAdmin = await Users.findOne({ phone: req.body.phone })    
       if (textAdmin === undefined || textAdmin === null || !textAdmin) {
         throw new Error(' Role not found')
       }
@@ -88,10 +88,11 @@ const authMiddleware = {
 
   },
   authSessionToken: (req, res, next) => {
-    try {
+    try {      
       const token = req.headers['authorization'];
       const split = token.split(' ')[1]
-
+      // console.log(split);
+      
 
       jwt.verify(split, process.env.SECRET_KEY, (err, user) => {
         if (err) throw new Error("Invalid or expired token")

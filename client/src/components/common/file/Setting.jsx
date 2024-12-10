@@ -12,6 +12,7 @@ const stylesClassName = {
     parentText: 'text-gray-500 ',
     flexNavbar : 'flex gap-5 items-center '
 }
+import Notification from "./notifications";
 const SettingProfile = () => {
     const { themeUniver,textClasses } = useThemeClasses()
     const location = useLocation();
@@ -21,17 +22,18 @@ const SettingProfile = () => {
     // const ticketHistory = location.pathname === '/profile/setting/ticket'
     console.log(pared.query.action);
     const ticketHistory = pared.query.action === 'ticket'
+    const notifiactions = pared.query.action === 'notifications'
     return (
         <div className={`p-5 ${themeUniver}`}>
             <div className="flex justify-between items-center my-5">
                 <Link to={location.search ?location.pathname :'/profile'} className={textClasses}>
                 <IoMdArrowRoundBack  />
                 </Link>
-                <h1 className="font-bold text-xl">Setting Profile</h1>
+                <h1 className="font-bold text-xl"> {notifiactions ? "Notifiaction" : "Setting Profile"}</h1>
                 <FaSearch />
             </div>
             <hr />
-            {!ticketHistory && (
+            {!ticketHistory && !notifiactions && (
                   <div className="text-left">
                   <div className="my-5">
                       <div>
@@ -39,10 +41,16 @@ const SettingProfile = () => {
                           <p className={stylesClassName.parentText}>Customize your exprerience on Movie </p>
                       </div>
                       <div className="flex flex-col gap-10 p-2">
-                          <div className={stylesClassName.flexNavbar} >
+                          {/* <div className={stylesClassName.flexNavbar} >
                               <span><IoIosNotificationsOutline size={30}/></span>
                               <h2 className={stylesClassName.textH2}>Notifications</h2>
-                          </div>
+                          </div> */}
+                             <Link
+                          to={'?action=notifications'}
+                           className={`${stylesClassName.flexNavbar} ${textClasses} hover:${textClasses}`} >
+                             <span><IoIosNotificationsOutline size={30}/></span>
+                             <h2 className={stylesClassName.textH2}>Notifications</h2>
+                          </Link>
                           <div className={stylesClassName.flexNavbar}>
                               <span><TbWorld  size={30}/></span>
                               <h2 className={stylesClassName.textH2}>Language</h2>
@@ -81,7 +89,7 @@ const SettingProfile = () => {
               </div>
             )}
             {ticketHistory && <TicketHistory/> }
-          
+            {notifiactions && <Notification/>}
 
 
 

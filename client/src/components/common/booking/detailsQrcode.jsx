@@ -34,15 +34,20 @@ const QrCode = () => {
     const [user, setUser] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
+        const account = localStorage.getItem('account_info')
+
+        
         const fetchData = async () => {
             setIsLoading(false)
             try {
-                if (localStorage.getItem('account-info')) {
-                    const { name } = JSON.parse(localStorage.getItem('account-info'))
+                
+                if (account) {
+                    const { name } = JSON.parse(account)
                     setUser(name)
 
                 } else {
                     alert('Please select an account ')
+                    return
                 }
                 // console.log(splitId);
 
