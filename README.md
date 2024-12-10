@@ -89,41 +89,38 @@ Dự án **Hệ Thống Đặt Vé Phim** là một ứng dụng web cho phép n
 
 /client            # Mã nguồn Frontend
   /public           # Tài nguyên (hình ảnh, video, ...)
-  /api             # API banner
-  /assets          # Ảnh, icon
-
-/src
-  /components      # Các thành phần giao diện
-    /common        # Các UI con của pages
-    /ui            # Cấu hình UI shadcn
-  /features        # Quản lý trạng thái
-  /controller      # Xử lý nghiệp vụ với services
-  /pages           # Giao diện chính (home, profile, search, ...)
-  /routes          # Định tuyến các routes
-  /store           # Khởi tạo store với redux
-  /services        # Kết nối API từ server
-  /validations     # Xử lý đầu vào dữ liệu
-  /context         # Store Provider
-    /Theme         # Quản lý theme giao diện, hàm tái sử dụng
-    /User          # Quản lý dữ liệu state, dữ liệu component
-  /lib             # Thư viện cấu hình hàm (random, toast, ...)
-  /layout          # NavBar, loading
-
-/server          # Mã nguồn Backend
-  /cache          # Cache dữ liệu ( otp , token)
-  /models         # Mô hình dữ liệu MongoDB
-  /database       # database , collection theo Mongo
-  /routes         # Các API routes
-  /controllers    # Logic xử lý các yêu cầu từ phí client
-  /error          # Xử lí lỗi ( error 404, 500, ...)
+  /api              # API banner
+  /assets           # Ảnh, icon
+  /src
+    /components      # Các thành phần giao diện
+      /common        # Các UI con của pages
+      /ui            # Cấu hình UI shadcn
+    /features        # Quản lý trạng thái
+    /controller      # Xử lý nghiệp vụ với services
+    /pages           # Giao diện chính (home, profile, search, ...)
+    /routes          # Định tuyến các routes
+    /store           # Khởi tạo store với redux
+    /services        # Kết nối API từ server
+    /validations     # Xử lý đầu vào dữ liệu
+    /context         # Store Provider
+      /Theme         # Quản lý theme giao diện, hàm tái sử dụng
+      /User          # Quản lý dữ liệu state, dữ liệu component
+    /lib             # Thư viện cấu hình hàm (random, toast, ...)
+    /layout          # NavBar, loading
+/server            # Mã nguồn Backend
+  /cache            # Cache dữ liệu (otp, token)
+  /models           # Mô hình dữ liệu MongoDB
+  /database         # Database, collection theo Mongo
+  /routes           # Các API routes
+  /controllers      # Logic xử lý các yêu cầu từ phí client
+  /error            # Xử lí lỗi (error 404, 500, ...)
   /middleware
-    /auth.js      # Xử lí xác thực người dùng, xử lí xác thực OTP,xử lí xác thực token , ...
-    /manager.js   # Xử lí logic nghiệp vụ của admin
-    /movie.js     # Xử lí logic nghiệp vụ của phim
-    /user.js      # Xử lí logic nghiệp vụ của người dùng
-  /utils          # Cấu hình các hàm tiện ích chung (gen code, hash password, ...)
-  /config         # Cấu hình các hằng số, các biến môi trường
-
+    /auth.js        # Xử lí xác thực người dùng, xử lí xác thực OTP, xử lí xác thực token, ...
+    /manager.js     # Xử lí logic nghiệp vụ của admin
+    /movie.js       # Xử lí logic nghiệp vụ của phim
+    /user.js        # Xử lí logic nghiệp vụ của người dùng
+  /utils            # Cấu hình các hàm tiện ích chung (gen code, hash password, ...)
+  /config           # Cấu hình các hằng số, các biến môi trường
 ### Giải thích các phần:
 
 1. **Mô Tả Dự Án**: Phần này giúp người đọc hiểu về ứng dụng và các tính năng chính của nó.
